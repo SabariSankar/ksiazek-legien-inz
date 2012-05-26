@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiVizTest", "WindowsFormsApplication1\ActiVizTest.csproj", "{9A38BF8E-E599-485E-B0FE-BCFA1CBDE956}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DicomLoadTest", "DicomLoadTest\DicomLoadTest.csproj", "{68B592EB-0C16-4108-9DDB-CBADA8B0E7D3}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A38BF8E-E599-485E-B0FE-BCFA1CBDE956}.Debug|x86.ActiveCfg = Debug|x86
+		{9A38BF8E-E599-485E-B0FE-BCFA1CBDE956}.Debug|x86.Build.0 = Debug|x86
+		{9A38BF8E-E599-485E-B0FE-BCFA1CBDE956}.Release|x86.ActiveCfg = Release|x86
+		{9A38BF8E-E599-485E-B0FE-BCFA1CBDE956}.Release|x86.Build.0 = Release|x86
+		{68B592EB-0C16-4108-9DDB-CBADA8B0E7D3}.Debug|x86.ActiveCfg = Debug|x86
+		{68B592EB-0C16-4108-9DDB-CBADA8B0E7D3}.Debug|x86.Build.0 = Debug|x86
+		{68B592EB-0C16-4108-9DDB-CBADA8B0E7D3}.Release|x86.ActiveCfg = Release|x86
+		{68B592EB-0C16-4108-9DDB-CBADA8B0E7D3}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
