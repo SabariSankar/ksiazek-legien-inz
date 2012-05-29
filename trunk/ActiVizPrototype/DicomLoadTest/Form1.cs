@@ -20,6 +20,7 @@ namespace DicomLoadTest
 
         public static float x = 1;
         vtkColorTransferFunction ctf;
+        vtkPiecewiseFunction spwf;
         vtkVolume vol;
 
         private void renderWindowControl1_Load(object sender, EventArgs e)
@@ -29,7 +30,7 @@ namespace DicomLoadTest
             vtkFixedPointVolumeRayCastMapper texMapper = vtkFixedPointVolumeRayCastMapper.New();
             vol = vtkVolume.New();
             ctf = vtkColorTransferFunction.New();
-            vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
+            spwf = vtkPiecewiseFunction.New();
             vtkPiecewiseFunction gpwf = vtkPiecewiseFunction.New();
 
             reader.SetFileName("head.vti");
@@ -46,8 +47,8 @@ namespace DicomLoadTest
             ctf.AddHSVPoint(254*x, .38, .013, 1);
 
             //Set the opacity curve for the volume
-            spwf.AddPoint(84, 0);
-            spwf.AddPoint(151, .1);
+            spwf.AddPoint(84, 0); //84
+            spwf.AddPoint(151, .1); //151
             spwf.AddPoint(255, 1);
 
             //Set the gradient curve for the volume
@@ -68,10 +69,11 @@ namespace DicomLoadTest
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             trackBar1.Minimum = 0;
-            trackBar1.Maximum = 256;
+            trackBar1.Maximum = 150;
             x = trackBar1.Value;
             //prowizoryczne zwiększanie współczymmika przenikalności
-            ctf = vtkColorTransferFunction.New();
+            spwf = vtkPiecewiseFunction.New();
+            /*
             ctf.AddHSVPoint(0 + x, .67, .07, 1);//1
             ctf.AddHSVPoint(94 + x, .67, .07, 1);
             ctf.AddHSVPoint(139 + x, 0, 0, 0);
@@ -79,7 +81,13 @@ namespace DicomLoadTest
             ctf.AddHSVPoint(254 + x, .38, .013, 1);
 
             vol.GetProperty().SetColor(ctf);
+             * */
             //
+            spwf.AddPoint(84+x, 0); //84
+            spwf.AddPoint(151, .1); //151
+            spwf.AddPoint(255, 1);
+            vol.GetProperty().SetScalarOpacity(spwf);
+
 
             renderWindowControl1.Validate();
             renderWindowControl1.Update();
