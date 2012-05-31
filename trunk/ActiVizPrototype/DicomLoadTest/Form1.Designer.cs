@@ -38,16 +38,16 @@
             this.renderWindowControl1.AddTestActors = false;
             this.renderWindowControl1.Location = new System.Drawing.Point(6, 7);
             this.renderWindowControl1.Name = "renderWindowControl1";
-            this.renderWindowControl1.Size = new System.Drawing.Size(662, 456);
+            this.renderWindowControl1.Size = new System.Drawing.Size(800, 500);
             this.renderWindowControl1.TabIndex = 0;
             this.renderWindowControl1.TestText = null;
             this.renderWindowControl1.Load += new System.EventHandler(this.renderWindowControl1_Load);
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(29, 469);
+            this.trackBar1.Location = new System.Drawing.Point(10, 510);
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(590, 45);
+            this.trackBar1.Size = new System.Drawing.Size(780, 45);
             this.trackBar1.TabIndex = 1;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
@@ -55,7 +55,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(671, 516);
+            this.ClientSize = new System.Drawing.Size(810, 600);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.renderWindowControl1);
             this.Name = "Form1";
