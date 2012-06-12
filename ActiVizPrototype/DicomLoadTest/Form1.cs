@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,6 +22,8 @@ namespace DicomLoadTest
         vtkColorTransferFunction ctf;
         vtkPiecewiseFunction spwf;
         vtkVolume vol;
+        float windowWidth = 0;
+        float windowLevel = 40;
 
         private void renderWindowControl1_Load(object sender, EventArgs e)
         {
@@ -46,16 +48,22 @@ namespace DicomLoadTest
             mapper.SetInputConnection(dicomReader.GetOutputPort());
 
             //Set the color curve for the volume
-            ctf.AddHSVPoint(1*x, .67, .07, 1);//1
-            ctf.AddHSVPoint(94*x, .67, .07, 1);
-            ctf.AddHSVPoint(139*x, 0, 0, 0);
-            ctf.AddHSVPoint(160*x, .28, .047, 1);
-            ctf.AddHSVPoint(254*x, .38, .013, 1);
+            ctf.AddRGBPoint(-100, .9, .9, .5);       //tluszcz 50 - -100
+            ctf.AddRGBPoint(0, .6, .45, .5);          //woda ~0
+            ctf.AddRGBPoint(40, 1, 0, 0);             //krew ~40
+            ctf.AddRGBPoint(50, 1, .1, .1);           //watroba 40-60
+            ctf.AddRGBPoint(37, .4, .4, .3);         //istota szara mozgu 37-45
+            //istota biala mozgu 20 - 30
+            //miazsz nerki ~30
+            //plyn mozgowo-rdzenowy 10-15
+            ctf.AddRGBPoint(20, 1, 0, 0);         //miesnie 10 - 40
+            ctf.AddRGBPoint(1500, 1, 1,1);           //kosc 1000 - 1500
 
             //Set the opacity curve for the volume
-            spwf.AddPoint(84, 0); //84
-            spwf.AddPoint(151, .1); //151
-            spwf.AddPoint(255, 1);
+            spwf.AddPoint(this.windowLevel - (this.windowWidth / 2), 0);
+            spwf.AddPoint(this.windowLevel, 1);
+            spwf.AddPoint(this.windowLevel + (this.windowWidth / 2), 0);
+
 
             //Set the gradient curve for the volume
             gpwf.AddPoint(0, .2);
@@ -72,38 +80,60 @@ namespace DicomLoadTest
             renderer.AddVolume(vol);
         }
 
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
-            trackBar1.Minimum = 0;
-            trackBar1.Maximum = 150;
-            x = trackBar1.Value;
 
+        private void renderWindowControl4_Load(object sender, EventArgs e)
+        {
+
+            vtkDICOMImageReader dicomReader = vtkDICOMImageReader.New();
+            dicomReader.SetDirectoryName("D:\\Downloads\\PANORAMIX\\");
+            dicomReader.Update();
+
+            //create image viewer
+
+            vtkImageViewer2 viewer = vtkImageViewer2.New();
+            viewer.SetInputConnection(dicomReader.GetOutputPort());
+
+        
+            viewer.OffScreenRenderingOn(); //dont show window of load images
+            int VolData_Images = viewer.GetSliceMax();
+            viewer.SetSlice(100); //slice showed
+
+            viewer.Render();
+            renderWindowControl4.RenderWindow.AddRenderer(viewer.GetRenderer());
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.windowWidth = float.Parse(comboBox1.SelectedItem.ToString());
 
             spwf = vtkPiecewiseFunction.New();
-            /*
-            ctf.AddHSVPoint(0 + x, .67, .07, 1);//1
-            ctf.AddHSVPoint(94 + x, .67, .07, 1);
-            ctf.AddHSVPoint(139 + x, 0, 0, 0);
-            ctf.AddHSVPoint(160 + x, .28, .047, 1);
-            ctf.AddHSVPoint(254 + x, .38, .013, 1);
-            */
-
-            ctf.AddRGBPoint(0 + x , 0, 0, 0);
-            ctf.AddRGBPoint(94 + x, .6, .7, 1);
-            ctf.AddRGBPoint(139 + x, 0, .9, .2);
-            ctf.AddRGBPoint(160 + x, .4, .47, .5);
-            ctf.AddRGBPoint(254 + x, .3, .13, .1);
-
-            vol.GetProperty().SetColor(ctf);
- 
-            spwf.AddPoint(84 + x, 0); //84
-            spwf.AddPoint(151 + x, .1); //151
-            spwf.AddPoint(255 + x, 1);
+            spwf.AddPoint(this.windowLevel - (this.windowWidth / 2), 0);
+            spwf.AddPoint(this.windowLevel, 1);
+            spwf.AddPoint(this.windowLevel + (this.windowWidth / 2), 0);
             vol.GetProperty().SetScalarOpacity(spwf);
 
-
-            renderWindowControl1.Validate();
-            renderWindowControl1.Update();
+            this.renderWindowControl1.Validate();
+            this.renderWindowControl1.Update();
         }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.windowLevel = float.Parse(comboBox2.SelectedItem.ToString());
+
+            spwf = vtkPiecewiseFunction.New();
+            spwf.AddPoint(this.windowLevel - (this.windowWidth / 2), 0);
+            spwf.AddPoint(this.windowLevel, 1);
+            spwf.AddPoint(this.windowLevel + (this.windowWidth / 2), 0);
+            vol.GetProperty().SetScalarOpacity(spwf);
+
+            this.renderWindowControl1.Validate();
+            this.renderWindowControl1.Update();
+        }
+
+  
+
+
+   
     }
 }
