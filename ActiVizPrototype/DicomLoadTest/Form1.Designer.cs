@@ -36,22 +36,14 @@ namespace DicomLoadTest
             this.panel1 = new System.Windows.Forms.Panel();
             this.textBoxLevel1 = new System.Windows.Forms.TextBox();
             this.textBoxWidth = new System.Windows.Forms.TextBox();
-            this.labelThird = new System.Windows.Forms.Label();
-            this.labelSecond = new System.Windows.Forms.Label();
-            this.labelFirst = new System.Windows.Forms.Label();
             this.labelLevel = new System.Windows.Forms.Label();
             this.labelWidth = new System.Windows.Forms.Label();
             this.trackBarLevel = new System.Windows.Forms.TrackBar();
-            this.trackBarThird = new System.Windows.Forms.TrackBar();
-            this.trackBarSecond = new System.Windows.Forms.TrackBar();
-            this.trackBarFirst = new System.Windows.Forms.TrackBar();
             this.trackBarWidth = new System.Windows.Forms.TrackBar();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLevel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarThird)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarSecond)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarFirst)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarWidth)).BeginInit();
             this.SuspendLayout();
             // 
@@ -108,74 +100,40 @@ namespace DicomLoadTest
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Controls.Add(this.textBoxLevel1);
             this.panel1.Controls.Add(this.textBoxWidth);
-            this.panel1.Controls.Add(this.labelThird);
-            this.panel1.Controls.Add(this.labelSecond);
-            this.panel1.Controls.Add(this.labelFirst);
             this.panel1.Controls.Add(this.labelLevel);
             this.panel1.Controls.Add(this.labelWidth);
             this.panel1.Controls.Add(this.trackBarLevel);
-            this.panel1.Controls.Add(this.trackBarThird);
-            this.panel1.Controls.Add(this.trackBarSecond);
-            this.panel1.Controls.Add(this.trackBarFirst);
             this.panel1.Controls.Add(this.trackBarWidth);
             this.panel1.Location = new System.Drawing.Point(12, 7);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(254, 608);
             this.panel1.TabIndex = 3;
             // 
-            // textBoxLevel
+            // textBoxLevel1
             // 
-            this.textBoxLevel1.Location = new System.Drawing.Point(80, 293);
-            this.textBoxLevel1.Name = "textBoxLevel";
+            this.textBoxLevel1.Location = new System.Drawing.Point(67, 94);
+            this.textBoxLevel1.Name = "textBoxLevel1";
             this.textBoxLevel1.Size = new System.Drawing.Size(57, 20);
             this.textBoxLevel1.TabIndex = 17;
             this.textBoxLevel1.Text = "0";
-            this.trackBarLevel.Value = 0;
             this.textBoxLevel1.TextChanged += new System.EventHandler(this.textBoxLevel_TextChanged);
             // 
             // textBoxWidth
             // 
-            this.textBoxWidth.Location = new System.Drawing.Point(80, 215);
+            this.textBoxWidth.Location = new System.Drawing.Point(67, 16);
             this.textBoxWidth.Name = "textBoxWidth";
             this.textBoxWidth.Size = new System.Drawing.Size(57, 20);
             this.textBoxWidth.TabIndex = 16;
             this.textBoxWidth.Text = "0";
-            this.trackBarWidth.Value = 0;
             this.textBoxWidth.TextChanged += new System.EventHandler(this.textBoxWidth_TextChanged);
-            // 
-            // labelThird
-            // 
-            this.labelThird.AutoSize = true;
-            this.labelThird.Location = new System.Drawing.Point(41, 558);
-            this.labelThird.Name = "labelThird";
-            this.labelThird.Size = new System.Drawing.Size(13, 13);
-            this.labelThird.TabIndex = 15;
-            this.labelThird.Text = "3";
-            // 
-            // labelSecond
-            // 
-            this.labelSecond.AutoSize = true;
-            this.labelSecond.Location = new System.Drawing.Point(41, 501);
-            this.labelSecond.Name = "labelSecond";
-            this.labelSecond.Size = new System.Drawing.Size(13, 13);
-            this.labelSecond.TabIndex = 14;
-            this.labelSecond.Text = "2";
-            // 
-            // labelFirst
-            // 
-            this.labelFirst.AutoSize = true;
-            this.labelFirst.Location = new System.Drawing.Point(41, 447);
-            this.labelFirst.Name = "labelFirst";
-            this.labelFirst.Size = new System.Drawing.Size(13, 13);
-            this.labelFirst.TabIndex = 13;
-            this.labelFirst.Text = "1";
             // 
             // labelLevel
             // 
             this.labelLevel.AutoSize = true;
-            this.labelLevel.Location = new System.Drawing.Point(41, 300);
+            this.labelLevel.Location = new System.Drawing.Point(28, 101);
             this.labelLevel.Name = "labelLevel";
             this.labelLevel.Size = new System.Drawing.Size(33, 13);
             this.labelLevel.TabIndex = 12;
@@ -184,7 +142,7 @@ namespace DicomLoadTest
             // labelWidth
             // 
             this.labelWidth.AutoSize = true;
-            this.labelWidth.Location = new System.Drawing.Point(39, 220);
+            this.labelWidth.Location = new System.Drawing.Point(26, 21);
             this.labelWidth.Name = "labelWidth";
             this.labelWidth.Size = new System.Drawing.Size(35, 13);
             this.labelWidth.TabIndex = 11;
@@ -192,46 +150,32 @@ namespace DicomLoadTest
             // 
             // trackBarLevel
             // 
-            this.trackBarLevel.Location = new System.Drawing.Point(26, 325);
-            this.trackBarLevel.Maximum = 1500;
+            this.trackBarLevel.Location = new System.Drawing.Point(13, 120);
+            this.trackBarLevel.Maximum = 2000;
             this.trackBarLevel.Minimum = -700;
             this.trackBarLevel.Name = "trackBarLevel";
             this.trackBarLevel.Size = new System.Drawing.Size(203, 45);
             this.trackBarLevel.TabIndex = 10;
             this.trackBarLevel.Scroll += new System.EventHandler(this.trackBarLevel_Scroll);
             // 
-            // trackBarThird
-            // 
-            this.trackBarThird.Location = new System.Drawing.Point(108, 549);
-            this.trackBarThird.Name = "trackBarThird";
-            this.trackBarThird.Size = new System.Drawing.Size(104, 45);
-            this.trackBarThird.TabIndex = 9;
-            this.trackBarThird.Scroll += new System.EventHandler(this.trackBarThird_Scroll);
-            // 
-            // trackBarSecond
-            // 
-            this.trackBarSecond.Location = new System.Drawing.Point(108, 498);
-            this.trackBarSecond.Name = "trackBarSecond";
-            this.trackBarSecond.Size = new System.Drawing.Size(104, 45);
-            this.trackBarSecond.TabIndex = 8;
-            this.trackBarSecond.Scroll += new System.EventHandler(this.trackBarSecond_Scroll);
-            // 
-            // trackBarFirst
-            // 
-            this.trackBarFirst.Location = new System.Drawing.Point(108, 447);
-            this.trackBarFirst.Name = "trackBarFirst";
-            this.trackBarFirst.Size = new System.Drawing.Size(104, 45);
-            this.trackBarFirst.TabIndex = 7;
-            this.trackBarFirst.Scroll += new System.EventHandler(this.trackBarFirst_Scroll);
-            // 
             // trackBarWidth
             // 
-            this.trackBarWidth.Location = new System.Drawing.Point(26, 249);
-            this.trackBarWidth.Maximum = 1000;
+            this.trackBarWidth.Location = new System.Drawing.Point(13, 50);
+            this.trackBarWidth.Maximum = 2500;
             this.trackBarWidth.Name = "trackBarWidth";
             this.trackBarWidth.Size = new System.Drawing.Size(203, 45);
             this.trackBarWidth.TabIndex = 6;
             this.trackBarWidth.Scroll += new System.EventHandler(this.trackBarWidth_Scroll);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(13, 195);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(203, 21);
+            this.comboBox1.TabIndex = 18;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+
             // 
             // Form1
             // 
@@ -241,14 +185,10 @@ namespace DicomLoadTest
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "Form1";
-            this.Text = "Form1";
             this.flowLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLevel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarThird)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarSecond)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarFirst)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarWidth)).EndInit();
             this.ResumeLayout(false);
 
@@ -265,15 +205,10 @@ namespace DicomLoadTest
         private System.Windows.Forms.Label labelLevel;
         private System.Windows.Forms.Label labelWidth;
         private System.Windows.Forms.TrackBar trackBarLevel;
-        private System.Windows.Forms.TrackBar trackBarThird;
-        private System.Windows.Forms.TrackBar trackBarSecond;
-        private System.Windows.Forms.TrackBar trackBarFirst;
         private System.Windows.Forms.TrackBar trackBarWidth;
-        private System.Windows.Forms.Label labelThird;
-        private System.Windows.Forms.Label labelSecond;
-        private System.Windows.Forms.Label labelFirst;
         private System.Windows.Forms.TextBox textBoxLevel1;
         private System.Windows.Forms.TextBox textBoxWidth;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 
