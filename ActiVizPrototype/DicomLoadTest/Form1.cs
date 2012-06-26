@@ -18,24 +18,25 @@ namespace DicomLoadTest
         Visualization2D secondVizualization2D;
         Visualization2D thirdVizualization2D;
 
+        vtkDICOMImageReader dicomReader;
         String directoryName = "D:\\Downloads\\PANORAMIX\\";
 
-        float windowWidth = 0;
-        float windowLevel = 40;
+        float windowWidth = 100;
+        float windowLevel = 100;
 
 
         public Form1()
         {
             InitializeComponent();
+
+            dicomReader = vtkDICOMImageReader.New();
+            dicomReader.SetDirectoryName(directoryName);
+            dicomReader.Update();
         }
 
         //wizualizacja 3d -----------------------------------------------------------------
         private void fourthWindow_Load(object sender, EventArgs e)
         {
-            vtkDICOMImageReader dicomReader = vtkDICOMImageReader.New();
-            dicomReader.SetDirectoryName(directoryName);
-            dicomReader.Update();
-
             vizualization3D = new Visualization3D(fourthWindow,dicomReader);
 
             PresetMapper presets = new PresetMapper();
@@ -84,19 +85,22 @@ namespace DicomLoadTest
         //wizualizaja 2d
         private void firstWindow_Load(object sender, EventArgs e)
         {
-            firstVizualization2D = new Visualization2D(firstWindow,directoryName);
+            firstVizualization2D = new Visualization2D(firstWindow,dicomReader);
+            firstVizualization2D.sliceX(50);
         }
 
 
         private void secondWindow_Load(object sender, EventArgs e)
         {
-            secondVizualization2D = new Visualization2D(firstWindow, directoryName);
+            secondVizualization2D = new Visualization2D(secondWindow, dicomReader);
+            secondVizualization2D.sliceY(50);
         }
 
 
         private void thirdWindow_Load(object sender, EventArgs e)
         {
-            thirdVizualization2D = new Visualization2D(secondWindow, directoryName);
+            thirdVizualization2D = new Visualization2D(thirdWindow, dicomReader);
+            thirdVizualization2D.sliceZ(50);
         }
 
         //zmiany textboxow
@@ -125,6 +129,21 @@ namespace DicomLoadTest
 
             this.update3DVisualization();
 
+        }
+
+        private void XtrackBar_Scroll(object sender, EventArgs e)
+        {
+            firstVizualization2D.sliceX(XtrackBar.Value);
+        }
+
+        private void YtrackBar1_Scroll(object sender, EventArgs e)
+        {
+            secondVizualization2D.sliceY(YtrackBar1.Value);
+        }
+
+        private void ZtrackBar2_Scroll(object sender, EventArgs e)
+        {
+            thirdVizualization2D.sliceZ(ZtrackBar2.Value);
         }
 
 

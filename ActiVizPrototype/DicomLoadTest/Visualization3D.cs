@@ -14,6 +14,7 @@ namespace DicomLoadTest
         private vtkPiecewiseFunction gpwf; 
         private vtkVolume vol;
         private PresetMapper presetMapper;
+        private vtkDICOMImageReader dicomReader;
 
         private float windowWidth = 0;
         private float windowLevel = 40;
@@ -92,12 +93,31 @@ namespace DicomLoadTest
         public Visualization3D(RenderWindowControl window, vtkDICOMImageReader dicomReader)
         {
             this.window = window;
+            this.dicomReader = dicomReader;
             this.presetMapper = new PresetMapper();
 
             vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
 
             vtkSmartVolumeMapper mapper = vtkSmartVolumeMapper.New();
             vol = vtkVolume.New();
+
+            vtkLookupTable bwLut =vtkLookupTable.New();
+            bwLut.SetTableRange (0, 2000);
+            bwLut.SetSaturationRange (0, 0);
+            bwLut.SetHueRange (0, 0);
+            bwLut.SetValueRange (0, 1);
+            bwLut.Build(); //effective built 
+
+            vtkImageMapToColors sagittalColors =vtkImageMapToColors.New();
+            sagittalColors.SetInputConnection(dicomReader.GetOutputPort());
+            sagittalColors.SetLookupTable(bwLut);
+            sagittalColors.Update();
+            vtkImageActor sagittal = vtkImageActor.New();
+            sagittal.SetInput(sagittalColors.GetOutput());
+            sagittal.SetDisplayExtent(117,117,0,173,1,180);
+
+            vtkImageReslice reslicer = vtkImageReslice.New();
+            reslicer.SetResliceAxesDirectionCosines(1,0,0,2,0,0,0,0,0);
  
             mapper.SetInputConnection(dicomReader.GetOutputPort());
 
@@ -107,6 +127,7 @@ namespace DicomLoadTest
 
             vol.SetMapper(mapper);
 
+            renderer.AddActor(sagittal);
             renderer.AddVolume(vol);
         }
 

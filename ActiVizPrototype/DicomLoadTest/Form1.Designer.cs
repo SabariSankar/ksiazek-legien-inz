@@ -34,17 +34,26 @@ namespace DicomLoadTest
             this.secondWindow = new Kitware.VTK.RenderWindowControl();
             this.thirdWindow = new Kitware.VTK.RenderWindowControl();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBoxLevel1 = new System.Windows.Forms.TextBox();
             this.textBoxWidth = new System.Windows.Forms.TextBox();
             this.labelLevel = new System.Windows.Forms.Label();
             this.labelWidth = new System.Windows.Forms.Label();
             this.trackBarLevel = new System.Windows.Forms.TrackBar();
             this.trackBarWidth = new System.Windows.Forms.TrackBar();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.XtrackBar = new System.Windows.Forms.TrackBar();
+            this.YtrackBar1 = new System.Windows.Forms.TrackBar();
+            this.ZtrackBar2 = new System.Windows.Forms.TrackBar();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.XtrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.YtrackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ZtrackBar2)).BeginInit();
             this.SuspendLayout();
             // 
             // fourthWindow
@@ -100,6 +109,12 @@ namespace DicomLoadTest
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.ZtrackBar2);
+            this.panel1.Controls.Add(this.YtrackBar1);
+            this.panel1.Controls.Add(this.XtrackBar);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Controls.Add(this.textBoxLevel1);
             this.panel1.Controls.Add(this.textBoxWidth);
@@ -109,8 +124,17 @@ namespace DicomLoadTest
             this.panel1.Controls.Add(this.trackBarWidth);
             this.panel1.Location = new System.Drawing.Point(12, 7);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(254, 608);
+            this.panel1.Size = new System.Drawing.Size(267, 608);
             this.panel1.TabIndex = 3;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(13, 195);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(203, 21);
+            this.comboBox1.TabIndex = 18;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // textBoxLevel1
             // 
@@ -167,15 +191,62 @@ namespace DicomLoadTest
             this.trackBarWidth.TabIndex = 6;
             this.trackBarWidth.Scroll += new System.EventHandler(this.trackBarWidth_Scroll);
             // 
-            // comboBox1
+            // label1
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(13, 195);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(203, 21);
-            this.comboBox1.TabIndex = 18;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(34, 263);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(15, 13);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "x:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(34, 300);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(15, 13);
+            this.label2.TabIndex = 20;
+            this.label2.Text = "y:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(34, 344);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(15, 13);
+            this.label3.TabIndex = 21;
+            this.label3.Text = "z:";
+            // 
+            // XtrackBar
+            // 
+            this.XtrackBar.Location = new System.Drawing.Point(88, 263);
+            this.XtrackBar.Name = "XtrackBar";
+            this.XtrackBar.Size = new System.Drawing.Size(163, 45);
+            this.XtrackBar.TabIndex = 50;
+            this.XtrackBar.Maximum = 200;
+            this.XtrackBar.Minimum = 0;
+            this.XtrackBar.Scroll += new System.EventHandler(this.XtrackBar_Scroll);
+            // 
+            // YtrackBar1
+            // 
+            this.YtrackBar1.Location = new System.Drawing.Point(88, 300);
+            this.YtrackBar1.Name = "YtrackBar1";
+            this.YtrackBar1.Size = new System.Drawing.Size(163, 45);
+            this.YtrackBar1.TabIndex = 50;
+            this.YtrackBar1.Maximum = 200;
+            this.YtrackBar1.Minimum = 0;
+            this.YtrackBar1.Scroll += new System.EventHandler(this.YtrackBar1_Scroll);
+            // 
+            // ZtrackBar2
+            // 
+            this.ZtrackBar2.Location = new System.Drawing.Point(88, 344);
+            this.ZtrackBar2.Name = "ZtrackBar2";
+            this.ZtrackBar2.Size = new System.Drawing.Size(163, 45);
+            this.ZtrackBar2.TabIndex = 50;
+            this.ZtrackBar2.Maximum = 200;
+            this.ZtrackBar2.Minimum = 0;
+            this.ZtrackBar2.Scroll += new System.EventHandler(this.ZtrackBar2_Scroll);
             // 
             // Form1
             // 
@@ -190,6 +261,9 @@ namespace DicomLoadTest
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLevel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.XtrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.YtrackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ZtrackBar2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -209,6 +283,12 @@ namespace DicomLoadTest
         private System.Windows.Forms.TextBox textBoxLevel1;
         private System.Windows.Forms.TextBox textBoxWidth;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TrackBar ZtrackBar2;
+        private System.Windows.Forms.TrackBar YtrackBar1;
+        private System.Windows.Forms.TrackBar XtrackBar;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
 
