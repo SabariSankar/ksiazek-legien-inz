@@ -9,49 +9,77 @@ namespace DicomLoadTest
     public class Visualization2D
     {
         private RenderWindowControl window;
-        private vtkColorTransferFunction ctf;
-        private vtkPiecewiseFunction spwf;
-        private vtkVolume vol;
+        private vtkDICOMImageReader dicomReader;
+        private vtkImageViewer2 viewer;
+        private vtkImagePlaneWidget widget;
 
         private float windowWidth = 0;
         private float windowLevel = 40;
+        private float slicePosition = 100;
 
 
-        public Visualization2D(RenderWindowControl window, String directoryName)
+        public void sliceY(float slicePosition)
+        {
+            this.slicePosition = slicePosition;
+            widget = vtkImagePlaneWidget.New();
+            widget.SetInput(dicomReader.GetOutput());
+            widget.SetPlaneOrientationToYAxes();
+            widget.SetSliceIndex((int) slicePosition);
+            widget.SetWindowLevel(this.windowWidth, this.windowLevel, 1);
+            viewer.SetInput(widget.GetResliceOutput());
+            viewer.Render();
+
+            window.Update();
+            window.RenderWindow.Render();
+        }
+
+
+        public void sliceZ(float slicePosition)
+        {
+            this.slicePosition = slicePosition;
+            widget = vtkImagePlaneWidget.New();
+            widget.SetInput(dicomReader.GetOutput());
+            widget.SetPlaneOrientationToZAxes();
+            widget.SetSliceIndex((int)slicePosition);
+            widget.SetWindowLevel(this.windowWidth, this.windowLevel, 1);
+            viewer.SetInput(widget.GetResliceOutput());
+            viewer.Render();
+
+            window.Update();
+            window.RenderWindow.Render();
+        }
+
+
+        public void sliceX(float slicePosition)
+        {
+            this.slicePosition = slicePosition;
+            widget = vtkImagePlaneWidget.New();
+            widget.SetInput(dicomReader.GetOutput());
+            widget.SetPlaneOrientationToXAxes();
+            widget.SetSliceIndex((int)slicePosition);
+            widget.SetWindowLevel(this.windowWidth, this.windowLevel, 1);
+            viewer.SetInput(widget.GetResliceOutput());
+            viewer.Render();
+
+            window.Update();
+            window.RenderWindow.Render();
+
+        }
+
+
+        public Visualization2D(RenderWindowControl window, vtkDICOMImageReader dicomReader)
         {
             this.window = window;
-         
-            vtkDICOMImageReader dicomReader = vtkDICOMImageReader.New();
-            dicomReader.SetFileName(directoryName + "IM-0001-0050.dcm");
-            dicomReader.Update();
+            this.dicomReader = dicomReader;
 
             vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
+            vtkRenderWindowInteractor renderWindowInteractor = window.RenderWindow.GetInteractor();
 
-            vtkSmartVolumeMapper mapper = vtkSmartVolumeMapper.New();
-            vol = vtkVolume.New();
-            spwf = vtkPiecewiseFunction.New();
-            vtkPiecewiseFunction gpwf = vtkPiecewiseFunction.New();
+            viewer = vtkImageViewer2.New();
+            viewer.OffScreenRenderingOn();
+            viewer.SetupInteractor(renderWindowInteractor);
+            viewer.SetRenderer(renderer);
 
-            mapper.SetInputConnection(dicomReader.GetOutputPort());
-
-            //Set the opacity curve for the volume
-            spwf.AddPoint(this.windowLevel - (this.windowWidth / 2), 1);
-            spwf.AddPoint(this.windowLevel, 0);
-            spwf.AddPoint(this.windowLevel + (this.windowWidth / 2), 1);
-
-
-            //Set the gradient curve for the volume
-            gpwf.AddPoint(0, .2);
-            gpwf.AddPoint(10, .2);
-            gpwf.AddPoint(25, 1);
-
-            vol.GetProperty().SetScalarOpacity(spwf);
-            vol.GetProperty().SetGradientOpacity(gpwf);
-
-            vol.SetMapper(mapper);
-
-            //Go through the Graphics Pipeline
-            renderer.AddVolume(vol);
         }
 
         public void update2DVisualization(float windowLevel, float windowWidth)
@@ -59,15 +87,13 @@ namespace DicomLoadTest
             this.windowLevel = windowLevel;
             this.windowWidth = windowWidth;
 
-            spwf = vtkPiecewiseFunction.New();
-            spwf.AddPoint(this.windowLevel - (this.windowWidth / 2), 1);
-            spwf.AddPoint(this.windowLevel, 0);
-            spwf.AddPoint(this.windowLevel + (this.windowWidth / 2), 1);
-            vol.GetProperty().SetScalarOpacity(spwf);
-
-            this.window.Validate();
-            this.window.Update();
-            this.window.RenderWindow.Render();
+            widget = vtkImagePlaneWidget.New();
+            widget.SetInput(dicomReader.GetOutput());
+            widget.SetPlaneOrientationToYAxes();
+            widget.SetSliceIndex((int)slicePosition);
+            widget.SetWindowLevel(this.windowWidth, this.windowLevel, 1);
+            viewer.SetInput(widget.GetResliceOutput());
+            viewer.Render();
 
         }
 
