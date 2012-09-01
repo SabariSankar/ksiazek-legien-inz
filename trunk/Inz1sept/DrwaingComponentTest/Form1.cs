@@ -44,6 +44,7 @@ namespace DrwaingComponentTest
         {
             _pointList.Add(new PointF(e.X, e.Y));
             this.Invalidate();
+
         }
 
     }
