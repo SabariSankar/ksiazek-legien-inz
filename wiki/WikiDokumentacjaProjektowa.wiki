@@ -1,3 +1,16 @@
+Dokumentacja projektu "Aplikacja służąca do wizualizacji badań medycznych".
 
-Rozdziały:
- * 1.[WikiWstep Wstęp] 
+Opiekun pracy: dr Ł. Czekierda
+Autorzy: Magda Książek, Grzegorz Legień
+
+Informatyka AGH, rok 2012 
+
+1. Dokumenctacja projektowa:
+ * 1.1 [WikiWstep Wstęp] 
+ * 1.2 Założenia projektu.
+ blablabla.. algorymty, co to jest dicom, opis VTK i tak dalej..
+
+
+2. Dokumentacja techniczna:
+
+3. Podręcznik użytkownika:
