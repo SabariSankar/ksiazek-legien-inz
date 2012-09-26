@@ -1,9 +1,11 @@
-Dokumentacja projektu "Aplikacja służąca do wizualizacji badań medycznych".
+#summary One-sentence summary of this page.
 
-Opiekun pracy: dr Ł. Czekierda
-Autorzy: Magda Książek, Grzegorz Legień
+=Dokumentacja projektu "Aplikacja służąca do wizualizacji badań medycznych".=
 
-Informatyka AGH, rok 2012 
+==Opiekun pracy: dr Ł. Czekierda==
+==Autorzy: Magda Książek, Grzegorz Legień==
+
+===Informatyka AGH, rok 2012===
 
 1. Dokumenctacja projektowa:
  * 1.1 [WikiWstep Wstęp] 
