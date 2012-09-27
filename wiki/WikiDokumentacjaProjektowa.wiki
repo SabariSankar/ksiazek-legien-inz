@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Dokumentacja projektu
 
 =Dokumentacja projektu "Aplikacja służąca do wizualizacji badań medycznych".=
 
@@ -7,10 +7,10 @@
 
 ===Informatyka AGH, rok 2012===
 
-1. Dokumenctacja projektowa:
+1. Dokumentacja projektowa:
  * 1.1 [WikiWstep Wstęp] 
- * 1.2 Założenia projektu.
- blablabla.. algorymty, co to jest dicom, opis VTK i tak dalej..
+ * 1.2 [WikiZalozenia Założenia projektu]
+
 
 
 2. Dokumentacja techniczna:
