@@ -15,4 +15,6 @@ W badanych w projekcje zagadnieniach rozważamy obrazy DICOM, których właściw
 
 Odpowiednio _gęste_ wykonanie zdjęć danego obszaru ciała lub tkanki, ze stałą odległością między zdjęciami rzędu 1-5 mm, pozwala na zebranie wystarczającej ilości danych do przedstawienia badanego obiektu w postaci trójwymiarowego obrazu.  
 
-Wykorzystywanym do tego algorytmem jest Volume Ray Casting(zwany także volumetric ray tracing). Technika ta bazuje na  
+Wizualizacja objętościowa jest techniką przedstawiającą na płaszczyźnie dwuwymiarowej uproszczoną funkcję powierzchni trójwymiarowej, stworzoną poprzez analizę obrazów 2-D. Cechą charakterystyczną jest użycie w obrazie półprzeźroczystości, który daje wgląd w wewnętrzne obszary obiektów, co istotne jest zwłaszcza w diagnostyce medycznej.
+
+==  == 
