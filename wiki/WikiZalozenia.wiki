@@ -13,4 +13,6 @@ W badanych w projekcje zagadnieniach rozważamy obrazy DICOM, których właściw
 
 == Wizualizacja wolumetryczna ==
 
-Odpowiednio _gęste_ wykonanie zdjęć danego obszaru ciała lub tkanki, ze stałą odległością między zdjęciami rzędu..., pozwala na zebranie wystarczającej ilości danych do przedstawienia badanego obiektu w postaci trójwymiarowego obrazu.  
+Odpowiednio _gęste_ wykonanie zdjęć danego obszaru ciała lub tkanki, ze stałą odległością między zdjęciami rzędu 1-5 mm, pozwala na zebranie wystarczającej ilości danych do przedstawienia badanego obiektu w postaci trójwymiarowego obrazu.  
+
+Wykorzystywanym do tego algorytmem jest Volume Ray Casting(zwany także volumetric ray tracing). Technika ta bazuje na  
