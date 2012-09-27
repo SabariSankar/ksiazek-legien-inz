@@ -9,7 +9,7 @@
 
 1. Dokumentacja projektowa:
  * 1.1 [WikiWstep Wstęp] 
- * 1.2 [WikiZalozenia Założenia]
+ * 1.2 [WikiZalozenia Założenia_projektu]
 
 
 
