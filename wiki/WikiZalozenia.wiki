@@ -1,8 +1,10 @@
 #summary Założenia projektu
 
-= Introduction =
+= Założenia projektu =
 
-Add your content here.
+== DICOM ==
+
+Dane medyczne aplikacja będzie przyjmować w postaci serii obrazów w standardzie DICOM(Digital Imaging and Communications in Medicine), okreslającym sposób przedstawiania wyników badań medycznych w poctaci cyfrowej oraz metody ich wymiany. Norma jest ogólnie przyjęta i stosowana między innymi w przetwarzaniu obrazów tomografii komputerowej, tomografii rezonansu magnetycznego, pozytonowej tomografii emisyjnej, cyfrowej angiografii subtrakcyjnej, cyfrowej radiografii konwencjonalnej, radiografii cyfrowej. W projekcie skupiono się na obsłudze obrazów pochodzących z tomografii. 
 
 
 = Details =
