@@ -19,7 +19,7 @@ namespace DicomLoadTest
         Visualization2D thirdVizualization2D;
 
         vtkDICOMImageReader dicomReader;
-        String directoryName = @"C:\Users\Grzegorz\Downloads\PANORAMIX\PANORAMIX";
+        String directoryName = @"D:\Downloads\PANORAMIX";
 
         float windowWidth = 100;
         float windowLevel = 100;
