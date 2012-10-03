@@ -19,7 +19,7 @@ namespace DicomLoadTest
         Visualization2D thirdVizualization2D;
 
         vtkDICOMImageReader dicomReader;
-        String directoryName = "D:\\Downloads\\PANORAMIX\\";
+        String directoryName = @"C:\Users\Grzegorz\Downloads\PANORAMIX\PANORAMIX";
 
         float windowWidth = 100;
         float windowLevel = 100;
@@ -102,6 +102,7 @@ namespace DicomLoadTest
             thirdVizualization2D = new Visualization2D(thirdWindow, dicomReader);
             thirdVizualization2D.sliceZ(50);
         }
+
 
         //zmiany textboxow
         private void textBoxWidth_TextChanged(object sender, EventArgs e)
