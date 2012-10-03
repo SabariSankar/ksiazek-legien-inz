@@ -114,8 +114,9 @@ namespace DicomLoadTest
             sagittalColors.Update();
             vtkImageActor sagittal = vtkImageActor.New();
             sagittal.SetInput(sagittalColors.GetOutput());
-            sagittal.SetDisplayExtent(117,117,0,173,1,180);
-
+            sagittal.SetDisplayExtent(117,117,0,80,1,180);
+            //sagittal.SetDisplayExtent(117,117,0,173,1,180);
+            
             vtkImageReslice reslicer = vtkImageReslice.New();
             reslicer.SetResliceAxesDirectionCosines(1,0,0,2,0,0,0,0,0);
  
