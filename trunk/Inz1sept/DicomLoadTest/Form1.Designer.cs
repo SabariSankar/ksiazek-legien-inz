@@ -85,7 +85,7 @@ namespace DicomLoadTest
             this.firstWindow.Size = new System.Drawing.Size(351, 294);
             this.firstWindow.TabIndex = 4;
             this.firstWindow.TestText = null;
-            this.firstWindow.Load += new System.EventHandler(this.firstWindow_Load);
+            //this.firstWindow.Load += new System.EventHandler(this.firstWindow_Load);
             // 
             // secondWindow
             // 
@@ -95,7 +95,7 @@ namespace DicomLoadTest
             this.secondWindow.Size = new System.Drawing.Size(351, 294);
             this.secondWindow.TabIndex = 3;
             this.secondWindow.TestText = null;
-            this.secondWindow.Load += new System.EventHandler(this.secondWindow_Load);
+            //this.secondWindow.Load += new System.EventHandler(this.secondWindow_Load);
             // 
             // thirdWindow
             // 
@@ -105,7 +105,7 @@ namespace DicomLoadTest
             this.thirdWindow.Size = new System.Drawing.Size(351, 294);
             this.thirdWindow.TabIndex = 4;
             this.thirdWindow.TestText = null;
-            this.thirdWindow.Load += new System.EventHandler(this.thirdWindow_Load);
+            //this.thirdWindow.Load += new System.EventHandler(this.thirdWindow_Load);
             // 
             // panel1
             // 
