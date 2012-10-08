@@ -2,24 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Kitware.VTK;
 
 namespace DicomLoadTest
 {
     public class Visualization3D
     {
-        private RenderWindowControl window;
+        private readonly RenderWindowControl window;
         private vtkColorTransferFunction ctf;
         private vtkPiecewiseFunction spwf;
         private vtkPiecewiseFunction gpwf; 
-        private vtkVolume vol;
-        private PresetMapper presetMapper;
+        private readonly vtkVolume vol;
+        private readonly PresetMapper presetMapper;
         private vtkDICOMImageReader dicomReader;
 
         private float windowWidth = 0;
         private float windowLevel = 40;
 
-        public void changeColorFunction(String presetName)
+        private readonly vtkVolumeMapper _mapper;
+        private readonly ClipingModule _clipingModule;
+
+        delegate void MyDlgt();
+
+        public void ChangeColorFunction(String presetName)
         {
             ctf = vtkColorTransferFunction.New();
             Dictionary<int,float[]> values = presetMapper.changeColorFunction(presetName);
@@ -32,7 +38,7 @@ namespace DicomLoadTest
             vol.GetProperty().SetColor(ctf);
         }
 
-        public void changeOpacityFunction(String presetName)
+        public void ChangeOpacityFunction(String presetName)
         {
             spwf = vtkPiecewiseFunction.New();
 
@@ -46,7 +52,7 @@ namespace DicomLoadTest
             vol.GetProperty().SetScalarOpacity(spwf);
         }
 
-        private void setColorFunction()
+        private void SetColorFunction()
         {
             ctf = vtkColorTransferFunction.New();
 
@@ -63,7 +69,7 @@ namespace DicomLoadTest
             vol.GetProperty().SetColor(ctf);
         }
 
-        private void setOpacityFunction()
+        private void SetOpacityFunction()
         {
             spwf = vtkPiecewiseFunction.New();
 
@@ -75,7 +81,7 @@ namespace DicomLoadTest
             vol.GetProperty().SetScalarOpacity(spwf);
         }
 
-        private void setGradientOpacity()
+        private void SetGradientOpacity()
         {
             gpwf = vtkPiecewiseFunction.New();
 
@@ -98,8 +104,10 @@ namespace DicomLoadTest
 
             vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
 
-            vtkSmartVolumeMapper mapper = vtkSmartVolumeMapper.New();
+            _mapper = vtkSmartVolumeMapper.New();
             vol = vtkVolume.New();
+
+            _clipingModule = new ClipingModule(_mapper);
 
             vtkLookupTable bwLut =vtkLookupTable.New();
             bwLut.SetTableRange (0, 2000);
@@ -119,13 +127,13 @@ namespace DicomLoadTest
             vtkImageReslice reslicer = vtkImageReslice.New();
             reslicer.SetResliceAxesDirectionCosines(1,0,0,2,0,0,0,0,0);
  
-            mapper.SetInputConnection(dicomReader.GetOutputPort());
+            _mapper.SetInputConnection(dicomReader.GetOutputPort());
+           
+            this.SetColorFunction();
+            this.SetOpacityFunction();
+            this.SetGradientOpacity();
 
-            this.setColorFunction();
-            this.setOpacityFunction();
-            this.setGradientOpacity();
-
-            vol.SetMapper(mapper);
+            vol.SetMapper(_mapper);
 
             renderer.AddActor(sagittal);
             renderer.AddVolume(vol);
@@ -133,7 +141,7 @@ namespace DicomLoadTest
 
 
         //updatatuje okno wziualizacji 3d
-        public void update3DVisualization(float windowLevel, float windowWidth)
+        public void Update3DVisualization(float windowLevel, float windowWidth)
         {
             this.windowLevel = windowLevel;
             this.windowWidth = windowWidth;
@@ -147,6 +155,21 @@ namespace DicomLoadTest
             window.Validate();
             window.Update();
             window.RenderWindow.Render();
+        }
+
+        public void PlaneOperation(object sender, ClipingEventArgs args)
+        {
+            Console.WriteLine("A");
+            var task = new Task(() => _clipingModule.ExecuteClipingOperation(args));
+            task.ContinueWith(x => window.Invoke(
+                new MyDlgt(() =>
+                               {
+                                   window.Validate();
+                                   window.Update();
+                                   window.RenderWindow.Render();
+                               }
+                    )));
+            task.Start();
         }
 
 

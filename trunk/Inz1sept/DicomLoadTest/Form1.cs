@@ -24,6 +24,7 @@ namespace DicomLoadTest
         float windowWidth = 100;
         float windowLevel = 100;
 
+        event EventHandler<ClipingEventArgs> clipingOperation;
 
         public Form1()
         {
@@ -32,12 +33,13 @@ namespace DicomLoadTest
             dicomReader = vtkDICOMImageReader.New();
             dicomReader.SetDirectoryName(directoryName);
             dicomReader.Update();
+
         }
 
         //wizualizacja 3d -----------------------------------------------------------------
         private void fourthWindow_Load(object sender, EventArgs e)
         {
-            vizualization3D = new Visualization3D(fourthWindow,dicomReader);
+            vizualization3D = new Visualization3D(fourthWindow, dicomReader);
 
             PresetMapper presets = new PresetMapper();
             foreach (string nameOfPreset in presets.Presets)
@@ -45,20 +47,24 @@ namespace DicomLoadTest
                 comboBox1.Items.Add(nameOfPreset);
             }
             comboBox1.SelectedText = presets.Presets[0];
+
+
+            //TODO: troche s³abe miejsce
+            clipingOperation += vizualization3D.PlaneOperation;
         }
 
         //updatatuje okno wziualizacji 3d
         private void update3DVisualization()
         {
-            vizualization3D.update3DVisualization(this.windowLevel,this.windowWidth);
+            vizualization3D.Update3DVisualization(this.windowLevel, this.windowWidth);
         }
 
 
         private void update2DVisualization()
         {
-            this.firstVizualization2D.update2DVisualization(this.windowLevel,this.windowWidth);
-            this.secondVizualization2D.update2DVisualization(this.windowLevel,this.windowWidth);
-            this.thirdVizualization2D.update2DVisualization(this.windowLevel,this.windowWidth);
+            this.firstVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
+            this.secondVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
+            this.thirdVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
         }
 
         //suwak obsluguje szerokosc ------------------------------------------------------------
@@ -85,7 +91,7 @@ namespace DicomLoadTest
         //wizualizaja 2d
         private void firstWindow_Load(object sender, EventArgs e)
         {
-            firstVizualization2D = new Visualization2D(firstWindow,dicomReader);
+            firstVizualization2D = new Visualization2D(firstWindow, dicomReader);
             firstVizualization2D.sliceX(50);
         }
 
@@ -125,8 +131,8 @@ namespace DicomLoadTest
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            vizualization3D.changeColorFunction(comboBox1.Text);
-            vizualization3D.changeOpacityFunction(comboBox1.Text);
+            vizualization3D.ChangeColorFunction(comboBox1.Text);
+            vizualization3D.ChangeOpacityFunction(comboBox1.Text);
 
             this.update3DVisualization();
 
@@ -145,6 +151,23 @@ namespace DicomLoadTest
         private void ZtrackBar2_Scroll(object sender, EventArgs e)
         {
             thirdVizualization2D.sliceZ(ZtrackBar2.Value);
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            var args = new ClipingEventArgs()
+                           {
+                               Type = EClipingModuleOperationType.NewPlane,
+
+                               A = numericUpDown1.Value,
+                               B = numericUpDown2.Value,
+                               C = numericUpDown3.Value,
+
+                               XNormal = numericUpDown4.Value,
+                               YNormal = numericUpDown5.Value,
+                               ZNormal = numericUpDown6.Value,
+                           };
+            clipingOperation(sender,args);
         }
 
 
