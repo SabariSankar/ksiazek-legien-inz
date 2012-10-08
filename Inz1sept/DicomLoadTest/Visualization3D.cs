@@ -159,7 +159,6 @@ namespace DicomLoadTest
 
         public void PlaneOperation(object sender, ClipingEventArgs args)
         {
-            Console.WriteLine("A");
             var task = new Task(() => _clipingModule.ExecuteClipingOperation(args));
             task.ContinueWith(x => window.Invoke(
                 new MyDlgt(() =>
