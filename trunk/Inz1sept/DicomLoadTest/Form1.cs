@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using XMLReaderTest;
 
 using Kitware.VTK;
 
@@ -39,15 +40,22 @@ namespace DicomLoadTest
         //wizualizacja 3d -----------------------------------------------------------------
         private void fourthWindow_Load(object sender, EventArgs e)
         {
-            vizualization3D = new Visualization3D(fourthWindow, dicomReader);
-
-            PresetMapper presets = new PresetMapper();
-            foreach (string nameOfPreset in presets.Presets)
+            vizualization3D = new Visualization3D(fourthWindow, dicomReader, chart1);
+            List<String> presetsNames = vizualization3D.PresetReader.Presets;
+            foreach (string nameOfPreset in presetsNames)
             {
                 comboBox1.Items.Add(nameOfPreset);
             }
-            comboBox1.SelectedText = presets.Presets[0];
+            comboBox1.SelectedIndex = 0;
+            vizualization3D.ChangeColorAndOpacityFunction(presetsNames[0]);
 
+            comboBoxSeries.Items.Clear();
+            int numberOfSeries = vizualization3D.PresetInfo.Series.Count;
+            for (int i = 1; i < numberOfSeries; i++)
+            {
+                comboBoxSeries.Items.Add(i.ToString());
+            }
+            comboBoxSeries.SelectedIndex = 0;
 
             //TODO: troche s³abe miejsce
             clipingOperation += vizualization3D.PlaneOperation;
@@ -131,11 +139,22 @@ namespace DicomLoadTest
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            vizualization3D.ChangeColorFunction(comboBox1.Text);
-            vizualization3D.ChangeOpacityFunction(comboBox1.Text);
-
+            vizualization3D.ChangeColorAndOpacityFunction(comboBox1.Text);
+            comboBoxSeries.Items.Clear();
+            int numberOfSeries = vizualization3D.PresetInfo.Series.Count;
+            for (int i = 1; i < numberOfSeries; i++)
+            {
+                comboBoxSeries.Items.Add(i.ToString());
+            }
+            comboBoxSeries.SelectedIndex = 0;
             this.update3DVisualization();
 
+        }
+
+
+        private void comboBoxSeries_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
         }
 
         private void XtrackBar_Scroll(object sender, EventArgs e)
@@ -169,6 +188,8 @@ namespace DicomLoadTest
                            };
             clipingOperation(sender,args);
         }
+
+
 
 
     }
