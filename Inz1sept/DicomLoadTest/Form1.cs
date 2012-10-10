@@ -71,6 +71,7 @@ namespace DicomLoadTest
         private void update2DVisualization()
         {
             this.firstVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
+            this.firstVizualization2D.sliceX(XtrackBar.Value);
             this.secondVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
             this.thirdVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
         }
@@ -80,7 +81,6 @@ namespace DicomLoadTest
         {
 
             this.windowWidth = float.Parse(trackBarWidth.Value.ToString());
-            this.update3DVisualization();
             this.update2DVisualization();
             this.textBoxWidth.Text = trackBarWidth.Value.ToString();
 
@@ -90,7 +90,6 @@ namespace DicomLoadTest
         private void trackBarLevel_Scroll(object sender, EventArgs e)
         {
             this.windowLevel = float.Parse(trackBarLevel.Value.ToString());
-            this.update3DVisualization();
             this.update2DVisualization();
             this.textBoxLevel1.Text = trackBarLevel.Value.ToString();
         }
@@ -100,7 +99,8 @@ namespace DicomLoadTest
         private void firstWindow_Load(object sender, EventArgs e)
         {
             firstVizualization2D = new Visualization2D(firstWindow, dicomReader);
-            firstVizualization2D.sliceX(50);
+            firstVizualization2D.sliceX(70);
+            XtrackBar.Value = 70;
         }
 
 
@@ -108,6 +108,7 @@ namespace DicomLoadTest
         {
             secondVizualization2D = new Visualization2D(secondWindow, dicomReader);
             secondVizualization2D.sliceY(50);
+            YtrackBar1.Value = 50;
         }
 
 
@@ -115,6 +116,7 @@ namespace DicomLoadTest
         {
             thirdVizualization2D = new Visualization2D(thirdWindow, dicomReader);
             thirdVizualization2D.sliceZ(50);
+            ZtrackBar2.Value = 50;
         }
 
 

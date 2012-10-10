@@ -28,10 +28,10 @@ namespace DicomLoadTest
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.fourthWindow = new Kitware.VTK.RenderWindowControl();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.firstWindow = new Kitware.VTK.RenderWindowControl();
@@ -157,25 +157,25 @@ namespace DicomLoadTest
             // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
+            chartArea4.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chart1.Legends.Add(legend4);
             this.chart1.Location = new System.Drawing.Point(13, 72);
             this.chart1.Name = "chart1";
             this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Excel;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series3.IsVisibleInLegend = false;
-            series3.Legend = "Legend1";
-            series3.Name = "OpacityFunction";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.IsVisibleInLegend = false;
-            series4.Legend = "Legend1";
-            series4.Name = "ColorFunction";
-            this.chart1.Series.Add(series3);
-            this.chart1.Series.Add(series4);
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series7.IsVisibleInLegend = false;
+            series7.Legend = "Legend1";
+            series7.Name = "OpacityFunction";
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series8.IsVisibleInLegend = false;
+            series8.Legend = "Legend1";
+            series8.Name = "ColorFunction";
+            this.chart1.Series.Add(series7);
+            this.chart1.Series.Add(series8);
             this.chart1.Size = new System.Drawing.Size(238, 120);
             this.chart1.TabIndex = 58;
             this.chart1.Text = "chart1";
@@ -240,7 +240,7 @@ namespace DicomLoadTest
             // ZtrackBar2
             // 
             this.ZtrackBar2.Location = new System.Drawing.Point(88, 344);
-            this.ZtrackBar2.Maximum = 200;
+            this.ZtrackBar2.Maximum = 300;
             this.ZtrackBar2.Name = "ZtrackBar2";
             this.ZtrackBar2.Size = new System.Drawing.Size(163, 45);
             this.ZtrackBar2.TabIndex = 50;
@@ -249,7 +249,7 @@ namespace DicomLoadTest
             // YtrackBar1
             // 
             this.YtrackBar1.Location = new System.Drawing.Point(88, 300);
-            this.YtrackBar1.Maximum = 200;
+            this.YtrackBar1.Maximum = 300;
             this.YtrackBar1.Name = "YtrackBar1";
             this.YtrackBar1.Size = new System.Drawing.Size(163, 45);
             this.YtrackBar1.TabIndex = 50;
@@ -258,7 +258,7 @@ namespace DicomLoadTest
             // XtrackBar
             // 
             this.XtrackBar.Location = new System.Drawing.Point(88, 263);
-            this.XtrackBar.Maximum = 200;
+            this.XtrackBar.Maximum = 500;
             this.XtrackBar.Name = "XtrackBar";
             this.XtrackBar.Size = new System.Drawing.Size(163, 45);
             this.XtrackBar.TabIndex = 50;
