@@ -73,7 +73,9 @@ namespace DicomLoadTest
             this.firstVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
             this.firstVizualization2D.sliceX(XtrackBar.Value);
             this.secondVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
+            this.secondVizualization2D.sliceY(YtrackBar1.Value);
             this.thirdVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
+            this.thirdVizualization2D.sliceZ(ZtrackBar2.Value);
         }
 
         //suwak obsluguje szerokosc ------------------------------------------------------------
@@ -99,24 +101,24 @@ namespace DicomLoadTest
         private void firstWindow_Load(object sender, EventArgs e)
         {
             firstVizualization2D = new Visualization2D(firstWindow, dicomReader);
-            firstVizualization2D.sliceX(70);
-            XtrackBar.Value = 70;
+            firstVizualization2D.sliceX(300);
+            XtrackBar.Value = 300;
         }
 
 
         private void secondWindow_Load(object sender, EventArgs e)
         {
             secondVizualization2D = new Visualization2D(secondWindow, dicomReader);
-            secondVizualization2D.sliceY(50);
-            YtrackBar1.Value = 50;
+            secondVizualization2D.sliceY(100);
+            YtrackBar1.Value = 100;
         }
 
 
         private void thirdWindow_Load(object sender, EventArgs e)
         {
             thirdVizualization2D = new Visualization2D(thirdWindow, dicomReader);
-            thirdVizualization2D.sliceZ(50);
-            ZtrackBar2.Value = 50;
+            thirdVizualization2D.sliceZ(100);
+            ZtrackBar2.Value = 100;
         }
 
 
