@@ -13,14 +13,12 @@ namespace DicomLoadTest
         private vtkImageViewer2 viewer;
         private vtkImagePlaneWidget widget;
 
-        private float windowWidth = 0;
-        private float windowLevel = 40;
-        private float slicePosition = 100;
+        private float windowWidth = 100;
+        private float windowLevel = 100;
 
 
         public void sliceY(float slicePosition)
         {
-            this.slicePosition = slicePosition;
             widget = vtkImagePlaneWidget.New();
             widget.SetInput(dicomReader.GetOutput());
             widget.SetPlaneOrientationToYAxes();
@@ -36,7 +34,6 @@ namespace DicomLoadTest
 
         public void sliceZ(float slicePosition)
         {
-            this.slicePosition = slicePosition;
             widget = vtkImagePlaneWidget.New();
             widget.SetInput(dicomReader.GetOutput());
             widget.SetPlaneOrientationToZAxes();
@@ -52,7 +49,6 @@ namespace DicomLoadTest
 
         public void sliceX(float slicePosition)
         {
-            this.slicePosition = slicePosition;
             widget = vtkImagePlaneWidget.New();
             widget.SetInput(dicomReader.GetOutput());
             widget.SetPlaneOrientationToXAxes();
@@ -86,14 +82,6 @@ namespace DicomLoadTest
         {
             this.windowLevel = windowLevel;
             this.windowWidth = windowWidth;
-
-            widget = vtkImagePlaneWidget.New();
-            widget.SetInput(dicomReader.GetOutput());
-            widget.SetPlaneOrientationToYAxes();
-            widget.SetSliceIndex((int)slicePosition);
-            widget.SetWindowLevel(this.windowWidth, this.windowLevel, 1);
-            viewer.SetInput(widget.GetResliceOutput());
-            viewer.Render();
 
         }
 
