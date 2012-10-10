@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kitware.VTK;
+using XMLReaderTest;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace DicomLoadTest
 {
     public class Visualization3D
     {
         private readonly RenderWindowControl window;
-        private vtkColorTransferFunction ctf;
-        private vtkPiecewiseFunction spwf;
-        private vtkPiecewiseFunction gpwf; 
         private readonly vtkVolume vol;
-        private readonly PresetMapper presetMapper;
         private vtkDICOMImageReader dicomReader;
+        private Chart chart1;
+        public XMLPresetReader PresetReader { get; set; }
+        public PresetInformation PresetInfo { get; set; } 
 
         private float windowWidth = 0;
         private float windowLevel = 40;
@@ -25,53 +26,57 @@ namespace DicomLoadTest
 
         delegate void MyDlgt();
 
-        public void ChangeColorFunction(String presetName)
+        public void ChangeColorAndOpacityFunction(string presetName)
         {
-            ctf = vtkColorTransferFunction.New();
-            Dictionary<int,float[]> values = presetMapper.changeColorFunction(presetName);
+            vtkColorTransferFunction ctf = vtkColorTransferFunction.New();
+            vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
 
-            foreach (var pair in values)
+            this.PresetInfo = this.PresetReader.ReadXMLFile(presetName);
+            chart1.Series["OpacityFunction"].Points.Clear();
+            foreach (var pair in this.PresetInfo.Series[0])
             {
-                ctf.AddRGBPoint(pair.Key, pair.Value[0], pair.Value[1], pair.Value[2]);
+                spwf.AddPoint(pair.Key, pair.Value);
+                chart1.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
+            }
+
+           
+             
+            foreach (var pair in this.PresetInfo.ColorFuction)
+            {
+                ctf.AddRGBSegment(pair.Key, pair.Value[0].Red, pair.Value[0].Green, pair.Value[0].Blue,
+                    pair.Key, pair.Value[1].Red, pair.Value[1].Green, pair.Value[1].Blue);
+                System.Drawing.Color colorLeft = System.Drawing.Color.FromArgb((int)pair.Value[0].Red, (int)pair.Value[0].Green, (int)pair.Value[0].Blue);
+                System.Drawing.Color colorRight= System.Drawing.Color.FromArgb((int)pair.Value[1].Red, (int)pair.Value[1].Green, (int)pair.Value[1].Blue);
+                
+                chart1.Series["ColorFunction"].Points.AddXY(pair.Key, 0);
+                chart1.Series["ColorFunction"].MarkerColor = colorLeft;
+                chart1.Series["ColorFunction"].Points.AddXY(pair.Key, 0);
+                chart1.Series["ColorFunction"].MarkerColor = colorRight;
             }
 
             vol.GetProperty().SetColor(ctf);
-        }
-
-        public void ChangeOpacityFunction(String presetName)
-        {
-            spwf = vtkPiecewiseFunction.New();
-
-            Dictionary<float, float> values = presetMapper.changeOpacityFunction(presetName);
-
-            foreach (var pair in values)
-            {
-                spwf.AddPoint(pair.Key, pair.Value);
-            }
-
             vol.GetProperty().SetScalarOpacity(spwf);
         }
 
-        private void SetColorFunction()
+        public void ChangeToSerie(int numberOfSerie)
         {
-            ctf = vtkColorTransferFunction.New();
+            vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
+            chart1.Series["OpacityFunction"].Points.Clear();
+            foreach (var pair in this.PresetInfo.Series[numberOfSerie-1])
+            {
+                spwf.AddPoint(pair.Key, pair.Value);
+                chart1.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
+            }
+            vol.GetProperty().SetScalarOpacity(spwf);
 
-            //Set the color curve for the volume
-            ctf.AddRGBPoint(-700, 0, 0, 0);             //powietrze -700
-            ctf.AddRGBPoint(-100, .9, .9, .5);       //tluszcz 50 - -100
-            ctf.AddRGBPoint(0, .6, .45, .5);          //woda ~0
-            ctf.AddRGBPoint(40, 1, 0, 0);             //krew ~40
-            ctf.AddRGBPoint(50, 1, .1, .1);           //watroba 40-60
-            ctf.AddRGBPoint(37, .4, .4, .3);         //istota szara mozgu 37-45
-            ctf.AddRGBPoint(20, 1, 0, 0);               //miesnie 10 - 40
-            ctf.AddRGBPoint(1500, 1, 1, 1);           //kosc 1000 - 1500
-
-            vol.GetProperty().SetColor(ctf);
+            window.Validate();
+            window.Update();
+            window.RenderWindow.Render();
         }
 
         private void SetOpacityFunction()
         {
-            spwf = vtkPiecewiseFunction.New();
+            vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
 
             //Set the opacity curve for the volume
             spwf.AddPoint(this.windowLevel - (this.windowWidth / 2), 0);
@@ -83,24 +88,24 @@ namespace DicomLoadTest
 
         private void SetGradientOpacity()
         {
-            gpwf = vtkPiecewiseFunction.New();
+            vtkPiecewiseFunction gpwf = vtkPiecewiseFunction.New();
 
             //Set the gradient curve for the volume
             gpwf.AddPoint(0, .2);
             gpwf.AddPoint(10, .2);
             gpwf.AddPoint(25, 1);
 
-
             vol.GetProperty().SetGradientOpacity(gpwf);
         }
 
 
         //wizualizacja 3d -----------------------------------------------------------------
-        public Visualization3D(RenderWindowControl window, vtkDICOMImageReader dicomReader)
+        public Visualization3D(RenderWindowControl window, vtkDICOMImageReader dicomReader , Chart chart1)
         {
+            this.chart1 = chart1;
             this.window = window;
             this.dicomReader = dicomReader;
-            this.presetMapper = new PresetMapper();
+            this.PresetReader = new XMLPresetReader();
 
             vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
 
@@ -129,7 +134,6 @@ namespace DicomLoadTest
  
             _mapper.SetInputConnection(dicomReader.GetOutputPort());
            
-            this.SetColorFunction();
             this.SetOpacityFunction();
             this.SetGradientOpacity();
 
@@ -146,11 +150,7 @@ namespace DicomLoadTest
             this.windowLevel = windowLevel;
             this.windowWidth = windowWidth;
 
-            spwf = vtkPiecewiseFunction.New();
-            spwf.AddPoint(this.windowLevel - (this.windowWidth / 2), 0);
-            spwf.AddPoint(this.windowLevel, 1);
-            spwf.AddPoint(this.windowLevel + (this.windowWidth / 2), 0);
-            vol.GetProperty().SetScalarOpacity(spwf);
+            //this.SetOpacityFunction();
 
             window.Validate();
             window.Update();
@@ -172,5 +172,7 @@ namespace DicomLoadTest
         }
 
 
+
+   
     }
 }
