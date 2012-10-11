@@ -71,11 +71,11 @@ namespace DicomLoadTest
         private void update2DVisualization()
         {
             this.firstVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
-            this.firstVizualization2D.sliceX(XtrackBar.Value);
+            this.firstVizualization2D.sliceToAxes(dicomReader, XtrackBar.Value,"X");
             this.secondVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
-            this.secondVizualization2D.sliceY(YtrackBar1.Value);
+            this.secondVizualization2D.sliceToAxes(dicomReader, YtrackBar1.Value,"Y");
             this.thirdVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
-            this.thirdVizualization2D.sliceZ(ZtrackBar2.Value);
+            this.thirdVizualization2D.sliceToAxes(dicomReader, ZtrackBar2.Value, "Z");
         }
 
         //suwak obsluguje szerokosc ------------------------------------------------------------
@@ -100,24 +100,24 @@ namespace DicomLoadTest
         //wizualizaja 2d
         private void firstWindow_Load(object sender, EventArgs e)
         {
-            firstVizualization2D = new Visualization2D(firstWindow, dicomReader);
-            firstVizualization2D.sliceX(300);
+            firstVizualization2D = new Visualization2D(firstWindow);
+            firstVizualization2D.sliceToAxes(dicomReader, 300, "X");
             XtrackBar.Value = 300;
         }
 
 
         private void secondWindow_Load(object sender, EventArgs e)
         {
-            secondVizualization2D = new Visualization2D(secondWindow, dicomReader);
-            secondVizualization2D.sliceY(100);
+            secondVizualization2D = new Visualization2D(secondWindow);
+            secondVizualization2D.sliceToAxes(dicomReader, 100, "Y");
             YtrackBar1.Value = 100;
         }
 
 
         private void thirdWindow_Load(object sender, EventArgs e)
         {
-            thirdVizualization2D = new Visualization2D(thirdWindow, dicomReader);
-            thirdVizualization2D.sliceZ(100);
+            thirdVizualization2D = new Visualization2D(thirdWindow);
+            thirdVizualization2D.sliceToAxes(dicomReader,100, "Z");
             ZtrackBar2.Value = 100;
         }
 
@@ -163,17 +163,17 @@ namespace DicomLoadTest
 
         private void XtrackBar_Scroll(object sender, EventArgs e)
         {
-            firstVizualization2D.sliceX(XtrackBar.Value);
+            firstVizualization2D.sliceToAxes(dicomReader, XtrackBar.Value,"X");
         }
 
         private void YtrackBar1_Scroll(object sender, EventArgs e)
         {
-            secondVizualization2D.sliceY(YtrackBar1.Value);
+            secondVizualization2D.sliceToAxes(dicomReader,YtrackBar1.Value,"Y");
         }
 
         private void ZtrackBar2_Scroll(object sender, EventArgs e)
         {
-            thirdVizualization2D.sliceZ(ZtrackBar2.Value);
+            thirdVizualization2D.sliceToAxes(this.dicomReader, ZtrackBar2.Value, "Z");
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
