@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using XMLReaderTest;
 
 using Kitware.VTK;
+using System.IO;
 
 namespace DicomLoadTest
 {
@@ -21,6 +22,7 @@ namespace DicomLoadTest
 
         vtkDICOMImageReader dicomReader;
         String directoryName = @"D:\Downloads\PANORAMIX";
+        String nameOfPresetsFolder = @"..\..\presety";
 
         float windowWidth = 100;
         float windowLevel = 100;
@@ -41,13 +43,13 @@ namespace DicomLoadTest
         private void fourthWindow_Load(object sender, EventArgs e)
         {
             vizualization3D = new Visualization3D(fourthWindow, dicomReader, chart1);
-            List<String> presetsNames = vizualization3D.PresetReader.Presets;
-            foreach (string nameOfPreset in presetsNames)
+
+            foreach (string nameOfPreset in Directory.GetFiles(nameOfPresetsFolder, "*.xml"))
             {
                 comboBox1.Items.Add(nameOfPreset);
             }
             comboBox1.SelectedIndex = 0;
-            vizualization3D.ChangeColorAndOpacityFunction(presetsNames[0]);
+            vizualization3D.ChangeColorAndOpacityFunction(comboBox1.SelectedText);
 
             comboBoxSeries.Items.Clear();
             int numberOfSeries = vizualization3D.PresetInfo.Series.Count;
