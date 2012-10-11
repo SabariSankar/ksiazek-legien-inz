@@ -22,7 +22,7 @@ namespace DicomLoadTest
 
         vtkDICOMImageReader dicomReader;
         String directoryName = @"D:\Downloads\PANORAMIX";
-        String nameOfPresetsFolder = @"..\..\presety";
+        String presetDir = @"..\..\presety";
 
         float windowWidth = 100;
         float windowLevel = 100;
@@ -43,10 +43,11 @@ namespace DicomLoadTest
         private void fourthWindow_Load(object sender, EventArgs e)
         {
             vizualization3D = new Visualization3D(fourthWindow, dicomReader, chart1);
+            string[] filePaths = Directory.GetFiles(presetDir, "*.xml");
 
-            foreach (string nameOfPreset in Directory.GetFiles(nameOfPresetsFolder, "*.xml"))
+            foreach (string dir in filePaths)
             {
-                comboBox1.Items.Add(nameOfPreset);
+                comboBox1.Items.Add(new FileInfo(dir).Name);
             }
             comboBox1.SelectedIndex = 0;
             vizualization3D.ChangeColorAndOpacityFunction(comboBox1.SelectedText);
