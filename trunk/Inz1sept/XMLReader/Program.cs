@@ -10,7 +10,7 @@ namespace XMLReaderTest
         static void Main(string[] args)
         {
             XMLPresetReader reader = new XMLPresetReader();
-            reader.ReadXMLFile("../../Abd_shaded_A.xml");
+            reader.ReadOpacityAndColorFunction("../../Colonography.xml");
         }
     }
 }

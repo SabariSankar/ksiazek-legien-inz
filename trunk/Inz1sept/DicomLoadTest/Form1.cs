@@ -51,7 +51,7 @@ namespace DicomLoadTest
 
             comboBoxSeries.Items.Clear();
             int numberOfSeries = vizualization3D.PresetInfo.Series.Count;
-            for (int i = 1; i < numberOfSeries; i++)
+            for (int i = 0; i < numberOfSeries; i++)
             {
                 comboBoxSeries.Items.Add(i.ToString());
             }
@@ -146,7 +146,7 @@ namespace DicomLoadTest
             vizualization3D.ChangeColorAndOpacityFunction(comboBox1.Text);
             comboBoxSeries.Items.Clear();
             int numberOfSeries = vizualization3D.PresetInfo.Series.Count;
-            for (int i = 1; i < numberOfSeries; i++)
+            for (int i = 0; i < numberOfSeries; i++)
             {
                 comboBoxSeries.Items.Add(i.ToString());
             }

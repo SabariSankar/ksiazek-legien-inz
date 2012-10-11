@@ -33,15 +33,13 @@ namespace DicomLoadTest
 
             this.PresetInfo = this.PresetReader.ReadXMLFile(presetName);
             chart1.Series["OpacityFunction"].Points.Clear();
-            foreach (var pair in this.PresetInfo.Series[0])
+            foreach (var pair in this.PresetInfo.Series[0].OpacityFunction)
             {
                 spwf.AddPoint(pair.Key, pair.Value);
                 chart1.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
             }
-
-           
              
-            foreach (var pair in this.PresetInfo.ColorFuction)
+            foreach (var pair in this.PresetInfo.Series[0].ColorFuction)
             {
                 ctf.AddRGBSegment(pair.Key, pair.Value[0].Red, pair.Value[0].Green, pair.Value[0].Blue,
                     pair.Key, pair.Value[1].Red, pair.Value[1].Green, pair.Value[1].Blue);
@@ -62,7 +60,8 @@ namespace DicomLoadTest
         {
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
             chart1.Series["OpacityFunction"].Points.Clear();
-            foreach (var pair in this.PresetInfo.Series[numberOfSerie-1])
+            
+            foreach (var pair in this.PresetInfo.Series[numberOfSerie].OpacityFunction)
             {
                 spwf.AddPoint(pair.Key, pair.Value);
                 chart1.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
