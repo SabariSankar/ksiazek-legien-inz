@@ -6,22 +6,42 @@ using Kitware.VTK;
 
 namespace DicomLoadTest
 {
+    /// <summary>
+    /// Takes care of 2D visualization window.
+    /// </summary>
     public class Visualization2D
     {
         private RenderWindowControl window;
-        private vtkDICOMImageReader dicomReader;
         private vtkImageViewer2 viewer;
         private vtkImagePlaneWidget planeWidget;
 
         private float windowWidth = 100;
         private float windowLevel = 100;
 
-
-        public void sliceY(float slicePosition)
+        /// <summary>
+        /// Update the 2D visualization window with new slice of pass X, Y or Z coordination. 
+        /// </summary>
+        /// <param name="dicomReader"> Dicom input from we are going to cut the slice.</param>
+        /// <param name="slicePosition">Coordinates of the slice. </param>
+        /// <param name="axis">Name of axis to set cut orientation (X,Y,Z). </param>
+        public void sliceToAxes(vtkDICOMImageReader dicomReader, float slicePosition, string axis)
         {
             planeWidget = vtkImagePlaneWidget.New();
             planeWidget.SetInput(dicomReader.GetOutput());
-            planeWidget.SetPlaneOrientationToYAxes();
+            switch (axis)
+            {
+                case "X":
+                    planeWidget.SetPlaneOrientationToXAxes();
+                    break;
+                case "Y":
+                    planeWidget.SetPlaneOrientationToYAxes();
+                    break;
+                case "Z":
+                    planeWidget.SetPlaneOrientationToZAxes();
+                    break;
+                default:
+                    throw new FormatException("Invalid axes");
+            }
             planeWidget.SetSliceIndex((int) slicePosition);
             planeWidget.SetWindowLevel(this.windowWidth, this.windowLevel, 1);
             viewer.SetInput(planeWidget.GetResliceOutput());
@@ -34,45 +54,13 @@ namespace DicomLoadTest
         }
 
 
-        public void sliceZ(float slicePosition)
-        {
-            planeWidget = vtkImagePlaneWidget.New();
-            planeWidget.SetInput(dicomReader.GetOutput());
-            planeWidget.SetPlaneOrientationToZAxes();
-            planeWidget.SetSliceIndex((int)slicePosition);
-            planeWidget.SetWindowLevel(this.windowWidth, this.windowLevel, 1);
-            viewer.SetInput(planeWidget.GetResliceOutput());
-            viewer.SetColorWindow(planeWidget.GetWindow());
-            viewer.SetColorLevel(planeWidget.GetLevel());
-            viewer.Render();
-
-            window.Update();
-            window.RenderWindow.Render();
-        }
-
-
-        public void sliceX(float slicePosition)
-        {
-            planeWidget = vtkImagePlaneWidget.New();
-            planeWidget.SetInput(dicomReader.GetOutput());
-            planeWidget.SetPlaneOrientationToXAxes();
-            planeWidget.SetSliceIndex((int)slicePosition);
-            planeWidget.SetWindowLevel(this.windowWidth, this.windowLevel, 1);
-            viewer.SetInput(planeWidget.GetResliceOutput());
-            viewer.SetColorWindow(planeWidget.GetWindow());
-            viewer.SetColorLevel(planeWidget.GetLevel());
-            viewer.Render();
-
-            window.Update();
-            window.RenderWindow.Render();
-
-        }
-
-
-        public Visualization2D(RenderWindowControl window, vtkDICOMImageReader dicomReader)
+        /// <summary>
+        /// Creating the 2D visualization window.
+        /// </summary>
+        /// <param name="window">Orginal window component. </param>
+        public Visualization2D(RenderWindowControl window)
         {
             this.window = window;
-            this.dicomReader = dicomReader;
 
             vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
             vtkRenderWindowInteractor renderWindowInteractor = window.RenderWindow.GetInteractor();
@@ -81,9 +69,13 @@ namespace DicomLoadTest
             viewer.OffScreenRenderingOn();
             viewer.SetupInteractor(renderWindowInteractor);
             viewer.SetRenderer(renderer);
-
         }
 
+        /// <summary>
+        /// Changing the window width and level of the current slice.
+        /// </summary>
+        /// <param name="windowLevel"> Level of the window.</param>
+        /// <param name="windowWidth"> Width of the window.</param>
         public void update2DVisualization(float windowLevel, float windowWidth)
         {
             this.windowLevel = windowLevel;

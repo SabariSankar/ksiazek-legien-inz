@@ -48,10 +48,10 @@ namespace DicomLoadTest
                 System.Drawing.Color colorLeft = System.Drawing.Color.FromArgb((int)pair.Value[0].Red, (int)pair.Value[0].Green, (int)pair.Value[0].Blue);
                 System.Drawing.Color colorRight= System.Drawing.Color.FromArgb((int)pair.Value[1].Red, (int)pair.Value[1].Green, (int)pair.Value[1].Blue);
                 
-                chart1.Series["ColorFunction"].Points.AddXY(pair.Key, 0);
-                chart1.Series["ColorFunction"].MarkerColor = colorLeft;
-                chart1.Series["ColorFunction"].Points.AddXY(pair.Key, 0);
-                chart1.Series["ColorFunction"].MarkerColor = colorRight;
+               // chart1.Series["ColorFunction"].Points.AddXY(pair.Key, 0);
+               // chart1.Series["ColorFunction"].MarkerColor = colorLeft;
+               // chart1.Series["ColorFunction"].Points.AddXY(pair.Key, 0);
+               // chart1.Series["ColorFunction"].MarkerColor = colorRight;
             }
 
             vol.GetProperty().SetColor(ctf);
