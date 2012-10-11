@@ -19,23 +19,33 @@ namespace XMLReaderTest
         }
     }
 
+    public class ElementOfSeries
+    {
+        //opacity - {wartosc hvc, intensywnosc}
+        public Dictionary<float, float> OpacityFunction { get; set;  }
+        //color - {wartosc, kolor}
+        public Dictionary<float, Color[]> ColorFuction { get; set;  }
+
+        public ElementOfSeries( Dictionary<float, float> opacityFunction, Dictionary<float, Color[]> colorFuction )
+        {
+            this.OpacityFunction = opacityFunction;
+            this.ColorFuction = colorFuction;
+        }
+    }
+
     public class PresetInformation
     {
-        private List<Dictionary<float, float>> series = new List<Dictionary<float, float>>();
-        public Dictionary<float, Color[]> ColorFuction { set; get; }
-        public List<Dictionary<float, float>> Series
-        {
-            get { return this.series; }
-        }
-
+        //seria = lista elementow {funkcja opacity, funkcja koloru}
+        public List<ElementOfSeries> Series { set; get; }
+      
         public PresetInformation()
         {
-            this.ColorFuction = new Dictionary<float,Color[]>();
+            this.Series = new List<ElementOfSeries>();
         }
 
-        public void AddSerie(Dictionary<float, float> opacityFunction)
+        public void AddSerie(Dictionary<float, float> opacityFunction, Dictionary<float, Color[]> colorFunction)
         {
-            this.series.Add(opacityFunction);
+            this.Series.Add( new ElementOfSeries(opacityFunction, colorFunction));
         }
     }
 }
