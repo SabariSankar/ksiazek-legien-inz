@@ -10,7 +10,6 @@ namespace XMLReaderTest
         static void Main(string[] args)
         {
             XMLPresetReader reader = new XMLPresetReader();
-            reader.ReadOpacityAndColorFunction("../../Colonography.xml");
         }
     }
 }
