@@ -3,32 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using System.IO;
 
 namespace XMLReaderTest
 {
+    /// <summary>
+    /// Open and reads xml file with preset
+    /// </summary>
     public class XMLPresetReader
     {
-        private PresetInformation presetInformation;
-        public List<String> Presets { get; set; }
+        /// <summary>
+        /// Handler to the open xml file
+        /// </summary>
         private XmlTextReader reader;
 
-
-        public XMLPresetReader()
+        /// <summary>
+        /// Reads opacity function from the open xml
+        /// </summary>
+        /// <param name="colorFunction">Color function which will be appply to loaded opacity function</param>
+        /// <returns>Information about the preset, which includes series of color and opacity function</returns>
+        public PresetInformation ReadOpacityFunction(Dictionary<float, Color[]> colorFunction)
         {
-            this.Presets = new List<string>();
-            string[] filePaths = Directory.GetFiles(@"..\..\presety", "*.xml");
+            PresetInformation presetInformation = new PresetInformation();
 
-            foreach (string dir in filePaths)
-            {
-                //functionMapper[new FileInfo(dir).Name] = Abd_shaded_A;
-                Presets.Add(new FileInfo(dir).Name);
-            }
-            return;
-        }
-
-        public void ReadOpacityFunction(String fileName, Dictionary<float, Color[]> colorFunction)
-        {
             if (reader.ReadToFollowing("OpacityFunctions"))
                 //Console.WriteLine("<Opacity Function>");
 
@@ -52,7 +48,6 @@ namespace XMLReaderTest
                         {
                             //Console.WriteLine("</PointList>");
                             presetInformation.AddSerie(opacityFunction,colorFunction);
-                            //Console.WriteLine(presetInformation.Series.Count.ToString());
                             break;
                         }
                     }
@@ -63,9 +58,14 @@ namespace XMLReaderTest
                     break;
                 }
             }
+            return presetInformation;
         }
 
-        private Color ReadColor(XmlReader reader)
+        /// <summary>
+        /// Helper method. Reads the color block from xml file.
+        /// </summary>
+        /// <returns> Loaded color. </returns>
+        private Color ReadColor()
         {
             reader.ReadToFollowing("ROT");
             float R = float.Parse(reader.ReadElementContentAsString().Replace('.', ','));
@@ -77,10 +77,12 @@ namespace XMLReaderTest
             return new Color(R, G, B);
         }
 
-        public Dictionary<float, Color[]> ReadColorFunction(String fileName)
+        /// <summary>
+        /// Reads color function from the open xml. 
+        /// </summary>
+        /// <returns>Color function.</returns>
+        public Dictionary<float, Color[]> ReadColorFunction()
         {
-            //  Load the XML file
-            XmlTextReader reader = new XmlTextReader(@"..\..\presety\" + fileName);
             Dictionary<float, Color[]> colorFunction = new Dictionary<float, Color[]>();
 
             if (reader.ReadToFollowing("ColorLut"))
@@ -90,7 +92,7 @@ namespace XMLReaderTest
             {
                 if ((reader.NodeType == XmlNodeType.Element) && reader.Name.Equals("PointList"))
                 {
-                    //Console.WriteLine("<PointList>"); ;
+                    //Console.WriteLine("<PointList>"); 
                     while (reader.Read())
                     {
                         if ((reader.NodeType == XmlNodeType.Element) && reader.Name.Equals("First"))
@@ -99,10 +101,10 @@ namespace XMLReaderTest
                             float intensity = float.Parse(reader.ReadElementContentAsString().Replace('.', ','));
                             //Left Color
                             reader.ReadToFollowing("LeftColor");
-                            colorArray[0] = ReadColor(reader);
+                            colorArray[0] = ReadColor();
                             //Right Color
                             reader.ReadToFollowing("RightColor");
-                            colorArray[1] = ReadColor(reader);
+                            colorArray[1] = ReadColor();
                             colorFunction.Add(intensity, colorArray);
                         }
                         if ((reader.NodeType == XmlNodeType.EndElement) && reader.Name.Equals("PointList"))
@@ -120,18 +122,23 @@ namespace XMLReaderTest
             return colorFunction;
         }
 
-        public void ReadOpacityAndColorFunction(String fileName)
+
+        /// <summary>
+        /// Reads opacity and color function from the open xml. 
+        /// </summary>
+        /// <returns>Information about the preset, which includes series of color and opacity function.</returns>
+        public PresetInformation ReadOpacityAndColorFunction()
         {
-            presetInformation = new PresetInformation();
+            PresetInformation presetInformation = new PresetInformation();
 
             if (reader.ReadToFollowing("ColoredFunctions"))
-                Console.WriteLine("<ColoredFunctions>");
+                //Console.WriteLine("<ColoredFunctions>");
 
             while (reader.Read())
             {
                 if ((reader.NodeType == XmlNodeType.Element) && reader.Name.Equals("PointList"))
                 {
-                    Console.WriteLine("<PointList>");
+                    //Console.WriteLine("<PointList>");
                     Dictionary<float, float> opacityFunction = new Dictionary<float, float>();
                     Dictionary<float, Color[]> colorFunction = new Dictionary<float, Color[]>();
                     while (reader.Read())
@@ -140,23 +147,20 @@ namespace XMLReaderTest
                         {
                             Color[] colorArray = new Color[2];
                             float first = float.Parse(reader.ReadElementContentAsString().Replace('.', ','));
-                            Console.WriteLine("<First>");
                             reader.ReadToFollowing("LeftColor");
-                            Console.WriteLine("<LeftColor>");
-                            colorArray[0] = ReadColor(reader);
+                            colorArray[0] = ReadColor();
                             reader.ReadToFollowing("RightColor");
-                            Console.WriteLine("<RightColor>");
-                            colorArray[1] = ReadColor(reader);
+                            colorArray[1] = ReadColor();
                             reader.ReadToFollowing("Opacity");
-                            Console.WriteLine("<Opacity>");
                             float opacity = float.Parse(reader.ReadElementContentAsString().Replace('.', ','));
+
                             opacityFunction.Add(first, opacity);
                             colorFunction.Add(first, colorArray);
                         }               
                         
                         if ((reader.NodeType == XmlNodeType.EndElement) && reader.Name.Equals("PointList"))
                         {
-                            Console.WriteLine("</PointList>");
+                            //Console.WriteLine("</PointList>");
                             presetInformation.AddSerie(opacityFunction, colorFunction);
                             break;
                         }
@@ -165,31 +169,33 @@ namespace XMLReaderTest
 
                 if ((reader.NodeType == XmlNodeType.EndElement) && reader.Name.Equals("ColoredFunctions"))
                 {
-                    Console.WriteLine("</ColoredFunctions>"); ;
+                    //Console.WriteLine("</ColoredFunctions>"); ;
                     break;
                 }
             }
-            //Console.ReadKey();
+            return presetInformation;
         }
 
+
+        /// <summary>
+        /// Determinates which version of the xml if this current file, and read color and opacity function from it. 
+        /// </summary>
+        /// <param name="fileName">Name of the preset</param>
+        /// <returns>Information about the preset, which includes series of color and opacity function</returns>
         public PresetInformation ReadXMLFile(String fileName)
         {
             reader = new XmlTextReader(@"..\..\presety\" + fileName);
             reader.ReadToFollowing("IndependentColor");
             Boolean isIndependent = reader.ReadElementContentAsBoolean();
 
-            presetInformation = new PresetInformation();
             if (isIndependent)
             {
-                Dictionary<float, Color[]> colorFunction = ReadColorFunction(fileName);
-                ReadOpacityFunction(fileName, colorFunction);
+                return ReadOpacityFunction(ReadColorFunction());
             }
             else
             {
-                ReadOpacityAndColorFunction(fileName);
+                return ReadOpacityAndColorFunction();
             }
-
-            return presetInformation;
         }
     }
 
