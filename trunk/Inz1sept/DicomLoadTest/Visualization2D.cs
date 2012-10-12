@@ -40,7 +40,7 @@ namespace DicomLoadTest
                     planeWidget.SetPlaneOrientationToZAxes();
                     break;
                 default:
-                    throw new FormatException("Invalid axes");
+                    throw new FormatException("Invalid axis");
             }
             planeWidget.SetSliceIndex((int) slicePosition);
             planeWidget.SetWindowLevel(this.windowWidth, this.windowLevel, 1);

@@ -10,6 +10,7 @@ using XMLReaderTest;
 
 using Kitware.VTK;
 using System.IO;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace DicomLoadTest
 {
@@ -20,12 +21,14 @@ namespace DicomLoadTest
         Visualization2D secondVizualization2D;
         Visualization2D thirdVizualization2D;
 
+
         vtkDICOMImageReader dicomReader;
         String directoryName = @"D:\Downloads\PANORAMIX";
         String presetDir = @"..\..\presety";
 
         float windowWidth = 100;
         float windowLevel = 100;
+        private DataPoint selectedDataPoint = null;
 
         event EventHandler<ClipingEventArgs> clipingOperation;
 
@@ -194,6 +197,75 @@ namespace DicomLoadTest
                                ZNormal = numericUpDown6.Value,
                            };
             clipingOperation(sender,args);
+        }
+
+
+    
+        private void chart1_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Check if data point selected
+            if (selectedDataPoint != null)
+            {
+                // Mouse coordinates should not be outside of the chart 
+                int coordinate = e.Y;
+                if (coordinate < 0)
+                    coordinate = 0;
+                if (coordinate > chart1.Size.Height - 1)
+                    coordinate = chart1.Size.Height - 1;
+
+                // Calculate new Y value from current cursor position
+                double yValue = chart1.ChartAreas["ChartArea1"].AxisY.PixelPositionToValue(coordinate);
+                yValue = Math.Min(yValue, chart1.ChartAreas["ChartArea1"].AxisY.Maximum);
+                yValue = Math.Max(yValue, chart1.ChartAreas["ChartArea1"].AxisY.Minimum);
+
+                // Update selected point Y value
+                selectedDataPoint.YValues[0] = yValue;
+
+
+                // Invalidate chart
+                chart1.Invalidate();
+
+                // Force the chart to redraw
+                chart1.Update();
+            }
+            else
+            {
+
+                chart1.Cursor = Cursors.Hand;
+
+            }
+        }
+
+        private void chart1_MouseUp(object sender, MouseEventArgs e)
+        {
+            // Initialize currently selected data point
+            if (selectedDataPoint != null)
+            {
+                // Hide point label
+                selectedDataPoint.IsValueShownAsLabel = false;
+
+                // reset selected object
+                selectedDataPoint = null;
+
+                // Invalidate chart
+                chart1.Invalidate();
+
+            }
+        }
+
+        private void chart1_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Call Hit Test Method
+            HitTestResult hitResult = chart1.HitTest(e.X, e.Y);
+
+            // Initialize currently selected data point
+            selectedDataPoint = null;
+            if (hitResult.ChartElementType == ChartElementType.DataPoint)
+            {
+                selectedDataPoint = (DataPoint)hitResult.Object;
+
+
+            }
         }
 
 

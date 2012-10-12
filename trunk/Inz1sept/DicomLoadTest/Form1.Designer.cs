@@ -29,7 +29,6 @@ namespace DicomLoadTest
         private void InitializeComponent()
         {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.fourthWindow = new Kitware.VTK.RenderWindowControl();
@@ -59,7 +58,6 @@ namespace DicomLoadTest
             this.labelWidth = new System.Windows.Forms.Label();
             this.trackBarLevel = new System.Windows.Forms.TrackBar();
             this.trackBarWidth = new System.Windows.Forms.TrackBar();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -79,6 +77,8 @@ namespace DicomLoadTest
             // fourthWindow
             // 
             this.fourthWindow.AddTestActors = false;
+            this.fourthWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.fourthWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.fourthWindow.Location = new System.Drawing.Point(360, 303);
             this.fourthWindow.Name = "fourthWindow";
             this.fourthWindow.Size = new System.Drawing.Size(351, 294);
@@ -92,14 +92,15 @@ namespace DicomLoadTest
             this.flowLayoutPanel1.Controls.Add(this.secondWindow);
             this.flowLayoutPanel1.Controls.Add(this.thirdWindow);
             this.flowLayoutPanel1.Controls.Add(this.fourthWindow);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(282, 4);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(287, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(734, 611);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(734, 619);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
             // firstWindow
             // 
             this.firstWindow.AddTestActors = false;
+            this.firstWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.firstWindow.Location = new System.Drawing.Point(3, 3);
             this.firstWindow.Name = "firstWindow";
             this.firstWindow.Size = new System.Drawing.Size(351, 294);
@@ -110,6 +111,7 @@ namespace DicomLoadTest
             // secondWindow
             // 
             this.secondWindow.AddTestActors = false;
+            this.secondWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.secondWindow.Location = new System.Drawing.Point(360, 3);
             this.secondWindow.Name = "secondWindow";
             this.secondWindow.Size = new System.Drawing.Size(351, 294);
@@ -120,6 +122,7 @@ namespace DicomLoadTest
             // thirdWindow
             // 
             this.thirdWindow.AddTestActors = false;
+            this.thirdWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.thirdWindow.Location = new System.Drawing.Point(3, 303);
             this.thirdWindow.Name = "thirdWindow";
             this.thirdWindow.Size = new System.Drawing.Size(351, 294);
@@ -150,35 +153,36 @@ namespace DicomLoadTest
             this.panel1.Controls.Add(this.labelWidth);
             this.panel1.Controls.Add(this.trackBarLevel);
             this.panel1.Controls.Add(this.trackBarWidth);
-            this.panel1.Location = new System.Drawing.Point(12, 7);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.MinimumSize = new System.Drawing.Size(267, 619);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(267, 608);
+            this.panel1.Size = new System.Drawing.Size(284, 619);
             this.panel1.TabIndex = 3;
             // 
             // chart1
             // 
             chartArea1.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(13, 72);
             this.chart1.Name = "chart1";
             this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Excel;
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series1.IsVisibleInLegend = false;
-            series1.Legend = "Legend1";
             series1.Name = "OpacityFunction";
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series2.IsVisibleInLegend = false;
-            series2.Legend = "Legend1";
             series2.Name = "ColorFunction";
             this.chart1.Series.Add(series1);
             this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(238, 120);
             this.chart1.TabIndex = 58;
             this.chart1.Text = "chart1";
+            this.chart1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseDown);
+            this.chart1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseMove);
+            this.chart1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseUp);
             // 
             // comboBoxSeries
             // 
@@ -411,7 +415,6 @@ namespace DicomLoadTest
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.ComboBox comboBoxSeries;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 
