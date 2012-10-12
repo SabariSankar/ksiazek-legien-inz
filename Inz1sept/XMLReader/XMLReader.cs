@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Drawing;
 
 namespace XMLReaderTest
 {
@@ -20,19 +21,21 @@ namespace XMLReaderTest
         /// Reads opacity function from the open xml
         /// </summary>
         /// <param name="colorFunction">Color function which will be appply to loaded opacity function</param>
+        /// <param name="fileName">Name of open xml</param>
         /// <returns>Information about the preset, which includes series of color and opacity function</returns>
-        public PresetInformation ReadOpacityFunction(Dictionary<float, Color[]> colorFunction)
+        public PresetInformation ReadOpacityFunction(String fileName, Dictionary<float, Color[]> colorFunction)
         {
             PresetInformation presetInformation = new PresetInformation();
+            reader = new XmlTextReader(@"..\..\presety\" + fileName);
 
             if (reader.ReadToFollowing("OpacityFunctions"))
-                //Console.WriteLine("<Opacity Function>");
+                Console.WriteLine("<Opacity Function>");
 
             while (reader.Read())
             {
                 if ((reader.NodeType == XmlNodeType.Element) && reader.Name.Equals("PointList"))
                 {
-                    //Console.WriteLine("<PointList>"); ;
+                    Console.WriteLine("<PointList>"); ;
                     Dictionary<float, float> opacityFunction = new Dictionary<float, float>();
                     while (reader.Read())
                     {
@@ -46,7 +49,7 @@ namespace XMLReaderTest
                         }
                         if ((reader.NodeType == XmlNodeType.EndElement) && reader.Name.Equals("PointList"))
                         {
-                            //Console.WriteLine("</PointList>");
+                            Console.WriteLine("</PointList>");
                             presetInformation.AddSerie(opacityFunction,colorFunction);
                             break;
                         }
@@ -74,7 +77,7 @@ namespace XMLReaderTest
             reader.ReadToFollowing("BLAU");
             float B = float.Parse(reader.ReadElementContentAsString().Replace('.', ','));
             //Console.WriteLine(R + " " + G + " " + B);
-            return new Color(R, G, B);
+            return Color.FromArgb((int)R, (int)G, (int)B);
         }
 
         /// <summary>
@@ -190,7 +193,7 @@ namespace XMLReaderTest
 
             if (isIndependent)
             {
-                return ReadOpacityFunction(ReadColorFunction());
+                return ReadOpacityFunction(fileName, ReadColorFunction());
             }
             else
             {

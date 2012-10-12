@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Kitware.VTK;
 using XMLReaderTest;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Drawing;
 
 namespace DicomLoadTest
 {
@@ -38,18 +39,25 @@ namespace DicomLoadTest
                 spwf.AddPoint(pair.Key, pair.Value);
                 chart1.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
             }
-             
+
+            float lastOpacity = -100;
             foreach (var pair in this.PresetInfo.Series[0].ColorFuction)
             {
                 ctf.AddRGBSegment(pair.Key, pair.Value[0].R, pair.Value[0].G, pair.Value[0].B,
                     pair.Key, pair.Value[1].R, pair.Value[1].G, pair.Value[1].B);
-                System.Drawing.Color colorLeft = System.Drawing.Color.FromArgb((int)pair.Value[0].R, (int)pair.Value[0].G, (int)pair.Value[0].B);
-                System.Drawing.Color colorRight= System.Drawing.Color.FromArgb((int)pair.Value[1].R, (int)pair.Value[1].G, (int)pair.Value[1].B);
-                
-               // chart1.Series["ColorFunction"].Points.AddXY(pair.Key, 0);
-               // chart1.Series["ColorFunction"].MarkerColor = colorLeft;
-               // chart1.Series["ColorFunction"].Points.AddXY(pair.Key, 0);
-               // chart1.Series["ColorFunction"].MarkerColor = colorRight;
+                Color colorLeft = Color.FromArgb((int)pair.Value[0].R, (int)pair.Value[0].G, (int)pair.Value[0].B);
+                Color colorRight= Color.FromArgb((int)pair.Value[1].R, (int)pair.Value[1].G, (int)pair.Value[1].B);
+
+                Series series = new Series();
+                series.ChartType = SeriesChartType.Line;
+                series.BorderColor = colorLeft;
+                series.Points.AddXY(lastOpacity, 0.2);
+                series.BorderWidth = 10;
+                series.BorderDashStyle = ChartDashStyle.Solid;
+                series.Points.AddXY(pair.Key, 0.2);
+                lastOpacity = pair.Key;
+                chart1.Series.Add(series);
+               
             }
 
             vol.GetProperty().SetColor(ctf);
