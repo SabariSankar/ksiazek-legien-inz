@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -136,9 +137,6 @@ namespace DicomLoadTest
             sagittal.SetInput(sagittalColors.GetOutput());
             sagittal.SetDisplayExtent(117,117,0,173,1,180);
             
-            vtkImageReslice reslicer = vtkImageReslice.New();
-            reslicer.SetResliceAxesDirectionCosines(1,0,0,2,0,0,0,0,0);
- 
             _mapper.SetInputConnection(dicomReader.GetOutputPort());
            
             this.SetOpacityFunction();
@@ -178,6 +176,14 @@ namespace DicomLoadTest
             task.Start();
         }
 
+        public IList<double> GetObjectSize()
+        {
+            var xyzSize = new List<double>();
+            xyzSize.Add(vol.GetXRange()[1]);
+            xyzSize.Add(vol.GetYRange()[1]);
+            xyzSize.Add(vol.GetZRange()[1]);
+            return xyzSize;
+        }
 
 
    

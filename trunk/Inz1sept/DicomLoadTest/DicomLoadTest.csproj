@@ -58,6 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClipingModule.cs" />
+    <Compile Include="ClipingToolbox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClipingToolbox.Designer.cs">
+      <DependentUpon>ClipingToolbox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,6 +74,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Visualization2D.cs" />
     <Compile Include="Visualization3D.cs" />
+    <EmbeddedResource Include="ClipingToolbox.resx">
+      <DependentUpon>ClipingToolbox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
