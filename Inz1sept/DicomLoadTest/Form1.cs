@@ -53,7 +53,7 @@ namespace DicomLoadTest
                 comboBox1.Items.Add(new FileInfo(dir).Name);
             }
             comboBox1.SelectedIndex = 0;
-            vizualization3D.ChangeColorAndOpacityFunction(comboBox1.SelectedText);
+            vizualization3D.ChangeColorAndOpacityFunction(String.IsNullOrEmpty(comboBox1.SelectedText) ? comboBox1.Text : comboBox1.SelectedText);
 
             comboBoxSeries.Items.Clear();
             int numberOfSeries = vizualization3D.PresetInfo.Series.Count;
@@ -149,7 +149,7 @@ namespace DicomLoadTest
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            vizualization3D.ChangeColorAndOpacityFunction(comboBox1.Text);
+            vizualization3D.ChangeColorAndOpacityFunction(String.IsNullOrEmpty(comboBox1.SelectedText) ? comboBox1.Text : comboBox1.SelectedText);
             comboBoxSeries.Items.Clear();
             int numberOfSeries = vizualization3D.PresetInfo.Series.Count;
             for (int i = 0; i < numberOfSeries; i++)

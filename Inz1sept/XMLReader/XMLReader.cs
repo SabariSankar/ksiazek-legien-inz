@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -187,7 +188,7 @@ namespace XMLReaderTest
         /// <returns>Information about the preset, which includes series of color and opacity function</returns>
         public PresetInformation ReadXMLFile(String fileName)
         {
-            reader = new XmlTextReader(@"..\..\presety\" + fileName);
+            reader = new XmlTextReader(Path.Combine(@"..\..\presety\",fileName));
             reader.ReadToFollowing("IndependentColor");
             Boolean isIndependent = reader.ReadElementContentAsBoolean();
 
