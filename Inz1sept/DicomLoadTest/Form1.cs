@@ -32,6 +32,8 @@ namespace DicomLoadTest
 
         event EventHandler<ClipingEventArgs> clipingOperation;
 
+        private ClipingToolbox _clipingToolbox;
+
         public Form1()
         {
             InitializeComponent();
@@ -265,6 +267,26 @@ namespace DicomLoadTest
                 selectedDataPoint = (DataPoint)hitResult.Object;
 
 
+            }
+        }
+
+        private void ClipingToolboxButton_Click(object sender, EventArgs e)
+        {
+            if (_clipingToolbox == null)
+            {
+                _clipingToolbox = new ClipingToolbox(vizualization3D.GetObjectSize());
+                _clipingToolbox.Visible = true;
+                ClipingToolboxButton.Text = ButtonText.HideClipingToolbox;
+            }
+            else if(_clipingToolbox.Visible)
+            {
+                _clipingToolbox.Visible = false;
+                ClipingToolboxButton.Text = ButtonText.ShowClipingToolbox;
+            }
+            else
+            {
+                _clipingToolbox.Visible = true;
+                ClipingToolboxButton.Text = ButtonText.HideClipingToolbox;
             }
         }
 

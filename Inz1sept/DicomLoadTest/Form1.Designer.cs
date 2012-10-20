@@ -58,6 +58,7 @@ namespace DicomLoadTest
             this.labelWidth = new System.Windows.Forms.Label();
             this.trackBarLevel = new System.Windows.Forms.TrackBar();
             this.trackBarWidth = new System.Windows.Forms.TrackBar();
+            this.ClipingToolboxButton = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -132,6 +133,7 @@ namespace DicomLoadTest
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.ClipingToolboxButton);
             this.panel1.Controls.Add(this.chart1);
             this.panel1.Controls.Add(this.comboBoxSeries);
             this.panel1.Controls.Add(this.numericUpDown4);
@@ -219,7 +221,7 @@ namespace DicomLoadTest
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(29, 454);
+            this.numericUpDown3.Location = new System.Drawing.Point(3, 555);
             this.numericUpDown3.Name = "numericUpDown3";
             this.numericUpDown3.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown3.TabIndex = 53;
@@ -227,7 +229,7 @@ namespace DicomLoadTest
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(29, 428);
+            this.numericUpDown2.Location = new System.Drawing.Point(3, 529);
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown2.TabIndex = 52;
@@ -235,7 +237,7 @@ namespace DicomLoadTest
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(29, 402);
+            this.numericUpDown1.Location = new System.Drawing.Point(3, 503);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown1.TabIndex = 51;
@@ -359,6 +361,16 @@ namespace DicomLoadTest
             this.trackBarWidth.TabIndex = 6;
             this.trackBarWidth.Scroll += new System.EventHandler(this.trackBarWidth_Scroll);
             // 
+            // ClipingToolboxButton
+            // 
+            this.ClipingToolboxButton.Location = new System.Drawing.Point(13, 384);
+            this.ClipingToolboxButton.Name = "ClipingToolboxButton";
+            this.ClipingToolboxButton.Size = new System.Drawing.Size(125, 23);
+            this.ClipingToolboxButton.TabIndex = 59;
+            this.ClipingToolboxButton.Text = "Show Clipping Toolbox";
+            this.ClipingToolboxButton.UseVisualStyleBackColor = true;
+            this.ClipingToolboxButton.Click += new System.EventHandler(this.ClipingToolboxButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -415,6 +427,7 @@ namespace DicomLoadTest
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.ComboBox comboBoxSeries;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.Button ClipingToolboxButton;
     }
 }
 
