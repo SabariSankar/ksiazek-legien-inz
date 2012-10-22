@@ -37,14 +37,9 @@ namespace DicomLoadTest
             this.secondWindow = new Kitware.VTK.RenderWindowControl();
             this.thirdWindow = new Kitware.VTK.RenderWindowControl();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ClipingToolboxButton = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.comboBoxSeries = new System.Windows.Forms.ComboBox();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.ZtrackBar2 = new System.Windows.Forms.TrackBar();
             this.YtrackBar1 = new System.Windows.Forms.TrackBar();
             this.XtrackBar = new System.Windows.Forms.TrackBar();
@@ -58,16 +53,9 @@ namespace DicomLoadTest
             this.labelWidth = new System.Windows.Forms.Label();
             this.trackBarLevel = new System.Windows.Forms.TrackBar();
             this.trackBarWidth = new System.Windows.Forms.TrackBar();
-            this.ClipingToolboxButton = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ZtrackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YtrackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.XtrackBar)).BeginInit();
@@ -136,12 +124,6 @@ namespace DicomLoadTest
             this.panel1.Controls.Add(this.ClipingToolboxButton);
             this.panel1.Controls.Add(this.chart1);
             this.panel1.Controls.Add(this.comboBoxSeries);
-            this.panel1.Controls.Add(this.numericUpDown4);
-            this.panel1.Controls.Add(this.numericUpDown5);
-            this.panel1.Controls.Add(this.numericUpDown6);
-            this.panel1.Controls.Add(this.numericUpDown3);
-            this.panel1.Controls.Add(this.numericUpDown2);
-            this.panel1.Controls.Add(this.numericUpDown1);
             this.panel1.Controls.Add(this.ZtrackBar2);
             this.panel1.Controls.Add(this.YtrackBar1);
             this.panel1.Controls.Add(this.XtrackBar);
@@ -161,6 +143,16 @@ namespace DicomLoadTest
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(284, 619);
             this.panel1.TabIndex = 3;
+            // 
+            // ClipingToolboxButton
+            // 
+            this.ClipingToolboxButton.Location = new System.Drawing.Point(13, 384);
+            this.ClipingToolboxButton.Name = "ClipingToolboxButton";
+            this.ClipingToolboxButton.Size = new System.Drawing.Size(125, 23);
+            this.ClipingToolboxButton.TabIndex = 59;
+            this.ClipingToolboxButton.Text = "Show Clipping Toolbox";
+            this.ClipingToolboxButton.UseVisualStyleBackColor = true;
+            this.ClipingToolboxButton.Click += new System.EventHandler(this.ClipingToolboxButton_Click);
             // 
             // chart1
             // 
@@ -194,54 +186,6 @@ namespace DicomLoadTest
             this.comboBoxSeries.Size = new System.Drawing.Size(121, 21);
             this.comboBoxSeries.TabIndex = 57;
             this.comboBoxSeries.SelectedIndexChanged += new System.EventHandler(this.comboBoxSeries_SelectedIndexChanged);
-            // 
-            // numericUpDown4
-            // 
-            this.numericUpDown4.Location = new System.Drawing.Point(131, 555);
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown4.TabIndex = 56;
-            this.numericUpDown4.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // numericUpDown5
-            // 
-            this.numericUpDown5.Location = new System.Drawing.Point(131, 529);
-            this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown5.TabIndex = 55;
-            this.numericUpDown5.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // numericUpDown6
-            // 
-            this.numericUpDown6.Location = new System.Drawing.Point(131, 503);
-            this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown6.TabIndex = 54;
-            this.numericUpDown6.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // numericUpDown3
-            // 
-            this.numericUpDown3.Location = new System.Drawing.Point(3, 555);
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown3.TabIndex = 53;
-            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(3, 529);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown2.TabIndex = 52;
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(3, 503);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown1.TabIndex = 51;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // ZtrackBar2
             // 
@@ -361,16 +305,6 @@ namespace DicomLoadTest
             this.trackBarWidth.TabIndex = 6;
             this.trackBarWidth.Scroll += new System.EventHandler(this.trackBarWidth_Scroll);
             // 
-            // ClipingToolboxButton
-            // 
-            this.ClipingToolboxButton.Location = new System.Drawing.Point(13, 384);
-            this.ClipingToolboxButton.Name = "ClipingToolboxButton";
-            this.ClipingToolboxButton.Size = new System.Drawing.Size(125, 23);
-            this.ClipingToolboxButton.TabIndex = 59;
-            this.ClipingToolboxButton.Text = "Show Clipping Toolbox";
-            this.ClipingToolboxButton.UseVisualStyleBackColor = true;
-            this.ClipingToolboxButton.Click += new System.EventHandler(this.ClipingToolboxButton_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -383,12 +317,6 @@ namespace DicomLoadTest
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ZtrackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YtrackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.XtrackBar)).EndInit();
@@ -419,12 +347,6 @@ namespace DicomLoadTest
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown numericUpDown4;
-        private System.Windows.Forms.NumericUpDown numericUpDown5;
-        private System.Windows.Forms.NumericUpDown numericUpDown6;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.ComboBox comboBoxSeries;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Button ClipingToolboxButton;

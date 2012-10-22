@@ -32,7 +32,7 @@ namespace DicomLoadTest
 
         event EventHandler<ClipingEventArgs> clipingOperation;
 
-        private ClipingToolbox _clipingToolbox;
+        private ClipingModule _clipingModule;
 
         public Form1()
         {
@@ -79,9 +79,9 @@ namespace DicomLoadTest
         private void update2DVisualization()
         {
             this.firstVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
-            this.firstVizualization2D.sliceToAxes(dicomReader, XtrackBar.Value,"X");
+            this.firstVizualization2D.sliceToAxes(dicomReader, XtrackBar.Value, "X");
             this.secondVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
-            this.secondVizualization2D.sliceToAxes(dicomReader, YtrackBar1.Value,"Y");
+            this.secondVizualization2D.sliceToAxes(dicomReader, YtrackBar1.Value, "Y");
             this.thirdVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
             this.thirdVizualization2D.sliceToAxes(dicomReader, ZtrackBar2.Value, "Z");
         }
@@ -125,7 +125,7 @@ namespace DicomLoadTest
         private void thirdWindow_Load(object sender, EventArgs e)
         {
             thirdVizualization2D = new Visualization2D(thirdWindow);
-            thirdVizualization2D.sliceToAxes(dicomReader,100, "Z");
+            thirdVizualization2D.sliceToAxes(dicomReader, 100, "Z");
             ZtrackBar2.Value = 100;
         }
 
@@ -171,12 +171,12 @@ namespace DicomLoadTest
 
         private void XtrackBar_Scroll(object sender, EventArgs e)
         {
-            firstVizualization2D.sliceToAxes(dicomReader, XtrackBar.Value,"X");
+            firstVizualization2D.sliceToAxes(dicomReader, XtrackBar.Value, "X");
         }
 
         private void YtrackBar1_Scroll(object sender, EventArgs e)
         {
-            secondVizualization2D.sliceToAxes(dicomReader,YtrackBar1.Value,"Y");
+            secondVizualization2D.sliceToAxes(dicomReader, YtrackBar1.Value, "Y");
         }
 
         private void ZtrackBar2_Scroll(object sender, EventArgs e)
@@ -186,6 +186,7 @@ namespace DicomLoadTest
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
+            /*
             var args = new ClipingEventArgs()
                            {
                                Type = EClipingModuleOperationType.NewPlane,
@@ -198,11 +199,12 @@ namespace DicomLoadTest
                                YNormal = numericUpDown5.Value,
                                ZNormal = numericUpDown6.Value,
                            };
-            clipingOperation(sender,args);
+            clipingOperation(sender, args);
+             * */
         }
 
 
-    
+
         private void chart1_MouseMove(object sender, MouseEventArgs e)
         {
             // Check if data point selected
@@ -272,22 +274,13 @@ namespace DicomLoadTest
 
         private void ClipingToolboxButton_Click(object sender, EventArgs e)
         {
-            if (_clipingToolbox == null)
+            if (_clipingModule == null)
             {
-                _clipingToolbox = new ClipingToolbox(vizualization3D.GetObjectSize());
-                _clipingToolbox.Visible = true;
-                ClipingToolboxButton.Text = ButtonText.HideClipingToolbox;
+                _clipingModule = new ClipingModule(vizualization3D);
             }
-            else if(_clipingToolbox.Visible)
-            {
-                _clipingToolbox.Visible = false;
-                ClipingToolboxButton.Text = ButtonText.ShowClipingToolbox;
-            }
-            else
-            {
-                _clipingToolbox.Visible = true;
-                ClipingToolboxButton.Text = ButtonText.HideClipingToolbox;
-            }
+            ClipingToolboxButton.Text = _clipingModule.ShowToolbox()
+                                       ? ButtonText.HideClipingToolbox
+                                       : ButtonText.ShowClipingToolbox;
         }
 
 
