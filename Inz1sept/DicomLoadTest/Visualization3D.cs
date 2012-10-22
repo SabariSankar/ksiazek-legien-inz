@@ -23,7 +23,7 @@ namespace DicomLoadTest
         private float windowWidth = 0;
         private float windowLevel = 40;
 
-        private readonly vtkVolumeMapper _mapper;
+        public vtkVolumeMapper Mapper { get; private set; }
         private readonly ClipingModule _clipingModule;
 
         delegate void MyDlgt();
@@ -117,10 +117,8 @@ namespace DicomLoadTest
 
             vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
 
-            _mapper = vtkSmartVolumeMapper.New();
+            Mapper = vtkSmartVolumeMapper.New();
             vol = vtkVolume.New();
-
-            _clipingModule = new ClipingModule(_mapper);
 
             vtkLookupTable bwLut =vtkLookupTable.New();
             bwLut.SetTableRange (0, 2000);
@@ -137,12 +135,12 @@ namespace DicomLoadTest
             sagittal.SetInput(sagittalColors.GetOutput());
             sagittal.SetDisplayExtent(117,117,0,173,1,180);
             
-            _mapper.SetInputConnection(dicomReader.GetOutputPort());
+            Mapper.SetInputConnection(dicomReader.GetOutputPort());
            
             this.SetOpacityFunction();
             this.SetGradientOpacity();
 
-            vol.SetMapper(_mapper);
+            vol.SetMapper(Mapper);
 
             renderer.AddActor(sagittal);
             renderer.AddVolume(vol);
@@ -150,6 +148,11 @@ namespace DicomLoadTest
 
 
         //updatatuje okno wziualizacji 3d
+        public void Update3DVisualization()
+        {
+            Update3DVisualization(windowLevel, windowWidth);
+        }
+
         public void Update3DVisualization(float windowLevel, float windowWidth)
         {
             this.windowLevel = windowLevel;
