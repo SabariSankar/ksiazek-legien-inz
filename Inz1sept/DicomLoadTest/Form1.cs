@@ -44,6 +44,14 @@ namespace DicomLoadTest
 
         }
 
+        public void DisposeAll(object sender, FormClosingEventArgs e)
+        {
+            vizualization3D.Dispose();
+            firstVizualization2D.Dispose();
+            secondVizualization2D.Dispose();
+            thirdVizualization2D.Dispose();
+        }
+
         //wizualizacja 3d -----------------------------------------------------------------
         private void fourthWindow_Load(object sender, EventArgs e)
         {
@@ -184,27 +192,6 @@ namespace DicomLoadTest
             thirdVizualization2D.sliceToAxes(this.dicomReader, ZtrackBar2.Value, "Z");
         }
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            /*
-            var args = new ClipingEventArgs()
-                           {
-                               Type = EClipingModuleOperationType.NewPlane,
-
-                               A = numericUpDown1.Value,
-                               B = numericUpDown2.Value,
-                               C = numericUpDown3.Value,
-
-                               XNormal = numericUpDown4.Value,
-                               YNormal = numericUpDown5.Value,
-                               ZNormal = numericUpDown6.Value,
-                           };
-            clipingOperation(sender, args);
-             * */
-        }
-
-
-
         private void chart1_MouseMove(object sender, MouseEventArgs e)
         {
             // Check if data point selected
@@ -282,9 +269,6 @@ namespace DicomLoadTest
                                        ? ButtonText.HideClipingToolbox
                                        : ButtonText.ShowClipingToolbox;
         }
-
-
-
 
     }
 }

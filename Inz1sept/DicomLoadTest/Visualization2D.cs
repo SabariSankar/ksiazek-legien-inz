@@ -83,5 +83,15 @@ namespace DicomLoadTest
 
         }
 
+        /// <summary>
+        /// Dispose class objects. 
+        /// </summary>
+        public bool Dispose()
+        {
+            if(window != null) window.Dispose();
+            if(viewer != null) viewer.Dispose();
+            if(planeWidget != null) planeWidget.Dispose();
+            return true;
+        }
     }
 }

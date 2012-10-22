@@ -28,6 +28,45 @@ namespace DicomLoadTest
 
         delegate void MyDlgt();
 
+        //wizualizacja 3d -----------------------------------------------------------------
+        public Visualization3D(RenderWindowControl window, vtkDICOMImageReader dicomReader, Chart chart1)
+        {
+            this.chart1 = chart1;
+            this.window = window;
+            this.dicomReader = dicomReader;
+            this.PresetReader = new XMLPresetReader();
+
+            vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
+
+            Mapper = vtkSmartVolumeMapper.New();
+            vol = vtkVolume.New();
+
+            vtkLookupTable bwLut = vtkLookupTable.New();
+            bwLut.SetTableRange(0, 2000);
+            bwLut.SetSaturationRange(0, 0);
+            bwLut.SetHueRange(0, 0);
+            bwLut.SetValueRange(0, 1);
+            bwLut.Build(); //effective built 
+
+            vtkImageMapToColors sagittalColors = vtkImageMapToColors.New();
+            sagittalColors.SetInputConnection(dicomReader.GetOutputPort());
+            sagittalColors.SetLookupTable(bwLut);
+            sagittalColors.Update();
+            vtkImageActor sagittal = vtkImageActor.New();
+            sagittal.SetInput(sagittalColors.GetOutput());
+            sagittal.SetDisplayExtent(117, 117, 0, 173, 1, 180);
+
+            Mapper.SetInputConnection(dicomReader.GetOutputPort());
+
+            this.SetOpacityFunction();
+            this.SetGradientOpacity();
+
+            vol.SetMapper(Mapper);
+
+            renderer.AddActor(sagittal);
+            renderer.AddVolume(vol);
+        }
+
         public void ChangeColorAndOpacityFunction(string presetName)
         {
             vtkColorTransferFunction ctf = vtkColorTransferFunction.New();
@@ -106,47 +145,6 @@ namespace DicomLoadTest
             vol.GetProperty().SetGradientOpacity(gpwf);
         }
 
-
-        //wizualizacja 3d -----------------------------------------------------------------
-        public Visualization3D(RenderWindowControl window, vtkDICOMImageReader dicomReader , Chart chart1)
-        {
-            this.chart1 = chart1;
-            this.window = window;
-            this.dicomReader = dicomReader;
-            this.PresetReader = new XMLPresetReader();
-
-            vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
-
-            Mapper = vtkSmartVolumeMapper.New();
-            vol = vtkVolume.New();
-
-            vtkLookupTable bwLut =vtkLookupTable.New();
-            bwLut.SetTableRange (0, 2000);
-            bwLut.SetSaturationRange (0, 0);
-            bwLut.SetHueRange (0, 0);
-            bwLut.SetValueRange (0, 1);
-            bwLut.Build(); //effective built 
-
-            vtkImageMapToColors sagittalColors =vtkImageMapToColors.New();
-            sagittalColors.SetInputConnection(dicomReader.GetOutputPort());
-            sagittalColors.SetLookupTable(bwLut);
-            sagittalColors.Update();
-            vtkImageActor sagittal = vtkImageActor.New();
-            sagittal.SetInput(sagittalColors.GetOutput());
-            sagittal.SetDisplayExtent(117,117,0,173,1,180);
-            
-            Mapper.SetInputConnection(dicomReader.GetOutputPort());
-           
-            this.SetOpacityFunction();
-            this.SetGradientOpacity();
-
-            vol.SetMapper(Mapper);
-
-            renderer.AddActor(sagittal);
-            renderer.AddVolume(vol);
-        }
-
-
         //updatatuje okno wziualizacji 3d
         public void Update3DVisualization()
         {
@@ -188,7 +186,14 @@ namespace DicomLoadTest
             return xyzSize;
         }
 
-
+        public bool Dispose()
+        {
+            if(vol != null) vol.Dispose();
+            if(dicomReader != null) dicomReader.Dispose();
+            if(Mapper != null) Mapper.Dispose();
+            if(window != null) window.Dispose();
+            return true;
+        }
    
     }
 }
