@@ -23,7 +23,7 @@ namespace DicomLoadTest
 
 
         vtkDICOMImageReader dicomReader;
-        String directoryName = @"D:\Downloads\PANORAMIX";
+        String directoryName = @"C:\Users\Grzegorz\Downloads\Chest\JW\tmp";//@"D:\Downloads\PANORAMIX";
         String presetDir = @"..\..\presety";
 
         float windowWidth = 100;
