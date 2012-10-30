@@ -93,11 +93,11 @@ namespace DicomLoadTest
         {
             this.windowLevel = windowLevel;
             this.windowWidth = windowWidth;
-            viewer.SetColorWindow(this.windowWidth);
-            viewer.SetColorLevel(this.windowLevel);
-            viewer.Render();
-            window.Update();
-            window.RenderWindow.Render();
+            _viewer.SetColorWindow(this.windowWidth);
+            _viewer.SetColorLevel(this.windowLevel);
+            _viewer.Render();
+            _window.Update();
+            _window.RenderWindow.Render();
 
         }
 
