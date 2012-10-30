@@ -23,7 +23,7 @@ namespace DicomLoadTest
 
 
         vtkDICOMImageReader dicomReader;
-        String directoryName = @"C:\Users\Grzegorz\Downloads\Chest\JW\tmp";//@"D:\Downloads\PANORAMIX";
+        String directoryName = @"D:\Downloads\PANORAMIX";// @"C:\Users\Grzegorz\Downloads\Chest\JW\tmp";//@"D:\Downloads\PANORAMIX";
         String presetDir = @"..\..\presety";
 
         float windowWidth = 100;
@@ -194,14 +194,13 @@ namespace DicomLoadTest
 
         private void chart1_MouseMove(object sender, MouseEventArgs e)
         {
-            // Check if data point selected
             if (selectedDataPoint != null)
             {
                 // Mouse coordinates should not be outside of the chart 
                 int coordinate = e.Y;
-                if (coordinate < 0)
+                if (coordinate <= 0)
                     coordinate = 0;
-                if (coordinate > chart1.Size.Height - 1)
+                if (coordinate >= chart1.Size.Height - 1)
                     coordinate = chart1.Size.Height - 1;
 
                 // Calculate new Y value from current cursor position
@@ -212,11 +211,7 @@ namespace DicomLoadTest
                 // Update selected point Y value
                 selectedDataPoint.YValues[0] = yValue;
 
-
-                // Invalidate chart
                 chart1.Invalidate();
-
-                // Force the chart to redraw
                 chart1.Update();
             }
             else
@@ -229,33 +224,31 @@ namespace DicomLoadTest
 
         private void chart1_MouseUp(object sender, MouseEventArgs e)
         {
-            // Initialize currently selected data point
             if (selectedDataPoint != null)
             {
-                // Hide point label
-                selectedDataPoint.IsValueShownAsLabel = false;
+                List<DataPoint> splinePoints = chart1.Series["OpacityFunctionSpline"].Points.ToList<DataPoint>();
+                splinePoints.Find(x => x.XValue == selectedDataPoint.XValue).YValues[0] = selectedDataPoint.YValues[0];
 
-                // reset selected object
+                vizualization3D.ChangeSerie(splinePoints);
                 selectedDataPoint = null;
 
-                // Invalidate chart
                 chart1.Invalidate();
-
             }
         }
 
         private void chart1_MouseDown(object sender, MouseEventArgs e)
         {
-            // Call Hit Test Method
             HitTestResult hitResult = chart1.HitTest(e.X, e.Y);
 
-            // Initialize currently selected data point
             selectedDataPoint = null;
             if (hitResult.ChartElementType == ChartElementType.DataPoint)
             {
-                selectedDataPoint = (DataPoint)hitResult.Object;
-
-
+                DataPoint selected = (DataPoint)hitResult.Object;
+                //if (chart1.Series["OpacityFunction"].Points.Any<DataPoint>(x => x.XValue >= selected.XValue - 2 && x.XValue <= selected.XValue + 2))
+                if (chart1.Series["OpacityFunction"].Points.Contains(selected))
+                {
+                    selectedDataPoint = selected;
+                }
             }
         }
 

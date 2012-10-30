@@ -1,3 +1,4 @@
+using System.Drawing;
 namespace DicomLoadTest
 {
     partial class Form1
@@ -160,17 +161,20 @@ namespace DicomLoadTest
             this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Location = new System.Drawing.Point(13, 72);
             this.chart1.Name = "chart1";
-            this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Excel;
+            //this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Light;
+            series1.Color = Color.Yellow;
             series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series1.IsVisibleInLegend = false;
             series1.Name = "OpacityFunction";
             series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Color = Color.Blue;
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series2.IsVisibleInLegend = false;
-            series2.Name = "ColorFunction";
+            series2.Name = "OpacityFunctionSpline";
             this.chart1.Series.Add(series1);
             this.chart1.Series.Add(series2);
+            this.chart1.ChartAreas["ChartArea1"].AxisY.Maximum = 1;
             this.chart1.Size = new System.Drawing.Size(238, 120);
             this.chart1.TabIndex = 58;
             this.chart1.Text = "chart1";
