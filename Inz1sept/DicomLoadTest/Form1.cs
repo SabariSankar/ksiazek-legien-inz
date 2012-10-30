@@ -22,7 +22,7 @@ namespace DicomLoadTest
         Visualization2D thirdVizualization2D;
 
 
-        vtkDICOMImageReader dicomReader;
+        private readonly vtkDICOMImageReader _dicomReader;
         String directoryName = @"D:\Downloads\PANORAMIX";// @"C:\Users\Grzegorz\Downloads\Chest\JW\tmp";//@"D:\Downloads\PANORAMIX";
         String presetDir = @"..\..\presety";
 
@@ -38,9 +38,9 @@ namespace DicomLoadTest
         {
             InitializeComponent();
 
-            dicomReader = vtkDICOMImageReader.New();
-            dicomReader.SetDirectoryName(directoryName);
-            dicomReader.Update();
+            _dicomReader = vtkDICOMImageReader.New();
+            _dicomReader.SetDirectoryName(directoryName);
+            _dicomReader.Update();
 
         }
 
@@ -78,7 +78,7 @@ namespace DicomLoadTest
         //wizualizacja 3d -----------------------------------------------------------------
         private void fourthWindow_Load(object sender, EventArgs e)
         {
-            vizualization3D = new Visualization3D(fourthWindow, dicomReader, chart1);
+            vizualization3D = new Visualization3D(fourthWindow, _dicomReader, chart1);
             string[] filePaths = Directory.GetFiles(presetDir, "*.xml");
 
             foreach (string dir in filePaths)
@@ -142,21 +142,21 @@ namespace DicomLoadTest
         private void firstWindow_Load(object sender, EventArgs e)
         {
             firstVizualization2D = new Visualization2D(firstWindow);
-            firstVizualization2D.sliceToAxes(dicomReader, 300, "X");
+            firstVizualization2D.sliceToAxes(_dicomReader, 300, "X");
         }
 
 
         private void secondWindow_Load(object sender, EventArgs e)
         {
             secondVizualization2D = new Visualization2D(secondWindow);
-            secondVizualization2D.sliceToAxes(dicomReader, 100, "Y");
+            secondVizualization2D.sliceToAxes(_dicomReader, 100, "Y");
         }
 
 
         private void thirdWindow_Load(object sender, EventArgs e)
         {
             thirdVizualization2D = new Visualization2D(thirdWindow);
-            thirdVizualization2D.sliceToAxes(dicomReader, 100, "Z");
+            thirdVizualization2D.sliceToAxes(_dicomReader, 100, "Z");
         }
 
 
@@ -255,8 +255,8 @@ namespace DicomLoadTest
                 if (chart1.Series["OpacityFunction"].Points.Contains(selected))
                 {
                     selectedDataPoint = selected;
-                }
             }
+        }
         }
 
         private void ClipingToolboxButton_Click(object sender, EventArgs e)
@@ -314,5 +314,11 @@ namespace DicomLoadTest
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //var bmp = firstVizualization2D.GetImage();
+            var form = new Form2(_dicomReader);
+            form.Visible = true;
+        }
     }
 }
