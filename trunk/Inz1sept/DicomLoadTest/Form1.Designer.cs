@@ -188,22 +188,31 @@ namespace DicomLoadTest
             this.ClipingToolboxButton.Text = "Show Clipping Toolbox";
             this.ClipingToolboxButton.UseVisualStyleBackColor = true;
             this.ClipingToolboxButton.Click += new System.EventHandler(this.ClipingToolboxButton_Click);
+            // this.chart1.ChartAreas["ChartArea1"].AxisY.Maximum = 1.1;
             // 
             // chart1
             // 
             chartArea1.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea1);
+            this.chart1.ChartAreas["ChartArea1"].AxisY.Maximum = 1.1;
             this.chart1.Location = new System.Drawing.Point(13, 72);
             this.chart1.Name = "chart1";
+            series1.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            series1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            series1.BorderWidth = 5;
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series1.Color = System.Drawing.Color.Yellow;
             series1.IsVisibleInLegend = false;
+            series1.MarkerSize = 8;
             series1.Name = "OpacityFunction";
+            series1.YValuesPerPoint = 2;
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series2.Color = System.Drawing.Color.Blue;
             series2.IsVisibleInLegend = false;
+            series2.LabelBorderWidth = 3;
+            series2.MarkerSize = 7;
             series2.Name = "OpacityFunctionSpline";
             this.chart1.Series.Add(series1);
             this.chart1.Series.Add(series2);
