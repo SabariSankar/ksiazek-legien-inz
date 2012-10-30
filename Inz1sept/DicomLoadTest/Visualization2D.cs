@@ -18,6 +18,23 @@ namespace DicomLoadTest
         private float windowWidth = 100;
         private float windowLevel = 100;
 
+        public void PlaneMoved(vtkImagePlaneWidget plane)
+        {
+            //int i = plane.GetPlaneOrientation();
+            //int slice = (int) plane.GetSlicePosition();
+            //to update your 2D imageviewer corresponding to the 3D plane widget
+            //viewer.SetSlice(slice);
+            viewer.SetInput(plane.GetResliceOutput());
+            viewer.SetColorWindow(this.windowWidth);
+            viewer.SetColorLevel(this.windowLevel);
+            viewer.Render();
+
+            window.Update();
+            window.RenderWindow.Render();
+        
+        }
+
+
         /// <summary>
         /// Update the 2D visualization window with new slice of pass X, Y or Z coordination. 
         /// </summary>
