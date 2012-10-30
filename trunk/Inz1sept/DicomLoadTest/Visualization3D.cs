@@ -14,6 +14,12 @@ namespace DicomLoadTest
     public class Visualization3D
     {
         private readonly RenderWindowControl window;
+        private vtkRenderWindow renderWindow;
+        private vtkRenderWindowInteractor renderWindowInteractor;
+        private vtkImagePlaneWidget planeWidgetX;
+        private vtkImagePlaneWidget planeWidgetY;
+        private vtkImagePlaneWidget planeWidgetZ;
+
         private readonly vtkVolume vol;
         private vtkDICOMImageReader dicomReader;
         private Chart chart1;
@@ -36,35 +42,61 @@ namespace DicomLoadTest
             this.dicomReader = dicomReader;
             this.PresetReader = new XMLPresetReader();
 
-            vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
-
+            // Create a mapper and actor
             Mapper = vtkSmartVolumeMapper.New();
-            vol = vtkVolume.New();
-
-            vtkLookupTable bwLut = vtkLookupTable.New();
-            bwLut.SetTableRange(0, 2000);
-            bwLut.SetSaturationRange(0, 0);
-            bwLut.SetHueRange(0, 0);
-            bwLut.SetValueRange(0, 1);
-            bwLut.Build(); //effective built 
-
-            vtkImageMapToColors sagittalColors = vtkImageMapToColors.New();
-            sagittalColors.SetInputConnection(dicomReader.GetOutputPort());
-            sagittalColors.SetLookupTable(bwLut);
-            sagittalColors.Update();
-            vtkImageActor sagittal = vtkImageActor.New();
-            sagittal.SetInput(sagittalColors.GetOutput());
-            sagittal.SetDisplayExtent(117, 117, 0, 173, 1, 180);
-
             Mapper.SetInputConnection(dicomReader.GetOutputPort());
-
+            vol = vtkVolume.New();
             this.SetOpacityFunction();
             this.SetGradientOpacity();
-
             vol.SetMapper(Mapper);
 
-            renderer.AddActor(sagittal);
+            // A renderer and render window
+            //vtkRenderer renderer = vtkRenderer.New();
+            //renderWindow = vtkRenderWindow.New();
+            //vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
+
+            vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
             renderer.AddVolume(vol);
+
+            // An interactor
+            renderWindowInteractor = vtkRenderWindowInteractor.New();
+            renderWindowInteractor.SetRenderWindow(window.RenderWindow);
+
+            vtkInteractorStyleTrackballCamera style = vtkInteractorStyleTrackballCamera.New();
+            renderWindowInteractor.SetInteractorStyle(style);
+
+            vtkCellPicker picker = vtkCellPicker.New();
+            picker.SetTolerance(0.005);
+
+            planeWidgetX = vtkImagePlaneWidget.New();
+            planeWidgetX.DisplayTextOn();
+            planeWidgetX.SetInput(dicomReader.GetOutput());
+            planeWidgetX.SetPlaneOrientationToXAxes();
+            planeWidgetX.SetSliceIndex(250);
+            planeWidgetX.SetInteractor(renderWindowInteractor);
+
+            planeWidgetY = vtkImagePlaneWidget.New();
+            planeWidgetY.DisplayTextOn();
+            planeWidgetY.SetInput(dicomReader.GetOutput());
+            planeWidgetY.SetPlaneOrientationToYAxes();
+            planeWidgetY.SetSliceIndex(100);
+            planeWidgetY.SetInteractor(renderWindowInteractor);
+
+
+            planeWidgetZ = vtkImagePlaneWidget.New();
+            planeWidgetZ.DisplayTextOn();
+            planeWidgetZ.SetInput(dicomReader.GetOutput());
+            planeWidgetZ.SetPlaneOrientationToZAxes();
+            planeWidgetZ.SetSliceIndex(250);
+            planeWidgetZ.SetInteractor(renderWindowInteractor);
+
+            // Render
+            window.RenderWindow.Render();
+
+            //renderWindowInteractor.Initialize();
+            window.RenderWindow.Render();
+            // Begin mouse interaction
+            //renderWindowInteractor.Start();
         }
 
         public void ChangeColorAndOpacityFunction(string presetName)
@@ -213,8 +245,43 @@ namespace DicomLoadTest
             if(vol != null) vol.Dispose();
             if(dicomReader != null) dicomReader.Dispose();
             if(Mapper != null) Mapper.Dispose();
+            if (renderWindowInteractor != null) renderWindowInteractor.Dispose();
+            if (planeWidgetX != null) planeWidgetX.Dispose();
+            if (planeWidgetY != null) planeWidgetY.Dispose();
+            if (planeWidgetZ != null) planeWidgetZ.Dispose();
+            if (renderWindow != null) renderWindow.Dispose();
             if(window != null) window.Dispose();
+        
             return true;
+        }
+
+        //metody obsługujące pojawianie się i chowanie poszczególnych płaszczyzn
+        public void ShowPlaneX()
+        {
+            planeWidgetX.On();
+        }
+
+        public void ShowPlaneY()
+        {
+            planeWidgetY.On();
+        }
+
+        public void ShowPlaneZ()
+        {
+            planeWidgetZ.On();
+        }
+
+        public void HidePlaneX()
+        {
+            planeWidgetX.Off();
+        }
+        public void HidePlaneY()
+        {
+            planeWidgetY.Off();
+        }
+        public void HidePlaneZ()
+        {
+            planeWidgetZ.Off();
         }
    
     }
