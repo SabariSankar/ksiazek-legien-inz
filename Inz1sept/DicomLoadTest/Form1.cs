@@ -305,7 +305,7 @@ namespace DicomLoadTest
             if (PlaneZButton.Text.Equals("Show PlaneZ"))
             {
                 this.vizualization3D.PlaneWidgetZ.On();
-                PlaneZButton.Text = "Hide PlaneX";
+                PlaneZButton.Text = "Hide PlaneZ";
             }
             else
             {
