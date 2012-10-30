@@ -52,6 +52,29 @@ namespace DicomLoadTest
             thirdVizualization2D.Dispose();
         }
 
+        public void sth()
+        {
+        }
+
+        //-------------------------------------------------------------------------
+        //callback function for moving plane
+        public void planeXMoved(vtkObject sender, vtkObjectEventArgs e)
+        {
+            firstVizualization2D.PlaneMoved(vtkImagePlaneWidget.SafeDownCast(sender));
+        }
+
+        public void planeYMoved(vtkObject sender, vtkObjectEventArgs e)
+        {
+            secondVizualization2D.PlaneMoved(vtkImagePlaneWidget.SafeDownCast(sender));
+        }
+
+        public void planeZMoved(vtkObject sender, vtkObjectEventArgs e)
+        {
+            thirdVizualization2D.PlaneMoved(vtkImagePlaneWidget.SafeDownCast(sender));
+        }
+
+
+
         //wizualizacja 3d -----------------------------------------------------------------
         private void fourthWindow_Load(object sender, EventArgs e)
         {
@@ -72,6 +95,11 @@ namespace DicomLoadTest
                 comboBoxSeries.Items.Add(i.ToString());
             }
             comboBoxSeries.SelectedIndex = 0;
+
+            //moving planes
+            vizualization3D.PlaneWidgetX.InteractionEvt += new vtkObject.vtkObjectEventHandler(planeXMoved);
+            vizualization3D.PlaneWidgetY.InteractionEvt += new vtkObject.vtkObjectEventHandler(planeYMoved);
+            vizualization3D.PlaneWidgetZ.InteractionEvt += new vtkObject.vtkObjectEventHandler(planeZMoved);
 
             //TODO: troche s³abe miejsce
             clipingOperation += vizualization3D.PlaneOperation;
@@ -242,16 +270,18 @@ namespace DicomLoadTest
                                        : ButtonText.ShowClipingToolbox;
         }
 
+        //-------------------------------------------------------------------------------------
+        //obs³uga pojawiania i znikania poszczególnych p³aszczyzn
         private void PlaneXButton_Click(object sender, EventArgs e)
         {
             if (PlaneXButton.Text.Equals("Show PlaneX"))
             {
-                this.vizualization3D.ShowPlaneX();
+                this.vizualization3D.PlaneWidgetX.On();
                 PlaneXButton.Text = "Hide PlaneX";
             }
             else
             {
-                this.vizualization3D.HidePlaneX();
+                this.vizualization3D.PlaneWidgetX.Off();
                 PlaneXButton.Text = "Show PlaneX";
             }
         }
@@ -260,12 +290,12 @@ namespace DicomLoadTest
         {
             if (PlaneYButton.Text.Equals("Show PlaneY"))
             {
-                this.vizualization3D.ShowPlaneY();
+                this.vizualization3D.PlaneWidgetY.On();
                 PlaneYButton.Text = "Hide PlaneY";
             }
             else
             {
-                this.vizualization3D.HidePlaneY();
+                this.vizualization3D.PlaneWidgetY.Off();
                 PlaneYButton.Text = "Show PlaneY";
             }
         }
@@ -274,12 +304,12 @@ namespace DicomLoadTest
         {
             if (PlaneZButton.Text.Equals("Show PlaneZ"))
             {
-                this.vizualization3D.ShowPlaneZ();
+                this.vizualization3D.PlaneWidgetZ.On();
                 PlaneZButton.Text = "Hide PlaneX";
             }
             else
             {
-                this.vizualization3D.HidePlaneZ();
+                this.vizualization3D.PlaneWidgetZ.Off();
                 PlaneZButton.Text = "Show PlaneZ";
             }
         }

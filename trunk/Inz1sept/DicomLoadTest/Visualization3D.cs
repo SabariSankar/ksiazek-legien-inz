@@ -16,9 +16,10 @@ namespace DicomLoadTest
         private readonly RenderWindowControl window;
         private vtkRenderWindow renderWindow;
         private vtkRenderWindowInteractor renderWindowInteractor;
-        private vtkImagePlaneWidget planeWidgetX;
-        private vtkImagePlaneWidget planeWidgetY;
-        private vtkImagePlaneWidget planeWidgetZ;
+
+        public vtkImagePlaneWidget PlaneWidgetX { get; set; }
+        public vtkImagePlaneWidget PlaneWidgetY { get; set; }
+        public vtkImagePlaneWidget PlaneWidgetZ { get; set; }
 
         private readonly vtkVolume vol;
         private vtkDICOMImageReader dicomReader;
@@ -68,34 +69,34 @@ namespace DicomLoadTest
             vtkCellPicker picker = vtkCellPicker.New();
             picker.SetTolerance(0.005);
 
-            planeWidgetX = vtkImagePlaneWidget.New();
-            planeWidgetX.DisplayTextOn();
-            planeWidgetX.SetInput(dicomReader.GetOutput());
-            planeWidgetX.SetPlaneOrientationToXAxes();
-            planeWidgetX.SetSliceIndex(250);
-            planeWidgetX.SetInteractor(renderWindowInteractor);
-
-            planeWidgetY = vtkImagePlaneWidget.New();
-            planeWidgetY.DisplayTextOn();
-            planeWidgetY.SetInput(dicomReader.GetOutput());
-            planeWidgetY.SetPlaneOrientationToYAxes();
-            planeWidgetY.SetSliceIndex(100);
-            planeWidgetY.SetInteractor(renderWindowInteractor);
+            PlaneWidgetX = vtkImagePlaneWidget.New();
+            PlaneWidgetX.DisplayTextOn();
+            PlaneWidgetX.SetInput(dicomReader.GetOutput());
+            PlaneWidgetX.SetPlaneOrientationToXAxes();
+            PlaneWidgetX.SetSliceIndex(250);
+            PlaneWidgetX.SetInteractor(renderWindowInteractor);
+   
 
 
-            planeWidgetZ = vtkImagePlaneWidget.New();
-            planeWidgetZ.DisplayTextOn();
-            planeWidgetZ.SetInput(dicomReader.GetOutput());
-            planeWidgetZ.SetPlaneOrientationToZAxes();
-            planeWidgetZ.SetSliceIndex(250);
-            planeWidgetZ.SetInteractor(renderWindowInteractor);
+            PlaneWidgetY = vtkImagePlaneWidget.New();
+            PlaneWidgetY.DisplayTextOn();
+            PlaneWidgetY.SetInput(dicomReader.GetOutput());
+            PlaneWidgetY.SetPlaneOrientationToYAxes();
+            PlaneWidgetY.SetSliceIndex(100);
+            PlaneWidgetY.SetInteractor(renderWindowInteractor);
+
+
+            PlaneWidgetZ = vtkImagePlaneWidget.New();
+            PlaneWidgetZ.DisplayTextOn();
+            PlaneWidgetZ.SetInput(dicomReader.GetOutput());
+            PlaneWidgetZ.SetPlaneOrientationToZAxes();
+            PlaneWidgetZ.SetSliceIndex(250);
+            PlaneWidgetZ.SetInteractor(renderWindowInteractor);
 
             // Render
             window.RenderWindow.Render();
 
             //renderWindowInteractor.Initialize();
-            window.RenderWindow.Render();
-            // Begin mouse interaction
             //renderWindowInteractor.Start();
         }
 
@@ -246,43 +247,16 @@ namespace DicomLoadTest
             if(dicomReader != null) dicomReader.Dispose();
             if(Mapper != null) Mapper.Dispose();
             if (renderWindowInteractor != null) renderWindowInteractor.Dispose();
-            if (planeWidgetX != null) planeWidgetX.Dispose();
-            if (planeWidgetY != null) planeWidgetY.Dispose();
-            if (planeWidgetZ != null) planeWidgetZ.Dispose();
+            if (PlaneWidgetX != null) PlaneWidgetX.Dispose();
+            if (PlaneWidgetY != null) PlaneWidgetY.Dispose();
+            if (PlaneWidgetZ != null) PlaneWidgetZ.Dispose();
             if (renderWindow != null) renderWindow.Dispose();
             if(window != null) window.Dispose();
         
             return true;
         }
 
-        //metody obsługujące pojawianie się i chowanie poszczególnych płaszczyzn
-        public void ShowPlaneX()
-        {
-            planeWidgetX.On();
-        }
-
-        public void ShowPlaneY()
-        {
-            planeWidgetY.On();
-        }
-
-        public void ShowPlaneZ()
-        {
-            planeWidgetZ.On();
-        }
-
-        public void HidePlaneX()
-        {
-            planeWidgetX.Off();
-        }
-        public void HidePlaneY()
-        {
-            planeWidgetY.Off();
-        }
-        public void HidePlaneZ()
-        {
-            planeWidgetZ.Off();
-        }
+     
    
     }
 }
