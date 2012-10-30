@@ -20,18 +20,12 @@ namespace DicomLoadTest
 
         public void PlaneMoved(vtkImagePlaneWidget plane)
         {
-            //int i = plane.GetPlaneOrientation();
-            //int slice = (int) plane.GetSlicePosition();
-            //to update your 2D imageviewer corresponding to the 3D plane widget
-            //viewer.SetSlice(slice);
             viewer.SetInput(plane.GetResliceOutput());
             viewer.SetColorWindow(this.windowWidth);
             viewer.SetColorLevel(this.windowLevel);
             viewer.Render();
-
             window.Update();
             window.RenderWindow.Render();
-        
         }
 
 
@@ -97,6 +91,11 @@ namespace DicomLoadTest
         {
             this.windowLevel = windowLevel;
             this.windowWidth = windowWidth;
+            viewer.SetColorWindow(this.windowWidth);
+            viewer.SetColorLevel(this.windowLevel);
+            viewer.Render();
+            window.Update();
+            window.RenderWindow.Render();
 
         }
 
