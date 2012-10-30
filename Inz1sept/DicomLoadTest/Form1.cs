@@ -87,11 +87,8 @@ namespace DicomLoadTest
         private void update2DVisualization()
         {
             this.firstVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
-            this.firstVizualization2D.sliceToAxes(dicomReader, XtrackBar.Value, "X");
             this.secondVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
-            this.secondVizualization2D.sliceToAxes(dicomReader, YtrackBar1.Value, "Y");
             this.thirdVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
-            this.thirdVizualization2D.sliceToAxes(dicomReader, ZtrackBar2.Value, "Z");
         }
 
         //suwak obsluguje szerokosc ------------------------------------------------------------
@@ -118,7 +115,6 @@ namespace DicomLoadTest
         {
             firstVizualization2D = new Visualization2D(firstWindow);
             firstVizualization2D.sliceToAxes(dicomReader, 300, "X");
-            XtrackBar.Value = 300;
         }
 
 
@@ -126,7 +122,6 @@ namespace DicomLoadTest
         {
             secondVizualization2D = new Visualization2D(secondWindow);
             secondVizualization2D.sliceToAxes(dicomReader, 100, "Y");
-            YtrackBar1.Value = 100;
         }
 
 
@@ -134,7 +129,6 @@ namespace DicomLoadTest
         {
             thirdVizualization2D = new Visualization2D(thirdWindow);
             thirdVizualization2D.sliceToAxes(dicomReader, 100, "Z");
-            ZtrackBar2.Value = 100;
         }
 
 
@@ -175,21 +169,6 @@ namespace DicomLoadTest
         private void comboBoxSeries_SelectedIndexChanged(object sender, EventArgs e)
         {
             vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
-        }
-
-        private void XtrackBar_Scroll(object sender, EventArgs e)
-        {
-            firstVizualization2D.sliceToAxes(dicomReader, XtrackBar.Value, "X");
-        }
-
-        private void YtrackBar1_Scroll(object sender, EventArgs e)
-        {
-            secondVizualization2D.sliceToAxes(dicomReader, YtrackBar1.Value, "Y");
-        }
-
-        private void ZtrackBar2_Scroll(object sender, EventArgs e)
-        {
-            thirdVizualization2D.sliceToAxes(this.dicomReader, ZtrackBar2.Value, "Z");
         }
 
         private void chart1_MouseMove(object sender, MouseEventArgs e)
@@ -261,6 +240,48 @@ namespace DicomLoadTest
             ClipingToolboxButton.Text = _clipingModule.ShowToolbox()
                                        ? ButtonText.HideClipingToolbox
                                        : ButtonText.ShowClipingToolbox;
+        }
+
+        private void PlaneXButton_Click(object sender, EventArgs e)
+        {
+            if (PlaneXButton.Text.Equals("Show PlaneX"))
+            {
+                this.vizualization3D.ShowPlaneX();
+                PlaneXButton.Text = "Hide PlaneX";
+            }
+            else
+            {
+                this.vizualization3D.HidePlaneX();
+                PlaneXButton.Text = "Show PlaneX";
+            }
+        }
+
+        private void PlaneYButton_Click(object sender, EventArgs e)
+        {
+            if (PlaneYButton.Text.Equals("Show PlaneY"))
+            {
+                this.vizualization3D.ShowPlaneY();
+                PlaneYButton.Text = "Hide PlaneY";
+            }
+            else
+            {
+                this.vizualization3D.HidePlaneY();
+                PlaneYButton.Text = "Show PlaneY";
+            }
+        }
+
+        private void PlaneZButton_Click(object sender, EventArgs e)
+        {
+            if (PlaneZButton.Text.Equals("Show PlaneZ"))
+            {
+                this.vizualization3D.ShowPlaneZ();
+                PlaneZButton.Text = "Hide PlaneX";
+            }
+            else
+            {
+                this.vizualization3D.HidePlaneZ();
+                PlaneZButton.Text = "Show PlaneZ";
+            }
         }
 
     }
