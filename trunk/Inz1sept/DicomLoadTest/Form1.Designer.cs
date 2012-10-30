@@ -1,4 +1,5 @@
 using System.Drawing;
+
 namespace DicomLoadTest
 {
     partial class Form1
@@ -41,6 +42,7 @@ namespace DicomLoadTest
             this.PlaneZButton = new System.Windows.Forms.Button();
             this.PlaneYButton = new System.Windows.Forms.Button();
             this.PlaneXButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.ClipingToolboxButton = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.comboBoxSeries = new System.Windows.Forms.ComboBox();
@@ -119,6 +121,7 @@ namespace DicomLoadTest
             this.panel1.Controls.Add(this.PlaneZButton);
             this.panel1.Controls.Add(this.PlaneYButton);
             this.panel1.Controls.Add(this.PlaneXButton);
+            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.ClipingToolboxButton);
             this.panel1.Controls.Add(this.chart1);
             this.panel1.Controls.Add(this.comboBoxSeries);
@@ -165,6 +168,16 @@ namespace DicomLoadTest
             this.PlaneXButton.Text = "Show PlaneX";
             this.PlaneXButton.UseVisualStyleBackColor = true;
             this.PlaneXButton.Click += new System.EventHandler(this.PlaneXButton_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 584);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 60;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // ClipingToolboxButton
             // 
@@ -314,6 +327,7 @@ namespace DicomLoadTest
         private System.Windows.Forms.Button PlaneZButton;
         private System.Windows.Forms.Button PlaneYButton;
         private System.Windows.Forms.Button PlaneXButton;
+        private System.Windows.Forms.Button button1;
     }
 }
 

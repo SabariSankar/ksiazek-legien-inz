@@ -11,8 +11,8 @@ namespace DicomLoadTest
     /// </summary>
     public class Visualization2D
     {
-        private RenderWindowControl window;
-        private vtkImageViewer2 viewer;
+        private RenderWindowControl _window;
+        private vtkImageViewer2 _viewer;
         private vtkImagePlaneWidget planeWidget;
 
         private float windowWidth = 100;
@@ -20,12 +20,12 @@ namespace DicomLoadTest
 
         public void PlaneMoved(vtkImagePlaneWidget plane)
         {
-            viewer.SetInput(plane.GetResliceOutput());
-            viewer.SetColorWindow(this.windowWidth);
-            viewer.SetColorLevel(this.windowLevel);
-            viewer.Render();
-            window.Update();
-            window.RenderWindow.Render();
+            _viewer.SetInput(plane.GetResliceOutput());
+            _viewer.SetColorWindow(this.windowWidth);
+            _viewer.SetColorLevel(this.windowLevel);
+            _viewer.Render();
+            _window.Update();
+            _window.RenderWindow.Render();
         }
 
 
@@ -37,6 +37,7 @@ namespace DicomLoadTest
         /// <param name="axis">Name of axis to set cut orientation (X,Y,Z). </param>
         public void sliceToAxes(vtkDICOMImageReader dicomReader, float slicePosition, string axis)
         {
+            
             planeWidget = vtkImagePlaneWidget.New();
             planeWidget.SetInput(dicomReader.GetOutput());
             switch (axis)
@@ -53,15 +54,16 @@ namespace DicomLoadTest
                 default:
                     throw new FormatException("Invalid axis");
             }
-            planeWidget.SetSliceIndex((int) slicePosition);
+            planeWidget.SetSliceIndex((int)slicePosition);
             planeWidget.SetWindowLevel(this.windowWidth, this.windowLevel, 1);
-            viewer.SetInput(planeWidget.GetResliceOutput());
-            viewer.SetColorWindow(planeWidget.GetWindow());
-            viewer.SetColorLevel(planeWidget.GetLevel());
-            viewer.Render();
+            _viewer.SetInput(planeWidget.GetResliceOutput());
+            _viewer.SetColorWindow(planeWidget.GetWindow());
+            _viewer.SetColorLevel(planeWidget.GetLevel());
+            
+            _viewer.Render();
 
-            window.Update();
-            window.RenderWindow.Render();
+            _window.Update();
+            _window.RenderWindow.Render();
         }
 
 
@@ -71,15 +73,15 @@ namespace DicomLoadTest
         /// <param name="window">Orginal window component. </param>
         public Visualization2D(RenderWindowControl window)
         {
-            this.window = window;
+            _window = window;
 
             vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
             vtkRenderWindowInteractor renderWindowInteractor = window.RenderWindow.GetInteractor();
-
-            viewer = vtkImageViewer2.New();
-            viewer.OffScreenRenderingOn();
-            viewer.SetupInteractor(renderWindowInteractor);
-            viewer.SetRenderer(renderer);
+         
+            _viewer = vtkImageViewer2.New();
+            _viewer.OffScreenRenderingOn();
+            _viewer.SetupInteractor(renderWindowInteractor);
+            _viewer.SetRenderer(renderer);
         }
 
         /// <summary>
@@ -104,9 +106,9 @@ namespace DicomLoadTest
         /// </summary>
         public bool Dispose()
         {
-            if(window != null) window.Dispose();
-            if(viewer != null) viewer.Dispose();
-            if(planeWidget != null) planeWidget.Dispose();
+            if (_window != null) _window.Dispose();
+            if (_viewer != null) _viewer.Dispose();
+            if (planeWidget != null) planeWidget.Dispose();
             return true;
         }
     }
