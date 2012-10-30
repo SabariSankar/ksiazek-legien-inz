@@ -119,6 +119,17 @@
     <Content Include="presety\Abd_shaded_A.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="presety\Abd_shaded_B.xml" />
+    <Content Include="presety\Carotid_sha_A.xml" />
+    <Content Include="presety\Carotid_Stent_A.xml" />
+    <Content Include="presety\Colonography.xml" />
+    <Content Include="presety\CT_Angio_Routine.xml" />
+    <Content Include="presety\CT_Angio_Shaded.xml" />
+    <Content Include="presety\CT_Carotis_Coloured_Green.xml" />
+    <Content Include="presety\CT_Coronary_Std_01.xml" />
+    <Content Include="presety\CT_Kidney.xml" />
+    <Content Include="presety\CT_Thin_Slice_VRT_Abd_03.xml" />
+    <Content Include="presety\Extremities.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
