@@ -74,30 +74,32 @@ namespace DicomLoadTest
 
             this.PresetInfo = this.PresetReader.ReadXMLFile(presetName);
             chart1.Series["OpacityFunction"].Points.Clear();
+            chart1.Series["OpacityFunctionSpline"].Points.Clear();
             foreach (var pair in this.PresetInfo.Series[0].OpacityFunction)
             {
                 spwf.AddPoint(pair.Key, pair.Value);
                 chart1.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
+                chart1.Series["OpacityFunctionSpline"].Points.AddXY(pair.Key, pair.Value);
             }
 
-            float lastOpacity = -100;
+            //float lastOpacity = -100;
             foreach (var pair in this.PresetInfo.Series[0].ColorFuction)
             {
                 ctf.AddRGBSegment(pair.Key, pair.Value[0].R, pair.Value[0].G, pair.Value[0].B,
                     pair.Key, pair.Value[1].R, pair.Value[1].G, pair.Value[1].B);
                 Color colorLeft = Color.FromArgb((int)pair.Value[0].R, (int)pair.Value[0].G, (int)pair.Value[0].B);
-                Color colorRight= Color.FromArgb((int)pair.Value[1].R, (int)pair.Value[1].G, (int)pair.Value[1].B);
+                Color colorRight = Color.FromArgb((int)pair.Value[1].R, (int)pair.Value[1].G, (int)pair.Value[1].B);
 
-                Series series = new Series();
-                series.ChartType = SeriesChartType.Line;
-                series.BorderColor = colorLeft;
-                series.Points.AddXY(lastOpacity, 0.2);
-                series.BorderWidth = 10;
-                series.BorderDashStyle = ChartDashStyle.Solid;
-                series.Points.AddXY(pair.Key, 0.2);
-                lastOpacity = pair.Key;
-                chart1.Series.Add(series);
-               
+                //Series series = new Series();
+                //series.ChartType = SeriesChartType.Line;
+                //series.BorderColor = colorLeft;
+                //series.Points.AddXY(lastOpacity, 0.2);
+                //series.BorderWidth = 10;
+                //series.BorderDashStyle = ChartDashStyle.Solid;
+                //series.Points.AddXY(pair.Key, 0.2);
+                //lastOpacity = pair.Key;
+                //chart1.Series.Add(series);
+
             }
 
             vol.GetProperty().SetColor(ctf);
@@ -108,11 +110,13 @@ namespace DicomLoadTest
         {
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
             chart1.Series["OpacityFunction"].Points.Clear();
-            
+            chart1.Series["OpacityFunctionSpline"].Points.Clear();
+
             foreach (var pair in this.PresetInfo.Series[numberOfSerie].OpacityFunction)
             {
                 spwf.AddPoint(pair.Key, pair.Value);
                 chart1.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
+                chart1.Series["OpacityFunctionSpline"].Points.AddXY(pair.Key, pair.Value);
             }
             vol.GetProperty().SetScalarOpacity(spwf);
 
@@ -120,6 +124,24 @@ namespace DicomLoadTest
             window.Update();
             window.RenderWindow.Render();
         }
+
+        public void ChangeSerie(List<DataPoint> splinePoints)
+        {
+            vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
+            chart1.Series["OpacityFunctionSpline"].Points.Clear();
+
+            foreach (DataPoint point in splinePoints)
+            {
+                spwf.AddPoint(point.XValue, point.YValues[0]);
+                chart1.Series["OpacityFunctionSpline"].Points.AddXY(point.XValue, point.YValues[0]);
+            }
+            vol.GetProperty().SetScalarOpacity(spwf);
+
+            window.Validate();
+            window.Update();
+            window.RenderWindow.Render();
+        }
+
 
         private void SetOpacityFunction()
         {
