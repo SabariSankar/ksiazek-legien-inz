@@ -40,7 +40,7 @@ namespace MainWindow
         /// <summary>
         /// Update the 2D visualization when the plane moved.
         /// </summary>
-        /// <param name="plane">Plane which changed the coordinates.</param>
+        /// <param name="plane">PlaneWidget which changed the coordinates.</param>
         public void PlaneMoved(vtkImagePlaneWidget plane)
         {
             _viewer.SetInput(plane.GetResliceOutput());

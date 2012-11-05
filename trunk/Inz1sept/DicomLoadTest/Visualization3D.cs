@@ -20,9 +20,9 @@ namespace MainWindow
         /// </summary>
         private readonly vtkRenderWindowInteractor _renderWindowInteractor;
 
-        public vtkImagePlaneWidget PlaneWidgetX { get; set; }
-        public vtkImagePlaneWidget PlaneWidgetY { get; set; }
-        public vtkImagePlaneWidget PlaneWidgetZ { get; set; }
+        public PlaneWidget PlaneWidgetX { get; set; }
+        public PlaneWidget PlaneWidgetY { get; set; }
+        public PlaneWidget PlaneWidgetZ { get; set; }
 
         public vtkVolumeMapper Mapper { get; private set; }
         private readonly vtkVolume _volume;
@@ -39,15 +39,47 @@ namespace MainWindow
 
 
         /// <summary>
-        /// Set up the new plane.
+        /// Set up the new PlaneWidget.
         /// </summary>
-        /// <param name="plane">Plane to set up.</param>
-        private void SetupPlane(vtkImagePlaneWidget plane)
+        /// <param name="planeWidget">Plane to set up.</param>
+        private void SetupPlane(PlaneWidget planeWidget)
         {
-            plane.DisplayTextOn();
-            plane.SetInput(_dicomLoader.GetOutput());
-            plane.SetSliceIndex(250);
-            plane.SetInteractor(_renderWindowInteractor);
+            planeWidget.DisplayTextOff();
+            planeWidget.SetInput(_dicomLoader.GetOutput());
+            planeWidget.SetPlaneOrientationToXAxes();
+            planeWidget.SetSliceIndex(250);
+            planeWidget.SetInteractor(_renderWindowInteractor);
+            planeWidget.SetLeftButtonAction(0);
+            planeWidget.SetRightButtonAction(0);
+            planeWidget.SetMarginSizeX(0);
+            planeWidget.SetMarginSizeY(0);
+
+            planeWidget.GetMarginProperty().SetColor(1, 0, 0);
+            planeWidget.GetSelectedPlaneProperty().SetOpacity(0);
+            planeWidget.GetCursorProperty().SetOpacity(0);
+            planeWidget.GetPlaneProperty().SetOpacity(0);
+
+            vtkColorTransferFunction colors = vtkColorTransferFunction.New();
+            
+            if (planeWidget.Axis == Axis.X)
+            {
+                planeWidget.SetPlaneOrientationToXAxes();
+                colors.AddRGBPoint(0, 1, 0, 0);         //red
+            }
+            else if (planeWidget.Axis == Axis.Y)
+            {
+                planeWidget.SetPlaneOrientationToYAxes();
+                colors.AddRGBPoint(0, 0, 1, 0);
+            }
+            else if (planeWidget.Axis == Axis.Z)
+            {
+                planeWidget.SetPlaneOrientationToZAxes();
+                colors.AddRGBPoint(0, 0, 0, 1);
+            }
+            colors.SetAlpha(0.4);
+            colors.SetColorSpaceToRGB();
+            colors.Build();
+            planeWidget.GetColorMap().SetLookupTable(colors);
    
         }
 
@@ -79,19 +111,12 @@ namespace MainWindow
             _renderWindowInteractor.SetInteractorStyle(style);
 
             //Create and setup planes
-            PlaneWidgetX = vtkImagePlaneWidget.New();
+            PlaneWidgetX = new PlaneWidget(Axis.X);
             SetupPlane(PlaneWidgetX);
-            PlaneWidgetX.SetPlaneOrientationToXAxes();
-
-
-            PlaneWidgetY = vtkImagePlaneWidget.New();
+            PlaneWidgetY = new PlaneWidget(Axis.Y);
             SetupPlane(PlaneWidgetY);
-            PlaneWidgetY.SetPlaneOrientationToYAxes();
-
-            
-            PlaneWidgetZ = vtkImagePlaneWidget.New();
+            PlaneWidgetZ = new PlaneWidget(Axis.Z);
             SetupPlane(PlaneWidgetZ);
-            PlaneWidgetZ.SetPlaneOrientationToZAxes();
 
             // Render
             window.RenderWindow.Render();
@@ -264,5 +289,16 @@ namespace MainWindow
 
      
    
+    }
+
+
+    public class PlaneWidget : vtkImagePlaneWidget
+    {
+        public Axis Axis { get; set; }
+
+        public PlaneWidget(Axis axis)
+        {
+            Axis = axis;
+        }
     }
 }
