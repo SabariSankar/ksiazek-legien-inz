@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Drawing;
 
 namespace XMLReaderTest
@@ -20,7 +18,7 @@ namespace XMLReaderTest
         /// </summary>
         public PresetInformation()
         {
-            this.Series = new List<ElementOfSeries>();
+            Series = new List<ElementOfSeries>();
         }
 
         /// <summary>
@@ -30,7 +28,7 @@ namespace XMLReaderTest
         /// <param name="colorFunction">Color function - holds intensity and it correspond color in format { value of hu, color }</param>
         public void AddSerie(Dictionary<float, float> opacityFunction, Dictionary<float, Color[]> colorFunction)
         {
-            this.Series.Add( new ElementOfSeries(opacityFunction, colorFunction));
+            Series.Add( new ElementOfSeries(opacityFunction, colorFunction));
         }
     }
 }
