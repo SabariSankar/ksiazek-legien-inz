@@ -21,7 +21,7 @@ namespace MainWindow
         private readonly String _directoryPath = @"D:\Downloads\PANORAMIX";
         private const String PresetDir = @"..\..\presety";
 
-        private DataPoint _selectedDataPoint = null;
+        private DataPoint _selectedDataPoint;
 
         event EventHandler<ClipingEventArgs> clipingOperation;
         private ClipingModule _clipingModule;
@@ -79,14 +79,14 @@ namespace MainWindow
             int numberOfSeries = _vizualization3D.PresetInfo.Series.Count;
             for (int i = 0; i < numberOfSeries; i++)
             {
-                comboBoxSeries.Items.Add(i.ToString());
+                comboBoxSeries.Items.Add(i.ToString(CultureInfo.InvariantCulture));
             }
             comboBoxSeries.SelectedIndex = 0;
 
             //moving planes
-            _vizualization3D.PlaneWidgetX.InteractionEvt += new vtkObject.vtkObjectEventHandler(PlaneXMoved);
-            _vizualization3D.PlaneWidgetY.InteractionEvt += new vtkObject.vtkObjectEventHandler(PlaneYMoved);
-            _vizualization3D.PlaneWidgetZ.InteractionEvt += new vtkObject.vtkObjectEventHandler(PlaneZMoved);
+            _vizualization3D.PlaneWidgetX.InteractionEvt += PlaneXMoved;
+            _vizualization3D.PlaneWidgetY.InteractionEvt += PlaneYMoved;
+            _vizualization3D.PlaneWidgetZ.InteractionEvt += PlaneZMoved;
 
             //TODO: troche s³abe miejsce
             clipingOperation += _vizualization3D.PlaneOperation;
@@ -101,9 +101,9 @@ namespace MainWindow
 
         private void update2DVisualization(float windowLevel, float windowWidth)
         {
-            this._firstVizualization2D.Update2DVisualization(windowLevel, windowWidth);
-            this._secondVizualization2D.Update2DVisualization(windowLevel, windowWidth);
-            this._thirdVizualization2D.Update2DVisualization(windowLevel, windowWidth);
+            _firstVizualization2D.Update2DVisualization(windowLevel, windowWidth);
+            _secondVizualization2D.Update2DVisualization(windowLevel, windowWidth);
+            _thirdVizualization2D.Update2DVisualization(windowLevel, windowWidth);
         }
 
         //suwak obsluguje szerokosc ------------------------------------------------------------
@@ -111,8 +111,8 @@ namespace MainWindow
         {
             float windowLevel = float.Parse(trackBarLevel.Value.ToString(CultureInfo.InvariantCulture));
             float windowWidth = float.Parse(trackBarWidth.Value.ToString(CultureInfo.InvariantCulture));
-            this.update2DVisualization(windowLevel, windowWidth);
-            this.textBoxWidth.Text = trackBarWidth.Value.ToString(CultureInfo.InvariantCulture);
+            update2DVisualization(windowLevel, windowWidth);
+            textBoxWidth.Text = trackBarWidth.Value.ToString(CultureInfo.InvariantCulture);
 
         }
 
@@ -121,8 +121,8 @@ namespace MainWindow
         {
             float windowLevel = float.Parse(trackBarLevel.Value.ToString(CultureInfo.InvariantCulture));
             float windowWidth = float.Parse(trackBarWidth.Value.ToString(CultureInfo.InvariantCulture));
-            this.update2DVisualization(windowLevel, windowWidth);
-            this.textBoxLevel1.Text = trackBarLevel.Value.ToString();
+            update2DVisualization(windowLevel, windowWidth);
+            textBoxLevel1.Text = trackBarLevel.Value.ToString();
         }
 
 
@@ -152,13 +152,13 @@ namespace MainWindow
         private void textBoxWidth_TextChanged(object sender, EventArgs e)
         {
             int x = int.Parse(textBoxWidth.Text);
-            this.trackBarWidth.Value = x;
+            trackBarWidth.Value = x;
         }
 
         private void textBoxLevel_TextChanged(object sender, EventArgs e)
         {
             int x = int.Parse(textBoxLevel1.Text);
-            this.trackBarLevel.Value = x;
+            trackBarLevel.Value = x;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -171,7 +171,7 @@ namespace MainWindow
                 comboBoxSeries.Items.Add(i.ToString(CultureInfo.InvariantCulture));
             }
             comboBoxSeries.SelectedIndex = 0;
-            this._vizualization3D.Update3DVisualization();
+            _vizualization3D.Update3DVisualization();
 
         }
 
@@ -255,12 +255,12 @@ namespace MainWindow
         {
             if (PlaneXButton.Text.Equals(ButtonText.ShowPlaneX))
             {
-                this._vizualization3D.PlaneWidgetX.On();
+                _vizualization3D.PlaneWidgetX.On();
                 PlaneXButton.Text = ButtonText.HidePlaneX;
             }
             else
             {
-                this._vizualization3D.PlaneWidgetX.Off();
+                _vizualization3D.PlaneWidgetX.Off();
                 PlaneXButton.Text = ButtonText.ShowPlaneX;
             }
         }
@@ -269,12 +269,12 @@ namespace MainWindow
         {
             if (PlaneYButton.Text.Equals(ButtonText.ShowPlaneY))
             {
-                this._vizualization3D.PlaneWidgetY.On();
+                _vizualization3D.PlaneWidgetY.On();
                 PlaneYButton.Text = ButtonText.HidePlaneY;
             }
             else
             {
-                this._vizualization3D.PlaneWidgetY.Off();
+                _vizualization3D.PlaneWidgetY.Off();
                 PlaneYButton.Text = ButtonText.ShowPlaneY;
             }
         }
@@ -283,12 +283,12 @@ namespace MainWindow
         {
             if (PlaneZButton.Text.Equals(ButtonText.ShowPlaneZ))
             {
-                this._vizualization3D.PlaneWidgetZ.On();
+                _vizualization3D.PlaneWidgetZ.On();
                 PlaneZButton.Text = ButtonText.HidePlaneZ;
             }
             else
             {
-                this._vizualization3D.PlaneWidgetZ.Off();
+                _vizualization3D.PlaneWidgetZ.Off();
                 PlaneZButton.Text = ButtonText.ShowPlaneZ;
             }
         }
@@ -296,8 +296,7 @@ namespace MainWindow
         private void button1_Click(object sender, EventArgs e)
         {
             //var bmp = firstVizualization2D.GetImage();
-            var form = new Form2(_dicomLoader);
-            form.Visible = true;
+            var form = new Form2(_dicomLoader) {Visible = true};
         }
     }
 }
