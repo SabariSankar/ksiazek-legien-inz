@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
@@ -216,7 +217,7 @@ namespace MainWindow
                 List<DataPoint> splinePoints = chart1.Series["OpacityFunctionSpline"].Points.ToList<DataPoint>();
                 splinePoints.Find(x => x.XValue == _selectedDataPoint.XValue).YValues[0] = _selectedDataPoint.YValues[0];
 
-                _vizualization3D.ChangeSerie(splinePoints);
+                _vizualization3D.ChangeSplineFunction(splinePoints);
                 _selectedDataPoint = null;
 
                 chart1.Invalidate();
@@ -227,15 +228,48 @@ namespace MainWindow
         {
             HitTestResult hitResult = chart1.HitTest(e.X, e.Y);
 
-            _selectedDataPoint = null;
-            if (hitResult.ChartElementType == ChartElementType.DataPoint)
+            if (e.Button == MouseButtons.Left)
             {
-                var selected = (DataPoint)hitResult.Object;
-                if (chart1.Series["OpacityFunction"].Points.Contains(selected))
+                _selectedDataPoint = null;
+                if (hitResult.ChartElementType == ChartElementType.DataPoint)
                 {
-                    _selectedDataPoint = selected;
+                    DataPoint selected = (DataPoint)hitResult.Object;
+                    if (chart1.Series["OpacityFunction"].Points.Contains(selected))
+                    {
+                        _selectedDataPoint = selected;
+                    }
+                }
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                if (hitResult.ChartElementType == ChartElementType.DataPoint)
+                {
+                    DataPoint selected = (DataPoint)hitResult.Object;
+                    if (chart1.Series["OpacityFunctionSpline"].Points.Contains(selected))
+                    {
+                        //var pos = chart1.PointToClient(new Point(e.X, e.Y));
+                        //--------
+                        chart1.ChartAreas["ChartArea1"].CursorX.SetCursorPixelPosition(new Point(e.X, e.Y), false);
+                        chart1.ChartAreas["ChartArea1"].CursorY.SetCursorPixelPosition(new Point(e.X, e.Y), false);
+
+                        double pX = chart1.ChartAreas["ChartArea1"].CursorX.Position; //X Axis Coordinate of your mouse cursor
+                        double pY = chart1.ChartAreas["ChartArea1"].CursorY.Position; //Y Axis Coordinate of your mouse cursor
+ 
+                        chart1.Series["OpacityFunction"].Points.AddXY(pX, pY);
+                        
+                        //------
+                        //chart1.Series["OpacityFunction"].Points.AddXY(selected.XValue, selected.YValues[0]);
+                        List<DataPoint> points = chart1.Series["OpacityFunction"].Points.ToList<DataPoint>();
+                        points.Sort(new Comparison<DataPoint>(Compare));
+                        _vizualization3D.ChangeSplineFunction(points);
+                    }
+                }
             }
         }
+
+        private int Compare(DataPoint point1, DataPoint point2)
+        {
+            return point1.XValue.CompareTo(point2.XValue);
         }
 
         private void ClipingToolboxButton_Click(object sender, EventArgs e)
