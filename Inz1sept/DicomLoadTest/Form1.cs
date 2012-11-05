@@ -44,7 +44,7 @@ namespace MainWindow
    
 
         //-------------------------------------------------------------------------
-        //callback function for moving plane
+        //callback function for moving PlaneWidget
         public void PlaneXMoved(vtkObject sender, vtkObjectEventArgs e)
         {
             _firstVizualization2D.PlaneMoved(vtkImagePlaneWidget.SafeDownCast(sender));
