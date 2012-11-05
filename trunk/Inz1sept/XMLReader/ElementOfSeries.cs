@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Drawing;
 
 namespace XMLReaderTest
@@ -26,8 +24,8 @@ namespace XMLReaderTest
         /// <param name="colorFuction"> Color function - holds intensity and it correspond color in format { value of hu, color }</param>
         public ElementOfSeries(Dictionary<float, float> opacityFunction, Dictionary<float, Color[]> colorFuction)
         {
-            this.OpacityFunction = opacityFunction;
-            this.ColorFuction = colorFuction;
+            OpacityFunction = opacityFunction;
+            ColorFuction = colorFuction;
         }
     }
 }
