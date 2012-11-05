@@ -119,7 +119,7 @@ namespace MainWindow
         //suwak obsluguje level ------------------------------------------------------------
         private void trackBarLevel_Scroll(object sender, EventArgs e)
         {
-            float windowLevel = float.Parse(trackBarLevel.Value.ToString());
+            float windowLevel = float.Parse(trackBarLevel.Value.ToString(CultureInfo.InvariantCulture));
             float windowWidth = float.Parse(trackBarWidth.Value.ToString(CultureInfo.InvariantCulture));
             this.update2DVisualization(windowLevel, windowWidth);
             this.textBoxLevel1.Text = trackBarLevel.Value.ToString();
@@ -153,18 +153,12 @@ namespace MainWindow
         {
             int x = int.Parse(textBoxWidth.Text);
             this.trackBarWidth.Value = x;
-            float windowWidth = float.Parse(textBoxWidth.Text);
-            float windowLevel = float.Parse(textBoxLevel1.Text);
-            this.update3DVisualization(windowLevel, windowWidth);
         }
 
         private void textBoxLevel_TextChanged(object sender, EventArgs e)
         {
             int x = int.Parse(textBoxLevel1.Text);
             this.trackBarLevel.Value = x;
-            float windowLevel = float.Parse(textBoxLevel1.Text);
-            float windowWidth = float.Parse(textBoxWidth.Text);
-            this.update3DVisualization(windowLevel, windowWidth);
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
