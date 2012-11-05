@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Kitware.VTK;
 
-namespace DicomLoadTest
+namespace MainWindow
 {
     public class ClipingModule
     {

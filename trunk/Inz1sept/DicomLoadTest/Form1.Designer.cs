@@ -1,6 +1,4 @@
-using System.Drawing;
-
-namespace DicomLoadTest
+namespace MainWindow
 {
     partial class Form1
     {

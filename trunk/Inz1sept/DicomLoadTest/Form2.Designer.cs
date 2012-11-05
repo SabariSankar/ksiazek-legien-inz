@@ -1,4 +1,4 @@
-﻿namespace DicomLoadTest
+﻿namespace MainWindow
 {
     partial class Form2
     {

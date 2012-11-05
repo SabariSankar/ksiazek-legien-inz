@@ -1,76 +1,63 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using XMLReaderTest;
-
 using Kitware.VTK;
 using System.IO;
 using System.Windows.Forms.DataVisualization.Charting;
 
-namespace DicomLoadTest
+namespace MainWindow
 {
     public partial class Form1 : Form
     {
-        Visualization3D vizualization3D;
-        Visualization2D firstVizualization2D;
-        Visualization2D secondVizualization2D;
-        Visualization2D thirdVizualization2D;
+        private Visualization3D _vizualization3D;
+        private Visualization2D _firstVizualization2D;
+        private Visualization2D _secondVizualization2D;
+        private Visualization2D _thirdVizualization2D;
 
 
-        private readonly vtkDICOMImageReader _dicomReader;
-        String directoryName = @"D:\Downloads\PANORAMIX";// @"C:\Users\Grzegorz\Downloads\Chest\JW\tmp";//@"D:\Downloads\PANORAMIX";
-        String presetDir = @"..\..\presety";
+        private readonly DicomLoader _dicomLoader;
+        private readonly String _directoryPath = @"D:\Downloads\PANORAMIX";
+        private const String PresetDir = @"..\..\presety";
 
-        float windowWidth = 100;
-        float windowLevel = 100;
-        private DataPoint selectedDataPoint = null;
+        private DataPoint _selectedDataPoint = null;
 
         event EventHandler<ClipingEventArgs> clipingOperation;
-
         private ClipingModule _clipingModule;
 
         public Form1()
         {
             InitializeComponent();
-
-            _dicomReader = vtkDICOMImageReader.New();
-            _dicomReader.SetDirectoryName(directoryName);
-            _dicomReader.Update();
-
+            _dicomLoader = new DicomLoader(_directoryPath);
         }
 
         public void DisposeAll(object sender, FormClosingEventArgs e)
         {
-            vizualization3D.Dispose();
-            firstVizualization2D.Dispose();
-            secondVizualization2D.Dispose();
-            thirdVizualization2D.Dispose();
+            _vizualization3D.Dispose();
+            _firstVizualization2D.Dispose();
+            _secondVizualization2D.Dispose();
+            _thirdVizualization2D.Dispose();
+            _dicomLoader.Dispose();
         }
 
-        public void sth()
-        {
-        }
+   
 
         //-------------------------------------------------------------------------
         //callback function for moving plane
-        public void planeXMoved(vtkObject sender, vtkObjectEventArgs e)
+        public void PlaneXMoved(vtkObject sender, vtkObjectEventArgs e)
         {
-            firstVizualization2D.PlaneMoved(vtkImagePlaneWidget.SafeDownCast(sender));
+            _firstVizualization2D.PlaneMoved(vtkImagePlaneWidget.SafeDownCast(sender));
         }
 
-        public void planeYMoved(vtkObject sender, vtkObjectEventArgs e)
+        public void PlaneYMoved(vtkObject sender, vtkObjectEventArgs e)
         {
-            secondVizualization2D.PlaneMoved(vtkImagePlaneWidget.SafeDownCast(sender));
+            _secondVizualization2D.PlaneMoved(vtkImagePlaneWidget.SafeDownCast(sender));
         }
 
-        public void planeZMoved(vtkObject sender, vtkObjectEventArgs e)
+        public void PlaneZMoved(vtkObject sender, vtkObjectEventArgs e)
         {
-            thirdVizualization2D.PlaneMoved(vtkImagePlaneWidget.SafeDownCast(sender));
+            _thirdVizualization2D.PlaneMoved(vtkImagePlaneWidget.SafeDownCast(sender));
         }
 
 
@@ -78,18 +65,18 @@ namespace DicomLoadTest
         //wizualizacja 3d -----------------------------------------------------------------
         private void fourthWindow_Load(object sender, EventArgs e)
         {
-            vizualization3D = new Visualization3D(fourthWindow, _dicomReader, chart1);
-            string[] filePaths = Directory.GetFiles(presetDir, "*.xml");
+            _vizualization3D = new Visualization3D(fourthWindow, _dicomLoader, chart1);
+            string[] filePaths = Directory.GetFiles(PresetDir, "*.xml");
 
             foreach (string dir in filePaths)
             {
                 comboBox1.Items.Add(new FileInfo(dir).Name);
             }
             comboBox1.SelectedIndex = 0;
-            vizualization3D.ChangeColorAndOpacityFunction(String.IsNullOrEmpty(comboBox1.SelectedText) ? comboBox1.Text : comboBox1.SelectedText);
+            _vizualization3D.ChangeColorAndOpacityFunction(String.IsNullOrEmpty(comboBox1.SelectedText) ? comboBox1.Text : comboBox1.SelectedText);
 
             comboBoxSeries.Items.Clear();
-            int numberOfSeries = vizualization3D.PresetInfo.Series.Count;
+            int numberOfSeries = _vizualization3D.PresetInfo.Series.Count;
             for (int i = 0; i < numberOfSeries; i++)
             {
                 comboBoxSeries.Items.Add(i.ToString());
@@ -97,43 +84,44 @@ namespace DicomLoadTest
             comboBoxSeries.SelectedIndex = 0;
 
             //moving planes
-            vizualization3D.PlaneWidgetX.InteractionEvt += new vtkObject.vtkObjectEventHandler(planeXMoved);
-            vizualization3D.PlaneWidgetY.InteractionEvt += new vtkObject.vtkObjectEventHandler(planeYMoved);
-            vizualization3D.PlaneWidgetZ.InteractionEvt += new vtkObject.vtkObjectEventHandler(planeZMoved);
+            _vizualization3D.PlaneWidgetX.InteractionEvt += new vtkObject.vtkObjectEventHandler(PlaneXMoved);
+            _vizualization3D.PlaneWidgetY.InteractionEvt += new vtkObject.vtkObjectEventHandler(PlaneYMoved);
+            _vizualization3D.PlaneWidgetZ.InteractionEvt += new vtkObject.vtkObjectEventHandler(PlaneZMoved);
 
             //TODO: troche s³abe miejsce
-            clipingOperation += vizualization3D.PlaneOperation;
+            clipingOperation += _vizualization3D.PlaneOperation;
         }
 
         //updatatuje okno wziualizacji 3d
-        private void update3DVisualization()
+        private void update3DVisualization(float windowLevel, float windowWidth)
         {
-            vizualization3D.Update3DVisualization(this.windowLevel, this.windowWidth);
+            _vizualization3D.Update3DVisualization(windowLevel, windowWidth);
         }
 
 
-        private void update2DVisualization()
+        private void update2DVisualization(float windowLevel, float windowWidth)
         {
-            this.firstVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
-            this.secondVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
-            this.thirdVizualization2D.update2DVisualization(this.windowLevel, this.windowWidth);
+            this._firstVizualization2D.Update2DVisualization(windowLevel, windowWidth);
+            this._secondVizualization2D.Update2DVisualization(windowLevel, windowWidth);
+            this._thirdVizualization2D.Update2DVisualization(windowLevel, windowWidth);
         }
 
         //suwak obsluguje szerokosc ------------------------------------------------------------
         private void trackBarWidth_Scroll(object sender, EventArgs e)
         {
-
-            this.windowWidth = float.Parse(trackBarWidth.Value.ToString());
-            this.update2DVisualization();
-            this.textBoxWidth.Text = trackBarWidth.Value.ToString();
+            float windowLevel = float.Parse(trackBarLevel.Value.ToString(CultureInfo.InvariantCulture));
+            float windowWidth = float.Parse(trackBarWidth.Value.ToString(CultureInfo.InvariantCulture));
+            this.update2DVisualization(windowLevel, windowWidth);
+            this.textBoxWidth.Text = trackBarWidth.Value.ToString(CultureInfo.InvariantCulture);
 
         }
 
         //suwak obsluguje level ------------------------------------------------------------
         private void trackBarLevel_Scroll(object sender, EventArgs e)
         {
-            this.windowLevel = float.Parse(trackBarLevel.Value.ToString());
-            this.update2DVisualization();
+            float windowLevel = float.Parse(trackBarLevel.Value.ToString());
+            float windowWidth = float.Parse(trackBarWidth.Value.ToString(CultureInfo.InvariantCulture));
+            this.update2DVisualization(windowLevel, windowWidth);
             this.textBoxLevel1.Text = trackBarLevel.Value.ToString();
         }
 
@@ -141,22 +129,22 @@ namespace DicomLoadTest
         //wizualizaja 2d
         private void firstWindow_Load(object sender, EventArgs e)
         {
-            firstVizualization2D = new Visualization2D(firstWindow);
-            firstVizualization2D.sliceToAxes(_dicomReader, 300, "X");
+            _firstVizualization2D = new Visualization2D(firstWindow);
+            _firstVizualization2D.SliceToAxes(_dicomLoader, 300, Axis.X);
         }
 
 
         private void secondWindow_Load(object sender, EventArgs e)
         {
-            secondVizualization2D = new Visualization2D(secondWindow);
-            secondVizualization2D.sliceToAxes(_dicomReader, 100, "Y");
+            _secondVizualization2D = new Visualization2D(secondWindow);
+            _secondVizualization2D.SliceToAxes(_dicomLoader, 100, Axis.Y);
         }
 
 
         private void thirdWindow_Load(object sender, EventArgs e)
         {
-            thirdVizualization2D = new Visualization2D(thirdWindow);
-            thirdVizualization2D.sliceToAxes(_dicomReader, 100, "Z");
+            _thirdVizualization2D = new Visualization2D(thirdWindow);
+            _thirdVizualization2D.SliceToAxes(_dicomLoader, 100, Axis.Z);
         }
 
 
@@ -165,43 +153,43 @@ namespace DicomLoadTest
         {
             int x = int.Parse(textBoxWidth.Text);
             this.trackBarWidth.Value = x;
-            this.windowWidth = float.Parse(textBoxWidth.Text);
-
-            this.update3DVisualization();
+            float windowWidth = float.Parse(textBoxWidth.Text);
+            float windowLevel = float.Parse(textBoxLevel1.Text);
+            this.update3DVisualization(windowLevel, windowWidth);
         }
 
         private void textBoxLevel_TextChanged(object sender, EventArgs e)
         {
             int x = int.Parse(textBoxLevel1.Text);
             this.trackBarLevel.Value = x;
-            this.windowLevel = float.Parse(textBoxLevel1.Text);
-
-            this.update3DVisualization();
+            float windowLevel = float.Parse(textBoxLevel1.Text);
+            float windowWidth = float.Parse(textBoxWidth.Text);
+            this.update3DVisualization(windowLevel, windowWidth);
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            vizualization3D.ChangeColorAndOpacityFunction(String.IsNullOrEmpty(comboBox1.SelectedText) ? comboBox1.Text : comboBox1.SelectedText);
+            _vizualization3D.ChangeColorAndOpacityFunction(String.IsNullOrEmpty(comboBox1.SelectedText) ? comboBox1.Text : comboBox1.SelectedText);
             comboBoxSeries.Items.Clear();
-            int numberOfSeries = vizualization3D.PresetInfo.Series.Count;
-            for (int i = 0; i < numberOfSeries; i++)
+            int numberOfSeries = _vizualization3D.PresetInfo.Series.Count;
+            for (var i = 0; i < numberOfSeries; i++)
             {
-                comboBoxSeries.Items.Add(i.ToString());
+                comboBoxSeries.Items.Add(i.ToString(CultureInfo.InvariantCulture));
             }
             comboBoxSeries.SelectedIndex = 0;
-            this.update3DVisualization();
+            this._vizualization3D.Update3DVisualization();
 
         }
 
 
         private void comboBoxSeries_SelectedIndexChanged(object sender, EventArgs e)
         {
-            vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
+            _vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
         }
 
         private void chart1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (selectedDataPoint != null)
+            if (_selectedDataPoint != null)
             {
                 // Mouse coordinates should not be outside of the chart 
                 int coordinate = e.Y;
@@ -216,28 +204,26 @@ namespace DicomLoadTest
                 yValue = Math.Max(yValue, chart1.ChartAreas["ChartArea1"].AxisY.Minimum);
 
                 // Update selected point Y value
-                selectedDataPoint.YValues[0] = yValue;
+                _selectedDataPoint.YValues[0] = yValue;
 
                 chart1.Invalidate();
                 chart1.Update();
             }
             else
             {
-
                 chart1.Cursor = Cursors.Hand;
-
             }
         }
 
         private void chart1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (selectedDataPoint != null)
+            if (_selectedDataPoint != null)
             {
                 List<DataPoint> splinePoints = chart1.Series["OpacityFunctionSpline"].Points.ToList<DataPoint>();
-                splinePoints.Find(x => x.XValue == selectedDataPoint.XValue).YValues[0] = selectedDataPoint.YValues[0];
+                splinePoints.Find(x => x.XValue == _selectedDataPoint.XValue).YValues[0] = _selectedDataPoint.YValues[0];
 
-                vizualization3D.ChangeSerie(splinePoints);
-                selectedDataPoint = null;
+                _vizualization3D.ChangeSerie(splinePoints);
+                _selectedDataPoint = null;
 
                 chart1.Invalidate();
             }
@@ -247,14 +233,13 @@ namespace DicomLoadTest
         {
             HitTestResult hitResult = chart1.HitTest(e.X, e.Y);
 
-            selectedDataPoint = null;
+            _selectedDataPoint = null;
             if (hitResult.ChartElementType == ChartElementType.DataPoint)
             {
-                DataPoint selected = (DataPoint)hitResult.Object;
-                //if (chart1.Series["OpacityFunction"].Points.Any<DataPoint>(x => x.XValue >= selected.XValue - 2 && x.XValue <= selected.XValue + 2))
+                var selected = (DataPoint)hitResult.Object;
                 if (chart1.Series["OpacityFunction"].Points.Contains(selected))
                 {
-                    selectedDataPoint = selected;
+                    _selectedDataPoint = selected;
             }
         }
         }
@@ -263,7 +248,7 @@ namespace DicomLoadTest
         {
             if (_clipingModule == null)
             {
-                _clipingModule = new ClipingModule(vizualization3D);
+                _clipingModule = new ClipingModule(_vizualization3D);
             }
             ClipingToolboxButton.Text = _clipingModule.ShowToolbox()
                                        ? ButtonText.HideClipingToolbox
@@ -274,50 +259,50 @@ namespace DicomLoadTest
         //obs³uga pojawiania i znikania poszczególnych p³aszczyzn
         private void PlaneXButton_Click(object sender, EventArgs e)
         {
-            if (PlaneXButton.Text.Equals("Show PlaneX"))
+            if (PlaneXButton.Text.Equals(ButtonText.ShowPlaneX))
             {
-                this.vizualization3D.PlaneWidgetX.On();
-                PlaneXButton.Text = "Hide PlaneX";
+                this._vizualization3D.PlaneWidgetX.On();
+                PlaneXButton.Text = ButtonText.HidePlaneX;
             }
             else
             {
-                this.vizualization3D.PlaneWidgetX.Off();
-                PlaneXButton.Text = "Show PlaneX";
+                this._vizualization3D.PlaneWidgetX.Off();
+                PlaneXButton.Text = ButtonText.ShowPlaneX;
             }
         }
 
         private void PlaneYButton_Click(object sender, EventArgs e)
         {
-            if (PlaneYButton.Text.Equals("Show PlaneY"))
+            if (PlaneYButton.Text.Equals(ButtonText.ShowPlaneY))
             {
-                this.vizualization3D.PlaneWidgetY.On();
-                PlaneYButton.Text = "Hide PlaneY";
+                this._vizualization3D.PlaneWidgetY.On();
+                PlaneYButton.Text = ButtonText.HidePlaneY;
             }
             else
             {
-                this.vizualization3D.PlaneWidgetY.Off();
-                PlaneYButton.Text = "Show PlaneY";
+                this._vizualization3D.PlaneWidgetY.Off();
+                PlaneYButton.Text = ButtonText.ShowPlaneY;
             }
         }
 
         private void PlaneZButton_Click(object sender, EventArgs e)
         {
-            if (PlaneZButton.Text.Equals("Show PlaneZ"))
+            if (PlaneZButton.Text.Equals(ButtonText.ShowPlaneZ))
             {
-                this.vizualization3D.PlaneWidgetZ.On();
-                PlaneZButton.Text = "Hide PlaneZ";
+                this._vizualization3D.PlaneWidgetZ.On();
+                PlaneZButton.Text = ButtonText.HidePlaneZ;
             }
             else
             {
-                this.vizualization3D.PlaneWidgetZ.Off();
-                PlaneZButton.Text = "Show PlaneZ";
+                this._vizualization3D.PlaneWidgetZ.Off();
+                PlaneZButton.Text = ButtonText.ShowPlaneZ;
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             //var bmp = firstVizualization2D.GetImage();
-            var form = new Form2(_dicomReader);
+            var form = new Form2(_dicomLoader);
             form.Visible = true;
         }
     }

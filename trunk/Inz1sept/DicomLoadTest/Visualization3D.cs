@@ -1,103 +1,89 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Kitware.VTK;
 using XMLReaderTest;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Drawing;
 
-namespace DicomLoadTest
+namespace MainWindow
 {
     public class Visualization3D
     {
-        private readonly RenderWindowControl window;
-        private vtkRenderWindow renderWindow;
-        private vtkRenderWindowInteractor renderWindowInteractor;
+        private readonly RenderWindowControl _window;
+        private readonly vtkRenderWindowInteractor _renderWindowInteractor;
 
         public vtkImagePlaneWidget PlaneWidgetX { get; set; }
         public vtkImagePlaneWidget PlaneWidgetY { get; set; }
         public vtkImagePlaneWidget PlaneWidgetZ { get; set; }
 
-        private readonly vtkVolume vol;
-        private vtkDICOMImageReader dicomReader;
-        private Chart chart1;
+        public vtkVolumeMapper Mapper { get; private set; }
+        private readonly vtkVolume _volume;
+        private readonly DicomLoader _dicomLoader;
+        private readonly Chart _chart;
         public XMLPresetReader PresetReader { get; set; }
         public PresetInformation PresetInfo { get; set; } 
 
-        private float windowWidth = 0;
-        private float windowLevel = 40;
+        private float _windowWidth = 0;
+        private float _windowLevel = 40;
 
-        public vtkVolumeMapper Mapper { get; private set; }
         private readonly ClipingModule _clipingModule;
+        public delegate void MyDlgt();
 
-        delegate void MyDlgt();
+
+        private void SetupPlane(vtkImagePlaneWidget plane)
+        {
+            plane.DisplayTextOn();
+            plane.SetInput(_dicomLoader.GetOutput());
+            plane.SetSliceIndex(250);
+            plane.SetInteractor(_renderWindowInteractor);
+   
+        }
 
         //wizualizacja 3d -----------------------------------------------------------------
-        public Visualization3D(RenderWindowControl window, vtkDICOMImageReader dicomReader, Chart chart1)
+        public Visualization3D(RenderWindowControl window, DicomLoader dicomLoader, Chart chart)
         {
-            this.chart1 = chart1;
-            this.window = window;
-            this.dicomReader = dicomReader;
+            this._chart = chart;
+            this._window = window;
+            this._dicomLoader = dicomLoader;
             this.PresetReader = new XMLPresetReader();
 
             // Create a mapper and actor
             Mapper = vtkSmartVolumeMapper.New();
-            Mapper.SetInputConnection(dicomReader.GetOutputPort());
-            vol = vtkVolume.New();
+            Mapper.SetInput(dicomLoader.GetOutput());
+            _volume = vtkVolume.New();
             this.SetOpacityFunction();
             this.SetGradientOpacity();
-            vol.SetMapper(Mapper);
-
-            // A renderer and render window
-            //vtkRenderer renderer = vtkRenderer.New();
-            //renderWindow = vtkRenderWindow.New();
-            //vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
+            _volume.SetMapper(Mapper);
 
             vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
-            renderer.AddVolume(vol);
+            renderer.AddVolume(_volume);
 
             // An interactor
-            renderWindowInteractor = vtkRenderWindowInteractor.New();
-            renderWindowInteractor.SetRenderWindow(window.RenderWindow);
+            _renderWindowInteractor = vtkRenderWindowInteractor.New();
+            _renderWindowInteractor.SetRenderWindow(window.RenderWindow);
 
+            //Camera style
             vtkInteractorStyleTrackballCamera style = vtkInteractorStyleTrackballCamera.New();
-            renderWindowInteractor.SetInteractorStyle(style);
+            _renderWindowInteractor.SetInteractorStyle(style);
 
-            vtkCellPicker picker = vtkCellPicker.New();
-            picker.SetTolerance(0.005);
-
+            //Create and setup planes
             PlaneWidgetX = vtkImagePlaneWidget.New();
-            PlaneWidgetX.DisplayTextOn();
-            PlaneWidgetX.SetInput(dicomReader.GetOutput());
+            this.SetupPlane(PlaneWidgetX);
             PlaneWidgetX.SetPlaneOrientationToXAxes();
-            PlaneWidgetX.SetSliceIndex(250);
-            PlaneWidgetX.SetInteractor(renderWindowInteractor);
-   
 
 
             PlaneWidgetY = vtkImagePlaneWidget.New();
-            PlaneWidgetY.DisplayTextOn();
-            PlaneWidgetY.SetInput(dicomReader.GetOutput());
+            this.SetupPlane(PlaneWidgetY);
             PlaneWidgetY.SetPlaneOrientationToYAxes();
-            PlaneWidgetY.SetSliceIndex(100);
-            PlaneWidgetY.SetInteractor(renderWindowInteractor);
 
-
+            
             PlaneWidgetZ = vtkImagePlaneWidget.New();
-            PlaneWidgetZ.DisplayTextOn();
-            PlaneWidgetZ.SetInput(dicomReader.GetOutput());
+            this.SetupPlane(PlaneWidgetZ);
             PlaneWidgetZ.SetPlaneOrientationToZAxes();
-            PlaneWidgetZ.SetSliceIndex(250);
-            PlaneWidgetZ.SetInteractor(renderWindowInteractor);
 
             // Render
             window.RenderWindow.Render();
 
-            //renderWindowInteractor.Initialize();
-            //renderWindowInteractor.Start();
         }
 
         public void ChangeColorAndOpacityFunction(string presetName)
@@ -106,13 +92,14 @@ namespace DicomLoadTest
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
 
             this.PresetInfo = this.PresetReader.ReadXMLFile(presetName);
-            chart1.Series["OpacityFunction"].Points.Clear();
-            chart1.Series["OpacityFunctionSpline"].Points.Clear();
+            _chart.Series["OpacityFunction"].Points.Clear();
+            _chart.Series["OpacityFunctionSpline"].Points.Clear();
+
             foreach (var pair in this.PresetInfo.Series[0].OpacityFunction)
             {
                 spwf.AddPoint(pair.Key, pair.Value);
-                chart1.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
-                chart1.Series["OpacityFunctionSpline"].Points.AddXY(pair.Key, pair.Value);
+                _chart.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
+                _chart.Series["OpacityFunctionSpline"].Points.AddXY(pair.Key, pair.Value);
             }
 
             //float lastOpacity = -100;
@@ -122,57 +109,46 @@ namespace DicomLoadTest
                     pair.Key, pair.Value[1].R, pair.Value[1].G, pair.Value[1].B);
                 Color colorLeft = Color.FromArgb((int)pair.Value[0].R, (int)pair.Value[0].G, (int)pair.Value[0].B);
                 Color colorRight = Color.FromArgb((int)pair.Value[1].R, (int)pair.Value[1].G, (int)pair.Value[1].B);
-
-                //Series series = new Series();
-                //series.ChartType = SeriesChartType.Line;
-                //series.BorderColor = colorLeft;
-                //series.Points.AddXY(lastOpacity, 0.2);
-                //series.BorderWidth = 10;
-                //series.BorderDashStyle = ChartDashStyle.Solid;
-                //series.Points.AddXY(pair.Key, 0.2);
-                //lastOpacity = pair.Key;
-                //chart1.Series.Add(series);
-
             }
 
-            vol.GetProperty().SetColor(ctf);
-            vol.GetProperty().SetScalarOpacity(spwf);
+            _volume.GetProperty().SetColor(ctf);
+            _volume.GetProperty().SetScalarOpacity(spwf);
         }
 
         public void ChangeToSerie(int numberOfSerie)
         {
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
-            chart1.Series["OpacityFunction"].Points.Clear();
-            chart1.Series["OpacityFunctionSpline"].Points.Clear();
+            _chart.Series["OpacityFunction"].Points.Clear();
+            _chart.Series["OpacityFunctionSpline"].Points.Clear();
 
             foreach (var pair in this.PresetInfo.Series[numberOfSerie].OpacityFunction)
             {
                 spwf.AddPoint(pair.Key, pair.Value);
-                chart1.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
-                chart1.Series["OpacityFunctionSpline"].Points.AddXY(pair.Key, pair.Value);
+                _chart.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
+                _chart.Series["OpacityFunctionSpline"].Points.AddXY(pair.Key, pair.Value);
             }
-            vol.GetProperty().SetScalarOpacity(spwf);
+            _volume.GetProperty().SetScalarOpacity(spwf);
 
-            window.Validate();
-            window.Update();
-            window.RenderWindow.Render();
+            _window.Validate();
+            _window.Update();
+            _window.RenderWindow.Render();
         }
 
         public void ChangeSerie(List<DataPoint> splinePoints)
         {
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
-            chart1.Series["OpacityFunctionSpline"].Points.Clear();
+            _chart.Series["OpacityFunctionSpline"].Points.Clear();
 
             foreach (DataPoint point in splinePoints)
             {
                 spwf.AddPoint(point.XValue, point.YValues[0]);
-                chart1.Series["OpacityFunctionSpline"].Points.AddXY(point.XValue, point.YValues[0]);
+                _chart.Series["OpacityFunctionSpline"].Points.AddXY(point.XValue, point.YValues[0]);
             }
-            vol.GetProperty().SetScalarOpacity(spwf);
+            _volume.GetProperty().SetScalarOpacity(spwf);
 
-            window.Validate();
-            window.Update();
-            window.RenderWindow.Render();
+            _window.Validate();
+            _window.Update();
+            _window.RenderWindow.Render();
         }
 
 
@@ -181,11 +157,11 @@ namespace DicomLoadTest
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
 
             //Set the opacity curve for the volume
-            spwf.AddPoint(this.windowLevel - (this.windowWidth / 2), 0);
-            spwf.AddPoint(this.windowLevel, 1);
-            spwf.AddPoint(this.windowLevel + (this.windowWidth / 2), 0);
+            spwf.AddPoint(this._windowLevel - (this._windowWidth / 2), 0);
+            spwf.AddPoint(this._windowLevel, 1);
+            spwf.AddPoint(this._windowLevel + (this._windowWidth / 2), 0);
 
-            vol.GetProperty().SetScalarOpacity(spwf);
+            _volume.GetProperty().SetScalarOpacity(spwf);
         }
 
         private void SetGradientOpacity()
@@ -197,36 +173,38 @@ namespace DicomLoadTest
             gpwf.AddPoint(10, .2);
             gpwf.AddPoint(25, 1);
 
-            vol.GetProperty().SetGradientOpacity(gpwf);
+            _volume.GetProperty().SetGradientOpacity(gpwf);
         }
 
         //updatatuje okno wziualizacji 3d
         public void Update3DVisualization()
         {
-            Update3DVisualization(windowLevel, windowWidth);
+            _window.Validate();
+            _window.Update();
+            _window.RenderWindow.Render();
         }
 
         public void Update3DVisualization(float windowLevel, float windowWidth)
         {
-            this.windowLevel = windowLevel;
-            this.windowWidth = windowWidth;
+            this._windowLevel = windowLevel;
+            this._windowWidth = windowWidth;
 
-            //this.SetOpacityFunction();
+            this.SetOpacityFunction();
 
-            window.Validate();
-            window.Update();
-            window.RenderWindow.Render();
+            _window.Validate();
+            _window.Update();
+            _window.RenderWindow.Render();
         }
 
         public void PlaneOperation(object sender, ClipingEventArgs args)
         {
             var task = new Task(() => _clipingModule.ExecuteClipingOperation(args));
-            task.ContinueWith(x => window.Invoke(
+            task.ContinueWith(x => _window.Invoke(
                 new MyDlgt(() =>
                                {
-                                   window.Validate();
-                                   window.Update();
-                                   window.RenderWindow.Render();
+                                   _window.Validate();
+                                   _window.Update();
+                                   _window.RenderWindow.Render();
                                }
                     )));
             task.Start();
@@ -235,23 +213,22 @@ namespace DicomLoadTest
         public IList<double> GetObjectSize()
         {
             var xyzSize = new List<double>();
-            xyzSize.Add(vol.GetXRange()[1]);
-            xyzSize.Add(vol.GetYRange()[1]);
-            xyzSize.Add(vol.GetZRange()[1]);
+            xyzSize.Add(_volume.GetXRange()[1]);
+            xyzSize.Add(_volume.GetYRange()[1]);
+            xyzSize.Add(_volume.GetZRange()[1]);
             return xyzSize;
         }
 
         public bool Dispose()
         {
-            if(vol != null) vol.Dispose();
-            if(dicomReader != null) dicomReader.Dispose();
+            if(_volume != null) _volume.Dispose();
+            if(_dicomLoader != null) _dicomLoader.Dispose();
             if(Mapper != null) Mapper.Dispose();
-            if (renderWindowInteractor != null) renderWindowInteractor.Dispose();
+            if (_renderWindowInteractor != null) _renderWindowInteractor.Dispose();
             if (PlaneWidgetX != null) PlaneWidgetX.Dispose();
             if (PlaneWidgetY != null) PlaneWidgetY.Dispose();
             if (PlaneWidgetZ != null) PlaneWidgetZ.Dispose();
-            if (renderWindow != null) renderWindow.Dispose();
-            if(window != null) window.Dispose();
+            if(_window != null) _window.Dispose();
         
             return true;
         }
