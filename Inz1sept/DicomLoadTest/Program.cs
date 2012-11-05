@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using Kitware.VTK;
 
-namespace DicomLoadTest
+namespace MainWindow
 {
     static class Program
     {

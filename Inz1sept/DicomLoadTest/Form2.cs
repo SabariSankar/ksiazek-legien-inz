@@ -1,38 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Kitware.VTK;
 
-namespace DicomLoadTest
+namespace MainWindow
 {
     public partial class Form2 : Form
     {
         private Visualization2D _visualization2D;
-        private readonly vtkDICOMImageReader _dicomReader;
+        private readonly DicomLoader _dicomLoader;
         private Bitmap _windowBitmap;
 
-        public Form2(vtkDICOMImageReader dicomReader)
+        public Form2(DicomLoader dicomLoader)
         {
             InitializeComponent();
-            _dicomReader = dicomReader;
+            _dicomLoader = dicomLoader;
         }
 
         private void renderWindowControl1_Load(object sender, EventArgs e)
         {
             _visualization2D = new Visualization2D(renderWindowControl);
-            _visualization2D.sliceToAxes(_dicomReader, 300, "X");
+            _visualization2D.SliceToAxes(_dicomLoader, 300, Axis.X);
             trackBar.Maximum = 300;
             trackBar.Value = 300;
         }
 
         private void trackBar_Scroll(object sender, EventArgs e)
         {
-            _visualization2D.sliceToAxes(_dicomReader, trackBar.Value, "X");
+            _visualization2D.SliceToAxes(_dicomLoader, trackBar.Value, Axis.X);
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)

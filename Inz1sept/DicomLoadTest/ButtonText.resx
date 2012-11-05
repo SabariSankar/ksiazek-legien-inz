@@ -123,4 +123,22 @@
   <data name="ShowClipingToolbox" xml:space="preserve">
     <value>Show Cliping Toolbox</value>
   </data>
+  <data name="HidePlaneZ">
+    <value xml:space="preserve">Hide PlaneZ</value>
+  </data>
+  <data name="ShowPlaneZ">
+    <value xml:space="preserve">Show PlaneZ</value>
+  </data>
+  <data name="ShowPlaneY">
+    <value xml:space="preserve">Show PlaneY</value>
+  </data>
+  <data name="HidePlaneY">
+    <value xml:space="preserve">Hide PlaneY</value>
+  </data>
+  <data name="ShowPlaneX">
+    <value xml:space="preserve">Show PlaneX</value>
+  </data>
+  <data name="HidePlaneX">
+    <value xml:space="preserve">Hide PlaneX</value>
+  </data>
 </root>
