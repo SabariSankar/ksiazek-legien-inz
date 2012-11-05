@@ -183,7 +183,7 @@ namespace MainWindow
         /// Updates opacity function, when new points are added. 
         /// </summary>
         /// <param name="splinePoints">List of new points</param>
-        public void ChangeSerie(List<DataPoint> splinePoints)
+        public void ChangeSplineFunction(List<DataPoint> splinePoints)
         {
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
             _chart.Series["OpacityFunctionSpline"].Points.Clear();
@@ -192,6 +192,25 @@ namespace MainWindow
             {
                 spwf.AddPoint(point.XValue, point.YValues[0]);
                 _chart.Series["OpacityFunctionSpline"].Points.AddXY(point.XValue, point.YValues[0]);
+            }
+            _volume.GetProperty().SetScalarOpacity(spwf);
+
+            _window.Validate();
+            _window.Update();
+            _window.RenderWindow.Render();
+        }
+
+        public void ChangeSplineAndPointFunction(List<DataPoint> splinePoints )
+        {
+            vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
+            _chart.Series["OpacityFunctionSpline"].Points.Clear();
+            _chart.Series["OpacityFunction"].Points.Clear();
+
+            foreach (DataPoint point in splinePoints)
+            {
+                spwf.AddPoint(point.XValue, point.YValues[0]);
+                _chart.Series["OpacityFunctionSpline"].Points.AddXY(point.XValue, point.YValues[0]);
+                _chart.Series["OpacityFunction"].Points.AddXY(point.XValue, point.YValues[0]);
             }
             _volume.GetProperty().SetScalarOpacity(spwf);
 
