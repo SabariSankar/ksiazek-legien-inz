@@ -41,7 +41,6 @@ namespace MainWindow
             this.PlaneYButton = new System.Windows.Forms.Button();
             this.PlaneXButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.ClipingToolboxButton = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.comboBoxSeries = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -51,6 +50,7 @@ namespace MainWindow
             this.labelWidth = new System.Windows.Forms.Label();
             this.trackBarLevel = new System.Windows.Forms.TrackBar();
             this.trackBarWidth = new System.Windows.Forms.TrackBar();
+            this.clipingPanel = new MainWindow.ClipingToolbox();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -76,7 +76,7 @@ namespace MainWindow
             this.flowLayoutPanel1.Controls.Add(this.secondWindow);
             this.flowLayoutPanel1.Controls.Add(this.thirdWindow);
             this.flowLayoutPanel1.Controls.Add(this.fourthWindow);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(287, 0);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(332, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(734, 619);
             this.flowLayoutPanel1.TabIndex = 2;
@@ -116,11 +116,11 @@ namespace MainWindow
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.clipingPanel);
             this.panel1.Controls.Add(this.PlaneZButton);
             this.panel1.Controls.Add(this.PlaneYButton);
             this.panel1.Controls.Add(this.PlaneXButton);
             this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.ClipingToolboxButton);
             this.panel1.Controls.Add(this.chart1);
             this.panel1.Controls.Add(this.comboBoxSeries);
             this.panel1.Controls.Add(this.comboBox1);
@@ -134,7 +134,7 @@ namespace MainWindow
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.MinimumSize = new System.Drawing.Size(267, 619);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(284, 619);
+            this.panel1.Size = new System.Drawing.Size(326, 622);
             this.panel1.TabIndex = 3;
             // 
             // PlaneZButton
@@ -177,22 +177,10 @@ namespace MainWindow
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // ClipingToolboxButton
-            // 
-            this.ClipingToolboxButton.Location = new System.Drawing.Point(13, 384);
-            this.ClipingToolboxButton.Name = "ClipingToolboxButton";
-            this.ClipingToolboxButton.Size = new System.Drawing.Size(125, 23);
-            this.ClipingToolboxButton.TabIndex = 59;
-            this.ClipingToolboxButton.Text = "Show Clipping Toolbox";
-            this.ClipingToolboxButton.UseVisualStyleBackColor = true;
-            this.ClipingToolboxButton.Click += new System.EventHandler(this.ClipingToolboxButton_Click);
-            // this.chart1.ChartAreas["ChartArea1"].AxisY.Maximum = 1.1;
-            // 
             // chart1
             // 
             chartArea1.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea1);
-            this.chart1.ChartAreas["ChartArea1"].AxisY.Maximum = 1.1;
             this.chart1.Location = new System.Drawing.Point(13, 72);
             this.chart1.Name = "chart1";
             series1.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
@@ -294,11 +282,19 @@ namespace MainWindow
             this.trackBarWidth.TabIndex = 6;
             this.trackBarWidth.Scroll += new System.EventHandler(this.trackBarWidth_Scroll);
             // 
+            // clipingPanel
+            // 
+            this.clipingPanel.Location = new System.Drawing.Point(13, 388);
+            this.clipingPanel.Name = "clipingPanel";
+            this.clipingPanel.Size = new System.Drawing.Size(289, 145);
+            this.clipingPanel.TabIndex = 63;
+            this.clipingPanel.Text = "ClipingToolbox";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1021, 619);
+            this.ClientSize = new System.Drawing.Size(1069, 622);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "Form1";
@@ -330,11 +326,11 @@ namespace MainWindow
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ComboBox comboBoxSeries;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private System.Windows.Forms.Button ClipingToolboxButton;
         private System.Windows.Forms.Button PlaneZButton;
         private System.Windows.Forms.Button PlaneYButton;
         private System.Windows.Forms.Button PlaneXButton;
         private System.Windows.Forms.Button button1;
+        private ClipingToolbox clipingPanel;
     }
 }
 

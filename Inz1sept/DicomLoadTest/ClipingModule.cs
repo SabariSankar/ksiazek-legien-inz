@@ -1,32 +1,31 @@
 ﻿using System;
 using Kitware.VTK;
+using System.Collections.Generic;
 
 namespace MainWindow
 {
     public class ClipingModule
     {
-        private readonly vtkVolumeMapper _mapper;
         private readonly vtkPlaneCollection _planeCollection;
-        private readonly Visualization3D _visualization3D;
 
         private int _xSize;
         private int _ySize;
         private int _zSize;
 
-        private ClipingToolbox _clipingToolbox;
-
-        public ClipingModule(Visualization3D visualization3D)
+        public ClipingModule(IList<double> sizeList)
         {
-            _visualization3D = visualization3D;
-            _mapper = visualization3D.Mapper;
             _planeCollection = vtkPlaneCollection.New();
 
-            var sizeArray = _visualization3D.GetObjectSize();
-            _xSize = (int)sizeArray[0];
-            _ySize = (int)sizeArray[1];
-            _zSize = (int)sizeArray[2];
+            InitVolumeSizesFromVizulaisation3D(sizeList);
 
            InitPlaneCollection(_planeCollection);
+        }
+
+        private void InitVolumeSizesFromVizulaisation3D(IList<double> sizeList)
+        {
+            _xSize = (int)sizeList[0];
+            _ySize = (int)sizeList[1];
+            _zSize = (int)sizeList[2];
         }
 
         private void InitPlaneCollection(vtkPlaneCollection planeCollection)
@@ -62,30 +61,7 @@ namespace MainWindow
             planeCollection.AddItem(planeZ2);
         }
 
-
-        //jesli zwraca true, ToolBox jest widoczny
-        public bool ShowToolbox()
-        {
-            if (_clipingToolbox == null || _clipingToolbox.IsDisposed)
-            {
-                _clipingToolbox = new ClipingToolbox(_visualization3D.GetObjectSize(),this);
-                _clipingToolbox.Visible = true;
-                return true;
-            }
-            else if (_clipingToolbox.Visible)
-            {
-                _clipingToolbox.Visible = false;
-                return false;
-            }
-            else
-            {
-                _clipingToolbox.Visible = true;
-                return true;
-
-            }
-        }
-
-        public void ExecuteClipingOperation(ClipingEventArgs args)
+        public vtkPlaneCollection GenerateNewPlaneCollection(ClipingEventArgs args)
         {
             try
             {
@@ -110,12 +86,12 @@ namespace MainWindow
                         _planeCollection.GetItem(5).SetOrigin(0, 0, _zSize - args.Position);
                         break;
                 }
-                _mapper.SetClippingPlanes(_planeCollection);
-                _visualization3D.Update3DVisualization();
+                
             }catch(Exception e)
             {
                 //logger
             }
+            return _planeCollection;
         }
 
     }

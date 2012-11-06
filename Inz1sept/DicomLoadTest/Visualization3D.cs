@@ -24,7 +24,7 @@ namespace MainWindow
         public PlaneWidget PlaneWidgetY { get; set; }
         public PlaneWidget PlaneWidgetZ { get; set; }
 
-        public vtkVolumeMapper Mapper { get; private set; }
+        private vtkVolumeMapper _mapper { get;set; }
         private readonly vtkVolume _volume;
         private readonly DicomLoader _dicomLoader;
         private readonly Chart _chart;
@@ -34,9 +34,7 @@ namespace MainWindow
         private float _windowWidth;
         private float _windowLevel = 40;
 
-        private readonly ClipingModule _clipingModule;
-        public delegate void MyDlgt();
-
+        private ClipingModule _clipingModule;
 
         /// <summary>
         /// Set up the new PlaneWidget.
@@ -92,12 +90,12 @@ namespace MainWindow
             PresetReader = new XmlPresetReader();
 
             // Create a mapper and actor
-            Mapper = vtkSmartVolumeMapper.New();
-            Mapper.SetInput(dicomLoader.GetOutput());
+            _mapper = vtkSmartVolumeMapper.New();
+            _mapper.SetInput(dicomLoader.GetOutput());
             _volume = vtkVolume.New();
             SetOpacityFunction();
             SetGradientOpacity();
-            _volume.SetMapper(Mapper);
+            _volume.SetMapper(_mapper);
 
             vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
             renderer.AddVolume(_volume);
@@ -121,6 +119,14 @@ namespace MainWindow
             // Render
             window.RenderWindow.Render();
 
+            //ClipingModule
+            _clipingModule = new ClipingModule(GetObjectSize());          
+        }
+
+        public void ExecuteClipingOperation(object sender, ClipingEventArgs args)
+        {
+            _mapper.SetClippingPlanes(_clipingModule.GenerateNewPlaneCollection(args));
+            Update3DVisualization();
         }
 
         /// <summary>
@@ -269,20 +275,6 @@ namespace MainWindow
             _window.RenderWindow.Render();
         }
 
-        public void PlaneOperation(object sender, ClipingEventArgs args)
-        {
-            var task = new Task(() => _clipingModule.ExecuteClipingOperation(args));
-            task.ContinueWith(x => _window.Invoke(
-                new MyDlgt(() =>
-                               {
-                                   _window.Validate();
-                                   _window.Update();
-                                   _window.RenderWindow.Render();
-                               }
-                    )));
-            task.Start();
-        }
-
         public IList<double> GetObjectSize()
         {
             var xyzSize = new List<double> {_volume.GetXRange()[1], _volume.GetYRange()[1], _volume.GetZRange()[1]};
@@ -296,7 +288,7 @@ namespace MainWindow
         {
             if(_volume != null) _volume.Dispose();
             if(_dicomLoader != null) _dicomLoader.Dispose();
-            if(Mapper != null) Mapper.Dispose();
+            if(_mapper != null) _mapper.Dispose();
             if (_renderWindowInteractor != null) _renderWindowInteractor.Dispose();
             if (PlaneWidgetX != null) PlaneWidgetX.Dispose();
             if (PlaneWidgetY != null) PlaneWidgetY.Dispose();
