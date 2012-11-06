@@ -24,9 +24,6 @@ namespace MainWindow
 
         private DataPoint _selectedDataPoint;
 
-        event EventHandler<ClipingEventArgs> clipingOperation;
-        private ClipingModule _clipingModule;
-
         public Form1()
         {
             InitializeComponent();
@@ -89,8 +86,9 @@ namespace MainWindow
             _vizualization3D.PlaneWidgetY.InteractionEvt += PlaneYMoved;
             _vizualization3D.PlaneWidgetZ.InteractionEvt += PlaneZMoved;
 
-            //TODO: troche s³abe miejsce
-            clipingOperation += _vizualization3D.PlaneOperation;
+            //handling events from ClipingToolbox
+            this.clipingPanel.ClipingOperationEventHandlerDelegate += new EventHandler<ClipingEventArgs>(_vizualization3D.ExecuteClipingOperation);
+            this.clipingPanel.InitialiseClipingToolbox(_vizualization3D.GetObjectSize());
         }
 
         //updatatuje okno wziualizacji 3d
@@ -270,17 +268,6 @@ namespace MainWindow
         private int Compare(DataPoint point1, DataPoint point2)
         {
             return point1.XValue.CompareTo(point2.XValue);
-        }
-
-        private void ClipingToolboxButton_Click(object sender, EventArgs e)
-        {
-            if (_clipingModule == null)
-            {
-                _clipingModule = new ClipingModule(_vizualization3D);
-            }
-            ClipingToolboxButton.Text = _clipingModule.ShowToolbox()
-                                       ? ButtonText.HideClipingToolbox
-                                       : ButtonText.ShowClipingToolbox;
         }
 
         //-------------------------------------------------------------------------------------

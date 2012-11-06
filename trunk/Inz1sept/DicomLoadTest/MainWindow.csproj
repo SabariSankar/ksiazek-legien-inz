@@ -59,7 +59,7 @@
     </Compile>
     <Compile Include="ClipingModule.cs" />
     <Compile Include="ClipingToolbox.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ClipingToolbox.Designer.cs">
       <DependentUpon>ClipingToolbox.cs</DependentUpon>

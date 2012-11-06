@@ -4,16 +4,18 @@ using System.Windows.Forms;
 
 namespace MainWindow
 {
-    public partial class ClipingToolbox : Form
+    public partial class ClipingToolbox : Panel
     {
-        private readonly ClipingModule _module;
+        public delegate void EventHandler(object sender, ClipingEventArgs e);
+        public EventHandler<ClipingEventArgs> ClipingOperationEventHandlerDelegate;
 
-        public ClipingToolbox(IList<double> sizeList, ClipingModule module)
+        public ClipingToolbox()
         {
             InitializeComponent();
+        }
 
-            _module = module;
-
+        public void InitialiseClipingToolbox(IList<double> sizeList)
+        {
             if (sizeList.Count != 3)
                 throw new ArgumentException("Invalid size List length. Expected: 3 for all dimensions.");
             XClipingTrackBar1.Maximum = (int)(sizeList[0] / 2);
@@ -26,58 +28,52 @@ namespace MainWindow
             ZClipingTrackBar2.Maximum = (int)(sizeList[2] / 2);
         }
 
-        private void XClipingTrackBar1_Scroll(object sender, EventArgs e)
+        private void InvokeOnHandler(EClipingModuleOperationType type, int value)
         {
-            _module.ExecuteClipingOperation(new ClipingEventArgs()
-                                                {
-                                                    Type = EClipingModuleOperationType.X1,
-                                                    Position = XClipingTrackBar1.Value,
-                                                });
+            if (this.ClipingOperationEventHandlerDelegate != null)
+            {
+                EventArgs e2 = new ClipingEventArgs()
+                {
+                    Type = type,
+                    Position = value,
+                };
+                object[] args = new object[] { null, e2 };
+                foreach (Delegate handler in this.ClipingOperationEventHandlerDelegate.GetInvocationList())
+                {
+                    handler.DynamicInvoke(args);
+                }
+            }
         }
 
+        private void XClipingTrackBar1_Scroll(object sender, EventArgs e)
+        {
+            InvokeOnHandler(EClipingModuleOperationType.X1, XClipingTrackBar1.Value);
+        }
+     
         private void XClipingTrackBar2_Scroll(object sender, EventArgs e)
         {
-            _module.ExecuteClipingOperation(new ClipingEventArgs()
-            {
-                Type = EClipingModuleOperationType.X2,
-                Position = XClipingTrackBar2.Value,
-            });
+            InvokeOnHandler(EClipingModuleOperationType.X2, XClipingTrackBar2.Value);
         }
 
         private void YClipingTrackBar1_Scroll(object sender, EventArgs e)
         {
-            _module.ExecuteClipingOperation(new ClipingEventArgs()
-            {
-                Type = EClipingModuleOperationType.Y1,
-                Position = YClipingTrackBar1.Value,
-            });
+            InvokeOnHandler(EClipingModuleOperationType.Y1, YClipingTrackBar1.Value);
         }
 
         private void YClipingTrackBar2_Scroll(object sender, EventArgs e)
         {
-            _module.ExecuteClipingOperation(new ClipingEventArgs()
-            {
-                Type = EClipingModuleOperationType.Y2,
-                Position = YClipingTrackBar2.Value,
-            });
+            InvokeOnHandler(EClipingModuleOperationType.Y2, YClipingTrackBar2.Value);
         }
 
         private void ZClipingTrackBar1_Scroll(object sender, EventArgs e)
         {
-            _module.ExecuteClipingOperation(new ClipingEventArgs()
-            {
-                Type = EClipingModuleOperationType.Z1,
-                Position = ZClipingTrackBar1.Value,
-            });
+            InvokeOnHandler(EClipingModuleOperationType.Z1, ZClipingTrackBar1.Value);
         }
 
         private void ZClipingTrackBar2_Scroll(object sender, EventArgs e)
         {
-            _module.ExecuteClipingOperation(new ClipingEventArgs()
-            {
-                Type = EClipingModuleOperationType.Z2,
-                Position = ZClipingTrackBar2.Value,
-            });
+            InvokeOnHandler(EClipingModuleOperationType.Z2, ZClipingTrackBar2.Value);
         }
+  
     }
 }
