@@ -18,15 +18,15 @@ namespace MainWindow
         /// <summary>
         /// Window interation of visualization 3D.
         /// </summary>
-        private readonly vtkRenderWindowInteractor _renderWindowInteractor;
+        private vtkRenderWindowInteractor _renderWindowInteractor;
 
         public PlaneWidget PlaneWidgetX { get; set; }
         public PlaneWidget PlaneWidgetY { get; set; }
         public PlaneWidget PlaneWidgetZ { get; set; }
 
-        private vtkVolumeMapper _mapper { get;set; }
-        private readonly vtkVolume _volume;
-        private readonly DicomLoader _dicomLoader;
+        private vtkVolumeMapper _mapper;
+        private vtkVolume _volume;
+        private DicomLoader _dicomLoader;
         private readonly Chart _chart;
         public XmlPresetReader PresetReader { get; set; }
         public PresetInformation PresetInfo { get; set; } 
@@ -47,7 +47,7 @@ namespace MainWindow
             planeWidget.SetPlaneOrientationToXAxes();
             planeWidget.SetSliceIndex(250);
             planeWidget.SetInteractor(_renderWindowInteractor);
-            planeWidget.SetLeftButtonAction(0);
+            planeWidget.SetLeftButtonAction(99);
             planeWidget.SetRightButtonAction(0);
             planeWidget.SetMarginSizeX(0);
             planeWidget.SetMarginSizeY(0);
@@ -91,22 +91,24 @@ namespace MainWindow
 
             // Create a mapper and actor
             _mapper = vtkSmartVolumeMapper.New();
-            _mapper.SetInput(dicomLoader.GetOutput());
+            _mapper.SetInput(_dicomLoader.GetOutput());
             _volume = vtkVolume.New();
             SetOpacityFunction();
             SetGradientOpacity();
             _volume.SetMapper(_mapper);
 
-            vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
-            renderer.AddVolume(_volume);
+            _window.RenderWindow.GetRenderers().GetFirstRenderer().AddVolume(_volume);
+
 
             // An interactor
             _renderWindowInteractor = vtkRenderWindowInteractor.New();
-            _renderWindowInteractor.SetRenderWindow(window.RenderWindow);
+            _renderWindowInteractor.SetRenderWindow(_window.RenderWindow);
 
             //Camera style
             vtkInteractorStyleTrackballCamera style = vtkInteractorStyleTrackballCamera.New();
+            style.AutoAdjustCameraClippingRangeOff();
             _renderWindowInteractor.SetInteractorStyle(style);
+
 
             //Create and setup planes
             PlaneWidgetX = new PlaneWidget(Axis.X);
@@ -117,10 +119,45 @@ namespace MainWindow
             SetupPlane(PlaneWidgetZ);
 
             // Render
-            window.RenderWindow.Render();
+            _window.RenderWindow.Render();
 
             //ClipingModule
             _clipingModule = new ClipingModule(GetObjectSize());          
+        }
+
+        public void ChangeDirectory(DicomLoader dicomLoader)
+        {
+            _dicomLoader = dicomLoader;
+            _mapper.Dispose();
+            _mapper = vtkSmartVolumeMapper.New();
+            _mapper.SetInput(_dicomLoader.GetOutput());
+            //_mapper.Update();
+
+            _window.RenderWindow.GetRenderers().GetFirstRenderer().RemoveVolume(_volume);
+            _volume.Dispose();
+            _volume = vtkVolume.New();
+            SetOpacityFunction();
+            SetGradientOpacity();
+            _volume.SetMapper(_mapper);
+            //_volume.Update();
+
+            _window.RenderWindow.GetRenderers().GetFirstRenderer().AddVolume(_volume);
+            //_window.RenderWindow.GetRenderers().GetFirstRenderer().UseDepthPeelingOff();
+            _window.RenderWindow.GetRenderers().GetFirstRenderer().Render();
+
+            SetupPlane(PlaneWidgetX);
+            SetupPlane(PlaneWidgetY);
+            SetupPlane(PlaneWidgetZ);
+
+            // Render
+            _window.RenderWindow.Render();
+            _window.Validate();
+            _window.Update();
+
+            
+
+            _clipingModule = new ClipingModule(GetObjectSize());     
+            
         }
 
         public void ExecuteClipingOperation(object sender, ClipingEventArgs args)
@@ -311,5 +348,10 @@ namespace MainWindow
         {
             Axis = axis;
         }
+
+
     }
+
+
 }
+

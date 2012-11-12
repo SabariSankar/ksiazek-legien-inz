@@ -161,14 +161,14 @@
 
         #endregion
 
-        private System.Windows.Forms.TrackBar XClipingTrackBar2;
-        private System.Windows.Forms.TrackBar XClipingTrackBar1;
+        public System.Windows.Forms.TrackBar XClipingTrackBar2;
+        public System.Windows.Forms.TrackBar XClipingTrackBar1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TrackBar YClipingTrackBar2;
-        private System.Windows.Forms.TrackBar YClipingTrackBar1;
-        private System.Windows.Forms.TrackBar ZClipingTrackBar2;
-        private System.Windows.Forms.TrackBar ZClipingTrackBar1;
+        public System.Windows.Forms.TrackBar YClipingTrackBar2;
+        public System.Windows.Forms.TrackBar YClipingTrackBar1;
+        public System.Windows.Forms.TrackBar ZClipingTrackBar2;
+        public System.Windows.Forms.TrackBar ZClipingTrackBar1;
     }
 }

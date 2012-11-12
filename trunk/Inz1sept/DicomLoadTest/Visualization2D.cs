@@ -26,7 +26,7 @@ namespace MainWindow
         /// <summary>
         /// Viewer of current visualization 2D. Takes care of proper display slice inside the window.
         /// </summary>
-        private readonly vtkImageViewer2 _viewer;
+        private readonly vtkImageViewer _viewer;
         /// <summary>
         /// Window width of the visualization 2D.
         /// </summary>
@@ -43,7 +43,32 @@ namespace MainWindow
         /// <param name="plane">PlaneWidget which changed the coordinates.</param>
         public void PlaneMoved(vtkImagePlaneWidget plane)
         {
-            _viewer.SetInput(plane.GetResliceOutput());
+            vtkImageResample resize = vtkImageResample.New();
+            resize.SetInput(plane.GetResliceOutput());
+
+            vtkImageData data = plane.GetResliceOutput();
+            int[] dims = data.GetDimensions();
+            double width = dims[0];
+            double height = dims[1];
+
+            //resize.SetOutputExtent(0, 350 - 1, 0, 300 - 1, 0, 0);
+            //resize.SetOutputOrigin(0, 0, 0); 
+            //resize.SetOutputDimensionality(2);
+
+            double f1 = 350/width;
+            double f2 = 250/height;
+            if (f1 < f2)
+            {
+                resize.SetAxisMagnificationFactor(0, f1); //350/512
+                resize.SetAxisMagnificationFactor(1, f1); //250/512
+            }
+            else
+            {
+                resize.SetAxisMagnificationFactor(0, f2); //350/512
+                resize.SetAxisMagnificationFactor(1, f2); //250/512
+            }
+
+            _viewer.SetInput(resize.GetOutput());
             _viewer.SetColorWindow(_windowWidth);
             _viewer.SetColorLevel(_windowLevel);
             _viewer.Render();
@@ -80,7 +105,7 @@ namespace MainWindow
             _viewer.SetColorWindow(planeWidget.GetWindow());
             _viewer.SetColorLevel(planeWidget.GetLevel());
             planeWidget.Dispose();
-            
+
             _viewer.Render();
             _window.Update();
             _window.RenderWindow.Render();
@@ -95,13 +120,15 @@ namespace MainWindow
         {
             _window = window;
 
-            vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
+            //vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
             vtkRenderWindowInteractor renderWindowInteractor = window.RenderWindow.GetInteractor();
          
-            _viewer = vtkImageViewer2.New();
+            _viewer = vtkImageViewer.New();
             _viewer.OffScreenRenderingOn();
             _viewer.SetupInteractor(renderWindowInteractor);
-            _viewer.SetRenderer(renderer);
+            //_viewer.SetRenderer(renderer);
+            _window.RenderWindow.AddRenderer(_viewer.GetRenderer());
+            _viewer.Render();
         }
 
         /// <summary>

@@ -6,10 +6,20 @@ namespace MainWindow
 
     public class DicomLoader
     {
-        private readonly vtkDICOMImageReader _dicomReader;
+        private vtkDICOMImageReader _dicomReader;
 
         public DicomLoader(String directoryPath)
         {
+            _dicomReader = new vtkDICOMImageReader();
+            _dicomReader.SetDirectoryName(directoryPath);
+            _dicomReader.Update();
+            int a = _dicomReader.GetWidth();
+            int b = _dicomReader.GetHeight();
+        }
+
+        public void ChangeDirectory(String directoryPath)
+        {
+            _dicomReader.Dispose();
             _dicomReader = new vtkDICOMImageReader();
             _dicomReader.SetDirectoryName(directoryPath);
             _dicomReader.Update();
