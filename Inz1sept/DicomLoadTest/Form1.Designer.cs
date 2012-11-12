@@ -1,3 +1,5 @@
+using System;
+
 namespace MainWindow
 {
     partial class Form1
@@ -37,6 +39,7 @@ namespace MainWindow
             this.secondWindow = new Kitware.VTK.RenderWindowControl();
             this.thirdWindow = new Kitware.VTK.RenderWindowControl();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.PlaneZButton = new System.Windows.Forms.Button();
             this.PlaneYButton = new System.Windows.Forms.Button();
             this.PlaneXButton = new System.Windows.Forms.Button();
@@ -50,6 +53,7 @@ namespace MainWindow
             this.labelWidth = new System.Windows.Forms.Label();
             this.trackBarLevel = new System.Windows.Forms.TrackBar();
             this.trackBarWidth = new System.Windows.Forms.TrackBar();
+            this.openFileDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.clipingPanel = new MainWindow.ClipingToolbox();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -116,6 +120,7 @@ namespace MainWindow
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.clipingPanel);
             this.panel1.Controls.Add(this.PlaneZButton);
             this.panel1.Controls.Add(this.PlaneYButton);
@@ -136,6 +141,16 @@ namespace MainWindow
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(326, 622);
             this.panel1.TabIndex = 3;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(12, 555);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 64;
+            this.button2.Text = "Load dicom";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // PlaneZButton
             // 
@@ -179,27 +194,29 @@ namespace MainWindow
             // 
             // chart1
             // 
+            chartArea1.AxisY.Maximum = 1D;
             chartArea1.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Location = new System.Drawing.Point(13, 72);
             this.chart1.Name = "chart1";
-            series1.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            series1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            series1.BorderWidth = 5;
+            series1.BorderWidth = 2;
             series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series1.Color = System.Drawing.Color.Yellow;
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Color = System.Drawing.Color.RoyalBlue;
             series1.IsVisibleInLegend = false;
-            series1.MarkerSize = 8;
-            series1.Name = "OpacityFunction";
-            series1.YValuesPerPoint = 2;
+            series1.LabelBorderWidth = 3;
+            series1.MarkerColor = System.Drawing.Color.White;
+            series1.MarkerSize = 1;
+            series1.Name = "OpacityFunctionSpline";
+            series2.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            series2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            series2.BorderWidth = 5;
             series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series2.Color = System.Drawing.Color.Blue;
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series2.Color = System.Drawing.Color.Yellow;
             series2.IsVisibleInLegend = false;
-            series2.LabelBorderWidth = 3;
-            series2.MarkerSize = 7;
-            series2.Name = "OpacityFunctionSpline";
+            series2.MarkerSize = 8;
+            series2.Name = "OpacityFunction";
             this.chart1.Series.Add(series1);
             this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(238, 120);
@@ -231,7 +248,7 @@ namespace MainWindow
             // 
             this.textBoxLevel1.Location = new System.Drawing.Point(51, 46);
             this.textBoxLevel1.Name = "textBoxLevel1";
-            this.textBoxLevel1.Size = new System.Drawing.Size(22, 20);
+            this.textBoxLevel1.Size = new System.Drawing.Size(42, 20);
             this.textBoxLevel1.TabIndex = 17;
             this.textBoxLevel1.Text = "0";
             this.textBoxLevel1.TextChanged += new System.EventHandler(this.textBoxLevel_TextChanged);
@@ -240,7 +257,7 @@ namespace MainWindow
             // 
             this.textBoxWidth.Location = new System.Drawing.Point(51, 16);
             this.textBoxWidth.Name = "textBoxWidth";
-            this.textBoxWidth.Size = new System.Drawing.Size(22, 20);
+            this.textBoxWidth.Size = new System.Drawing.Size(42, 20);
             this.textBoxWidth.TabIndex = 16;
             this.textBoxWidth.Text = "0";
             this.textBoxWidth.TextChanged += new System.EventHandler(this.textBoxWidth_TextChanged);
@@ -265,7 +282,7 @@ namespace MainWindow
             // 
             // trackBarLevel
             // 
-            this.trackBarLevel.Location = new System.Drawing.Point(67, 32);
+            this.trackBarLevel.Location = new System.Drawing.Point(99, 34);
             this.trackBarLevel.Maximum = 2000;
             this.trackBarLevel.Minimum = -700;
             this.trackBarLevel.Name = "trackBarLevel";
@@ -275,7 +292,7 @@ namespace MainWindow
             // 
             // trackBarWidth
             // 
-            this.trackBarWidth.Location = new System.Drawing.Point(67, 5);
+            this.trackBarWidth.Location = new System.Drawing.Point(99, 3);
             this.trackBarWidth.Maximum = 2500;
             this.trackBarWidth.Name = "trackBarWidth";
             this.trackBarWidth.Size = new System.Drawing.Size(203, 45);
@@ -331,6 +348,8 @@ namespace MainWindow
         private System.Windows.Forms.Button PlaneXButton;
         private System.Windows.Forms.Button button1;
         private ClipingToolbox clipingPanel;
+        private System.Windows.Forms.FolderBrowserDialog openFileDialog1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

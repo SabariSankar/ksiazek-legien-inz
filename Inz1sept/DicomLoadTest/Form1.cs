@@ -18,8 +18,8 @@ namespace MainWindow
         private Visualization2D _thirdVizualization2D;
 
 
-        private readonly DicomLoader _dicomLoader;
-        private readonly String _directoryPath = @"D:\Downloads\PANORAMIX";
+        private DicomLoader _dicomLoader;
+        private String _directoryPath = @"D:\Downloads\PANORAMIX"; //"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
         private const String PresetDir = @"..\..\presety";
 
         private DataPoint _selectedDataPoint;
@@ -70,7 +70,7 @@ namespace MainWindow
             {
                 comboBox1.Items.Add(new FileInfo(dir).Name);
             }
-            comboBox1.SelectedIndex = 0;
+            comboBox1.SelectedIndex = 1;
             _vizualization3D.ChangeColorAndOpacityFunction(String.IsNullOrEmpty(comboBox1.SelectedText) ? comboBox1.Text : comboBox1.SelectedText);
 
             comboBoxSeries.Items.Clear();
@@ -129,21 +129,21 @@ namespace MainWindow
         private void firstWindow_Load(object sender, EventArgs e)
         {
             _firstVizualization2D = new Visualization2D(firstWindow);
-            _firstVizualization2D.SliceToAxes(_dicomLoader, 300, Axis.X);
+            //_firstVizualization2D.SliceToAxes(_dicomLoader, 300, Axis.X);
         }
 
 
         private void secondWindow_Load(object sender, EventArgs e)
         {
             _secondVizualization2D = new Visualization2D(secondWindow);
-            _secondVizualization2D.SliceToAxes(_dicomLoader, 100, Axis.Y);
+           // _secondVizualization2D.SliceToAxes(_dicomLoader, 100, Axis.Y);
         }
 
 
         private void thirdWindow_Load(object sender, EventArgs e)
         {
             _thirdVizualization2D = new Visualization2D(thirdWindow);
-            _thirdVizualization2D.SliceToAxes(_dicomLoader, 100, Axis.Z);
+            //_thirdVizualization2D.SliceToAxes(_dicomLoader, 100, Axis.Z);
         }
 
 
@@ -179,6 +179,9 @@ namespace MainWindow
         {
             _vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
         }
+
+        #region Obsluga wykresu
+
 
         private void chart1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -270,6 +273,9 @@ namespace MainWindow
             return point1.XValue.CompareTo(point2.XValue);
         }
 
+
+        #endregion
+
         //-------------------------------------------------------------------------------------
         //obs³uga pojawiania i znikania poszczególnych p³aszczyzn
         private void PlaneXButton_Click(object sender, EventArgs e)
@@ -318,6 +324,21 @@ namespace MainWindow
         {
             //var bmp = firstVizualization2D.GetImage();
             var form = new Form2(_dicomLoader) {Visible = true};
+        }
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                _directoryPath = openFileDialog1.SelectedPath;
+                _dicomLoader.ChangeDirectory(_directoryPath);
+
+                _vizualization3D.ChangeDirectory(_dicomLoader);
+                _vizualization3D.ChangeColorAndOpacityFunction(comboBox1.Text);
+                _vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
+            }
+
         }
     }
 }
