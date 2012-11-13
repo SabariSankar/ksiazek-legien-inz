@@ -88,6 +88,29 @@ namespace MainWindow
             //handling events from ClipingToolbox
             clipingPanel.ClipingOperationEventHandlerDelegate += new EventHandler<ClipingEventArgs>(_vizualization3D.ExecuteClipingOperation);
             clipingPanel.InitialiseClipingToolbox(_vizualization3D.GetObjectSize());
+
+            vtkImageExtractComponents extract = vtkImageExtractComponents.New();
+            extract.SetInput( _dicomLoader.GetOutput() );
+            extract.SetComponents(0);
+            extract.Update();
+            
+            double[] range = extract.GetOutput().GetScalarRange();
+
+            vtkXYPlotActor xyPlotActor = new vtkXYPlotActor();
+            vtkActor actor = vtkActor.New();
+
+            vtkImageAccumulate histogram = new vtkImageAccumulate();
+            histogram.SetInput(extract.GetOutput());
+            histogram.SetComponentOrigin(0, 0, 0);
+            histogram.SetComponentSpacing(1, 1, 1);
+            histogram.IgnoreZeroOn();
+            histogram.Update();
+
+
+            xyPlotActor.AddInput(histogram.GetOutput());
+            fourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().AddActor(xyPlotActor); 
+            fourthWindow.RenderWindow.Render();
+
         }
 
         //updatatuje okno wziualizacji 3d
@@ -373,6 +396,16 @@ namespace MainWindow
                 _vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
             }
 
+        }
+
+        private void buttonBack_Click(object sender, EventArgs e)
+        {
+            _firstVizualization2D.RotateImageBack();
+        }
+
+        private void buttonForward_Click(object sender, EventArgs e)
+        {
+            _firstVizualization2D.RotateImageForward();
         }
 
 

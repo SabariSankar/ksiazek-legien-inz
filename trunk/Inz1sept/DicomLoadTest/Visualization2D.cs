@@ -13,6 +13,11 @@ namespace MainWindow
         Z
     };
 
+    public enum RotationOperation
+    {
+        Back,
+        Forward
+    };
 
     /// <summary>
     /// Takes care of 2D visualization window.
@@ -26,15 +31,61 @@ namespace MainWindow
         /// <summary>
         /// Viewer of current visualization 2D. Takes care of proper display slice inside the window.
         /// </summary>
-        private readonly vtkImageViewer _viewer;
+        private readonly vtkImageViewer2 _viewer;
         /// <summary>
         /// Window width of the visualization 2D.
         /// </summary>
         private float _windowWidth = 100;
         /// <summary>
-        /// Window Level of the visualization 2D.
+        /// Window level of the visualization 2D.
         /// </summary>
         private float _windowLevel = 100;
+        /// <summary>
+        /// Orientation of the current visualization 2D (in degrees).
+        /// </summary>
+        private int _orientation;
+
+
+        public void RotateImageForward()
+        {
+            _orientation = _orientation + 90;
+            if (_orientation == 360) _orientation = 0;
+            RotateImage(RotationOperation.Forward);
+        }
+
+        public void RotateImageBack()
+        {
+            _orientation = _orientation - 90;
+            if (_orientation == -90) _orientation = 270;
+            RotateImage(RotationOperation.Back);
+        }
+
+        private void RotateImage(RotationOperation operation)
+        {
+            vtkImageReslice reslice = vtkImageReslice.New();
+            vtkTransform transform = vtkTransform.New();
+            transform.PostMultiply();
+
+            double[] center = { 75, 100, 0 };
+            transform.Translate(-center[0], -center[1], -center[2]);
+            if (operation == RotationOperation.Forward)
+            {
+                transform.RotateZ(90);
+            }
+            else if (operation == RotationOperation.Back)
+            {
+                transform.RotateZ(-90);
+            }
+            transform.Translate(+center[0], +center[1], +center[2]);
+
+            transform.Update();
+            reslice.SetInput(_viewer.GetInput());
+            reslice.SetResliceTransform(transform);
+            reslice.Update();
+
+            _viewer.SetInput(reslice.GetOutput());
+            UpdateViewer();
+        }
 
 
         /// <summary>
@@ -43,37 +94,25 @@ namespace MainWindow
         /// <param name="plane">PlaneWidget which changed the coordinates.</param>
         public void PlaneMoved(vtkImagePlaneWidget plane)
         {
-            vtkImageResample resize = vtkImageResample.New();
-            resize.SetInput(plane.GetResliceOutput());
 
-            vtkImageData data = plane.GetResliceOutput();
-            int[] dims = data.GetDimensions();
-            double width = dims[0];
-            double height = dims[1];
+            vtkImageReslice reslice = vtkImageReslice.New();
+            vtkTransform transform = vtkTransform.New();
+            transform.PostMultiply();
 
-            //resize.SetOutputExtent(0, 350 - 1, 0, 300 - 1, 0, 0);
-            //resize.SetOutputOrigin(0, 0, 0); 
-            //resize.SetOutputDimensionality(2);
+            //TODO wyznaczenie centrum okna
+            double[] center = {75, 100, 0};
+			transform.Translate( -center[0], -center[1], -center[2] );
+            transform.RotateZ(_orientation);
+			transform.Translate( +center[0], +center[1], +center[2] );
 
-            double f1 = 350/width;
-            double f2 = 250/height;
-            if (f1 < f2)
-            {
-                resize.SetAxisMagnificationFactor(0, f1); //350/512
-                resize.SetAxisMagnificationFactor(1, f1); //250/512
-            }
-            else
-            {
-                resize.SetAxisMagnificationFactor(0, f2); //350/512
-                resize.SetAxisMagnificationFactor(1, f2); //250/512
-            }
+            transform.Update();
+            reslice.SetInput(plane.GetResliceOutput());
+            reslice.SetResliceTransform(transform);
+            reslice.Update();
 
-            _viewer.SetInput(resize.GetOutput());
-            _viewer.SetColorWindow(_windowWidth);
-            _viewer.SetColorLevel(_windowLevel);
-            _viewer.Render();
-            _window.Update();
-            _window.RenderWindow.Render();
+            _viewer.SetInput(reslice.GetOutput());
+            UpdateViewer();
+
         }
 
 
@@ -100,17 +139,23 @@ namespace MainWindow
                 planeWidget.SetPlaneOrientationToZAxes();
             }
             planeWidget.SetSliceIndex((int)slicePosition);
-            planeWidget.SetWindowLevel(_windowWidth, _windowLevel, 1);
             _viewer.SetInput(planeWidget.GetResliceOutput());
-            _viewer.SetColorWindow(planeWidget.GetWindow());
-            _viewer.SetColorLevel(planeWidget.GetLevel());
             planeWidget.Dispose();
 
+            UpdateViewer();
+        }
+
+        /// <summary>
+        /// Refresh viewer and window.
+        /// </summary>
+        private void UpdateViewer()
+        {
+            _viewer.SetColorWindow(_windowWidth);
+            _viewer.SetColorLevel(_windowLevel);
             _viewer.Render();
             _window.Update();
             _window.RenderWindow.Render();
         }
-
 
         /// <summary>
         /// Creating the 2D visualization window.
@@ -119,15 +164,14 @@ namespace MainWindow
         public Visualization2D(RenderWindowControl window)
         {
             _window = window;
+            vtkInteractorStyleImage imageStyle = vtkInteractorStyleImage.New();
 
-            //vtkRenderer renderer = window.RenderWindow.GetRenderers().GetFirstRenderer();
-            vtkRenderWindowInteractor renderWindowInteractor = window.RenderWindow.GetInteractor();
-         
-            _viewer = vtkImageViewer.New();
+            _viewer = vtkImageViewer2.New();
             _viewer.OffScreenRenderingOn();
-            _viewer.SetupInteractor(renderWindowInteractor);
-            //_viewer.SetRenderer(renderer);
+            _viewer.SetSize(350,250);
+            _window.RenderWindow.SetSize(350,250);
             _window.RenderWindow.AddRenderer(_viewer.GetRenderer());
+            _window.RenderWindow.GetInteractor().SetInteractorStyle(imageStyle);
             _viewer.Render();
         }
 
@@ -140,11 +184,8 @@ namespace MainWindow
         {
             _windowLevel = windowLevel;
             _windowWidth = windowWidth;
-            _viewer.SetColorWindow(_windowWidth);
-            _viewer.SetColorLevel(_windowLevel);
-            _viewer.Render();
-            _window.Update();
-            _window.RenderWindow.Render();
+          
+            UpdateViewer();
 
         }
 

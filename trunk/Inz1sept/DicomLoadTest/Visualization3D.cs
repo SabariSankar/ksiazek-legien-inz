@@ -349,7 +349,6 @@ namespace MainWindow
             Axis = axis;
         }
 
-
     }
 
 
