@@ -17,8 +17,7 @@ namespace MainWindow
         private Visualization2D _secondVizualization2D;
         private Visualization2D _thirdVizualization2D;
 
-
-        private DicomLoader _dicomLoader;
+        private readonly DicomLoader _dicomLoader;
         private String _directoryPath = @"D:\Downloads\PANORAMIX"; //"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
         private const String PresetDir = @"..\..\presety";
 
@@ -39,8 +38,8 @@ namespace MainWindow
             _dicomLoader.Dispose();
         }
 
-   
 
+        #region Obsluga przesuwania poszczegolnych plaszczyzn
         //-------------------------------------------------------------------------
         //callback function for moving PlaneWidget
         public void PlaneXMoved(vtkObject sender, vtkObjectEventArgs e)
@@ -57,7 +56,7 @@ namespace MainWindow
         {
             _thirdVizualization2D.PlaneMoved(vtkImagePlaneWidget.SafeDownCast(sender));
         }
-
+        #endregion
 
 
         //wizualizacja 3d -----------------------------------------------------------------
@@ -87,8 +86,8 @@ namespace MainWindow
             _vizualization3D.PlaneWidgetZ.InteractionEvt += PlaneZMoved;
 
             //handling events from ClipingToolbox
-            this.clipingPanel.ClipingOperationEventHandlerDelegate += new EventHandler<ClipingEventArgs>(_vizualization3D.ExecuteClipingOperation);
-            this.clipingPanel.InitialiseClipingToolbox(_vizualization3D.GetObjectSize());
+            clipingPanel.ClipingOperationEventHandlerDelegate += new EventHandler<ClipingEventArgs>(_vizualization3D.ExecuteClipingOperation);
+            clipingPanel.InitialiseClipingToolbox(_vizualization3D.GetObjectSize());
         }
 
         //updatatuje okno wziualizacji 3d
@@ -105,6 +104,30 @@ namespace MainWindow
             _thirdVizualization2D.Update2DVisualization(windowLevel, windowWidth);
         }
 
+  
+
+        //wizualizaja 2d
+        private void firstWindow_Load(object sender, EventArgs e)
+        {
+            _firstVizualization2D = new Visualization2D(firstWindow);
+            //_firstVizualization2D.SliceToAxes(_dicomLoader, 300, Axis.X);
+        }
+
+
+        private void secondWindow_Load(object sender, EventArgs e)
+        {
+            _secondVizualization2D = new Visualization2D(secondWindow);
+            // _secondVizualization2D.SliceToAxes(_dicomLoader, 100, Axis.Y);
+        }
+
+
+        private void thirdWindow_Load(object sender, EventArgs e)
+        {
+            _thirdVizualization2D = new Visualization2D(thirdWindow);
+            //_thirdVizualization2D.SliceToAxes(_dicomLoader, 100, Axis.Z);
+        }
+
+        #region Obsluga levelu okna i jego szerokosci
         //suwak obsluguje szerokosc ------------------------------------------------------------
         private void trackBarWidth_Scroll(object sender, EventArgs e)
         {
@@ -124,29 +147,6 @@ namespace MainWindow
             textBoxLevel1.Text = trackBarLevel.Value.ToString();
         }
 
-
-        //wizualizaja 2d
-        private void firstWindow_Load(object sender, EventArgs e)
-        {
-            _firstVizualization2D = new Visualization2D(firstWindow);
-            //_firstVizualization2D.SliceToAxes(_dicomLoader, 300, Axis.X);
-        }
-
-
-        private void secondWindow_Load(object sender, EventArgs e)
-        {
-            _secondVizualization2D = new Visualization2D(secondWindow);
-           // _secondVizualization2D.SliceToAxes(_dicomLoader, 100, Axis.Y);
-        }
-
-
-        private void thirdWindow_Load(object sender, EventArgs e)
-        {
-            _thirdVizualization2D = new Visualization2D(thirdWindow);
-            //_thirdVizualization2D.SliceToAxes(_dicomLoader, 100, Axis.Z);
-        }
-
-
         //zmiany textboxow
         private void textBoxWidth_TextChanged(object sender, EventArgs e)
         {
@@ -159,6 +159,9 @@ namespace MainWindow
             int x = int.Parse(textBoxLevel1.Text);
             trackBarLevel.Value = x;
         }
+        #endregion
+
+        #region Obsluga presetow
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -180,8 +183,11 @@ namespace MainWindow
             _vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
         }
 
-        #region Obsluga wykresu
+        #endregion
 
+        #region Obsluga wykresu
+        //-------------------------------------------------------------------------------------
+        //Obs³uga wykresu
 
         private void chart1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -216,8 +222,11 @@ namespace MainWindow
             if (_selectedDataPoint != null)
             {
                 List<DataPoint> splinePoints = chart1.Series["OpacityFunctionSpline"].Points.ToList<DataPoint>();
-                splinePoints.Find(x => x.XValue == _selectedDataPoint.XValue).YValues[0] = _selectedDataPoint.YValues[0];
-
+                if (splinePoints.Find(x => x.XValue == _selectedDataPoint.XValue) != null)
+                {
+                    splinePoints.Find(x => x.XValue == _selectedDataPoint.XValue).YValues[0] =
+                        _selectedDataPoint.YValues[0];
+                }
                 _vizualization3D.ChangeSplineFunction(splinePoints);
                 _selectedDataPoint = null;
 
@@ -255,9 +264,9 @@ namespace MainWindow
 
                         double pX = chart1.ChartAreas["ChartArea1"].CursorX.Position; //X Axis Coordinate of your mouse cursor
                         double pY = chart1.ChartAreas["ChartArea1"].CursorY.Position; //Y Axis Coordinate of your mouse cursor
- 
+
                         chart1.Series["OpacityFunction"].Points.AddXY(pX, pY);
-                        
+
                         //------
                         //chart1.Series["OpacityFunction"].Points.AddXY(selected.XValue, selected.YValues[0]);
                         List<DataPoint> points = chart1.Series["OpacityFunction"].Points.ToList<DataPoint>();
@@ -273,9 +282,32 @@ namespace MainWindow
             return point1.XValue.CompareTo(point2.XValue);
         }
 
+        private void chart1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            HitTestResult hitResult = chart1.HitTest(e.X, e.Y);
+            if (e.Button == MouseButtons.Right)
+            {
+                if (hitResult.ChartElementType == ChartElementType.DataPoint)
+                {
+                    DataPoint selected = (DataPoint) hitResult.Object;
+                    if (chart1.Series["OpacityFunction"].Points.Contains(selected))
+                    {
+                        chart1.Series["OpacityFunction"].Points.Remove(selected);
+                        //------
+                        //chart1.Series["OpacityFunction"].Points.AddXY(selected.XValue, selected.YValues[0]);
+                        List<DataPoint> points = chart1.Series["OpacityFunction"].Points.ToList<DataPoint>();
+                        //points.Remove(points.Find(x => x.XValue == pX & x.YValues[0] == pY));
+                        points.Sort(new Comparison<DataPoint>(Compare));
+                        _vizualization3D.ChangeSplineAndPointFunction(points);
+                    }
+                }
+            }
+
+        }
 
         #endregion
 
+        #region Obs³uga pojawiania i znikania poszczególnych p³aszczyzn
         //-------------------------------------------------------------------------------------
         //obs³uga pojawiania i znikania poszczególnych p³aszczyzn
         private void PlaneXButton_Click(object sender, EventArgs e)
@@ -320,14 +352,16 @@ namespace MainWindow
             }
         }
 
+        #endregion
+
         private void button1_Click(object sender, EventArgs e)
         {
             //var bmp = firstVizualization2D.GetImage();
-            var form = new Form2(_dicomLoader) {Visible = true};
+            var form = new Form2(_dicomLoader) { Visible = true };
         }
 
 
-        private void button2_Click(object sender, EventArgs e)
+        private void buttonLoadDicom_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -340,5 +374,7 @@ namespace MainWindow
             }
 
         }
+
+
     }
 }
