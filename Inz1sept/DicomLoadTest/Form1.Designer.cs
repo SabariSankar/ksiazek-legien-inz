@@ -55,6 +55,8 @@ namespace MainWindow
             this.trackBarLevel = new System.Windows.Forms.TrackBar();
             this.trackBarWidth = new System.Windows.Forms.TrackBar();
             this.openFileDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.buttonBack = new System.Windows.Forms.Button();
+            this.buttonForward = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -120,6 +122,8 @@ namespace MainWindow
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonForward);
+            this.panel1.Controls.Add(this.buttonBack);
             this.panel1.Controls.Add(this.buttonLoadDicom);
             this.panel1.Controls.Add(this.clipingPanel);
             this.panel1.Controls.Add(this.PlaneZButton);
@@ -308,6 +312,26 @@ namespace MainWindow
             this.trackBarWidth.TabIndex = 6;
             this.trackBarWidth.Scroll += new System.EventHandler(this.trackBarWidth_Scroll);
             // 
+            // buttonBack
+            // 
+            this.buttonBack.Location = new System.Drawing.Point(176, 274);
+            this.buttonBack.Name = "buttonBack";
+            this.buttonBack.Size = new System.Drawing.Size(40, 23);
+            this.buttonBack.TabIndex = 65;
+            this.buttonBack.Text = "Back";
+            this.buttonBack.UseVisualStyleBackColor = true;
+            this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
+            // 
+            // buttonForward
+            // 
+            this.buttonForward.Location = new System.Drawing.Point(222, 274);
+            this.buttonForward.Name = "buttonForward";
+            this.buttonForward.Size = new System.Drawing.Size(62, 23);
+            this.buttonForward.TabIndex = 66;
+            this.buttonForward.Text = "Forward";
+            this.buttonForward.UseVisualStyleBackColor = true;
+            this.buttonForward.Click += new System.EventHandler(this.buttonForward_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -351,6 +375,8 @@ namespace MainWindow
         private ClipingToolbox clipingPanel;
         private System.Windows.Forms.FolderBrowserDialog openFileDialog1;
         private System.Windows.Forms.Button buttonLoadDicom;
+        private System.Windows.Forms.Button buttonForward;
+        private System.Windows.Forms.Button buttonBack;
     }
 }
 
