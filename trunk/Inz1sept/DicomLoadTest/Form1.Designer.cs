@@ -30,17 +30,18 @@ namespace MainWindow
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.fourthWindow = new Kitware.VTK.RenderWindowControl();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.firstWindow = new Kitware.VTK.RenderWindowControl();
             this.secondWindow = new Kitware.VTK.RenderWindowControl();
             this.thirdWindow = new Kitware.VTK.RenderWindowControl();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonForward = new System.Windows.Forms.Button();
+            this.buttonBack = new System.Windows.Forms.Button();
             this.buttonLoadDicom = new System.Windows.Forms.Button();
-            this.clipingPanel = new MainWindow.ClipingToolbox();
             this.PlaneZButton = new System.Windows.Forms.Button();
             this.PlaneYButton = new System.Windows.Forms.Button();
             this.PlaneXButton = new System.Windows.Forms.Button();
@@ -55,8 +56,7 @@ namespace MainWindow
             this.trackBarLevel = new System.Windows.Forms.TrackBar();
             this.trackBarWidth = new System.Windows.Forms.TrackBar();
             this.openFileDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.buttonBack = new System.Windows.Forms.Button();
-            this.buttonForward = new System.Windows.Forms.Button();
+            this.clipingPanel = new MainWindow.ClipingToolbox();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -146,6 +146,26 @@ namespace MainWindow
             this.panel1.Size = new System.Drawing.Size(326, 622);
             this.panel1.TabIndex = 3;
             // 
+            // buttonForward
+            // 
+            this.buttonForward.Location = new System.Drawing.Point(222, 274);
+            this.buttonForward.Name = "buttonForward";
+            this.buttonForward.Size = new System.Drawing.Size(62, 23);
+            this.buttonForward.TabIndex = 66;
+            this.buttonForward.Text = "Forward";
+            this.buttonForward.UseVisualStyleBackColor = true;
+            this.buttonForward.Click += new System.EventHandler(this.buttonForward_Click);
+            // 
+            // buttonBack
+            // 
+            this.buttonBack.Location = new System.Drawing.Point(176, 274);
+            this.buttonBack.Name = "buttonBack";
+            this.buttonBack.Size = new System.Drawing.Size(40, 23);
+            this.buttonBack.TabIndex = 65;
+            this.buttonBack.Text = "Back";
+            this.buttonBack.UseVisualStyleBackColor = true;
+            this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
+            // 
             // buttonLoadDicom
             // 
             this.buttonLoadDicom.Location = new System.Drawing.Point(12, 555);
@@ -156,42 +176,44 @@ namespace MainWindow
             this.buttonLoadDicom.UseVisualStyleBackColor = true;
             this.buttonLoadDicom.Click += new System.EventHandler(this.buttonLoadDicom_Click);
             // 
-            // clipingPanel
-            // 
-            this.clipingPanel.Location = new System.Drawing.Point(13, 388);
-            this.clipingPanel.Name = "clipingPanel";
-            this.clipingPanel.Size = new System.Drawing.Size(289, 145);
-            this.clipingPanel.TabIndex = 63;
-            this.clipingPanel.Text = "ClipingToolbox";
-            // 
             // PlaneZButton
             // 
+            this.PlaneZButton.BackColor = System.Drawing.Color.Blue;
+            this.PlaneZButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.PlaneZButton.ForeColor = System.Drawing.Color.White;
             this.PlaneZButton.Location = new System.Drawing.Point(13, 332);
             this.PlaneZButton.Name = "PlaneZButton";
             this.PlaneZButton.Size = new System.Drawing.Size(125, 23);
             this.PlaneZButton.TabIndex = 62;
             this.PlaneZButton.Text = "Show PlaneZ";
-            this.PlaneZButton.UseVisualStyleBackColor = true;
+            this.PlaneZButton.UseVisualStyleBackColor = false;
             this.PlaneZButton.Click += new System.EventHandler(this.PlaneZButton_Click);
             // 
             // PlaneYButton
             // 
+            this.PlaneYButton.BackColor = System.Drawing.Color.Green;
+            this.PlaneYButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.PlaneYButton.ForeColor = System.Drawing.Color.White;
             this.PlaneYButton.Location = new System.Drawing.Point(13, 303);
             this.PlaneYButton.Name = "PlaneYButton";
             this.PlaneYButton.Size = new System.Drawing.Size(125, 23);
             this.PlaneYButton.TabIndex = 61;
             this.PlaneYButton.Text = "Show PlaneY";
-            this.PlaneYButton.UseVisualStyleBackColor = true;
+            this.PlaneYButton.UseVisualStyleBackColor = false;
             this.PlaneYButton.Click += new System.EventHandler(this.PlaneYButton_Click);
             // 
             // PlaneXButton
             // 
+            this.PlaneXButton.BackColor = System.Drawing.Color.Red;
+            this.PlaneXButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.PlaneXButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.PlaneXButton.ForeColor = System.Drawing.Color.White;
             this.PlaneXButton.Location = new System.Drawing.Point(13, 274);
             this.PlaneXButton.Name = "PlaneXButton";
             this.PlaneXButton.Size = new System.Drawing.Size(125, 23);
             this.PlaneXButton.TabIndex = 60;
             this.PlaneXButton.Text = "Show PlaneX";
-            this.PlaneXButton.UseVisualStyleBackColor = true;
+            this.PlaneXButton.UseVisualStyleBackColor = false;
             this.PlaneXButton.Click += new System.EventHandler(this.PlaneXButton_Click);
             // 
             // button1
@@ -206,31 +228,31 @@ namespace MainWindow
             // 
             // chart1
             // 
-            chartArea2.AxisY.Maximum = 1D;
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
+            chartArea1.AxisY.Maximum = 1D;
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Location = new System.Drawing.Point(13, 72);
             this.chart1.Name = "chart1";
-            series3.BorderWidth = 2;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Color = System.Drawing.Color.RoyalBlue;
-            series3.IsVisibleInLegend = false;
-            series3.LabelBorderWidth = 3;
-            series3.MarkerColor = System.Drawing.Color.White;
-            series3.MarkerSize = 1;
-            series3.Name = "OpacityFunctionSpline";
-            series4.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            series4.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            series4.BorderWidth = 5;
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series4.Color = System.Drawing.Color.Yellow;
-            series4.IsVisibleInLegend = false;
-            series4.MarkerSize = 8;
-            series4.Name = "OpacityFunction";
-            this.chart1.Series.Add(series3);
-            this.chart1.Series.Add(series4);
+            series1.BorderWidth = 2;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Color = System.Drawing.Color.RoyalBlue;
+            series1.IsVisibleInLegend = false;
+            series1.LabelBorderWidth = 3;
+            series1.MarkerColor = System.Drawing.Color.White;
+            series1.MarkerSize = 1;
+            series1.Name = "OpacityFunctionSpline";
+            series2.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            series2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            series2.BorderWidth = 5;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series2.Color = System.Drawing.Color.Yellow;
+            series2.IsVisibleInLegend = false;
+            series2.MarkerSize = 8;
+            series2.Name = "OpacityFunction";
+            this.chart1.Series.Add(series1);
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(238, 120);
             this.chart1.TabIndex = 58;
             this.chart1.Text = "chart1";
@@ -312,25 +334,14 @@ namespace MainWindow
             this.trackBarWidth.TabIndex = 6;
             this.trackBarWidth.Scroll += new System.EventHandler(this.trackBarWidth_Scroll);
             // 
-            // buttonBack
+            // clipingPanel
             // 
-            this.buttonBack.Location = new System.Drawing.Point(176, 274);
-            this.buttonBack.Name = "buttonBack";
-            this.buttonBack.Size = new System.Drawing.Size(40, 23);
-            this.buttonBack.TabIndex = 65;
-            this.buttonBack.Text = "Back";
-            this.buttonBack.UseVisualStyleBackColor = true;
-            this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
-            // 
-            // buttonForward
-            // 
-            this.buttonForward.Location = new System.Drawing.Point(222, 274);
-            this.buttonForward.Name = "buttonForward";
-            this.buttonForward.Size = new System.Drawing.Size(62, 23);
-            this.buttonForward.TabIndex = 66;
-            this.buttonForward.Text = "Forward";
-            this.buttonForward.UseVisualStyleBackColor = true;
-            this.buttonForward.Click += new System.EventHandler(this.buttonForward_Click);
+            this.clipingPanel.Location = new System.Drawing.Point(13, 388);
+            this.clipingPanel.Name = "clipingPanel";
+            this.clipingPanel.Size = new System.Drawing.Size(289, 145);
+            this.clipingPanel.TabIndex = 63;
+            this.clipingPanel.TabStop = false;
+            this.clipingPanel.Text = "ClipingToolbox";
             // 
             // Form1
             // 
@@ -370,13 +381,13 @@ namespace MainWindow
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Button PlaneZButton;
         private System.Windows.Forms.Button PlaneYButton;
-        private System.Windows.Forms.Button PlaneXButton;
         private System.Windows.Forms.Button button1;
         private ClipingToolbox clipingPanel;
         private System.Windows.Forms.FolderBrowserDialog openFileDialog1;
         private System.Windows.Forms.Button buttonLoadDicom;
         private System.Windows.Forms.Button buttonForward;
         private System.Windows.Forms.Button buttonBack;
+        private System.Windows.Forms.Button PlaneXButton;
     }
 }
 

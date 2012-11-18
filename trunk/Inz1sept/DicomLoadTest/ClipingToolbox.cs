@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace MainWindow
 {
-    public partial class ClipingToolbox : Panel
+    public partial class ClipingToolbox : GroupBox
     {
         public delegate void EventHandler(object sender, ClipingEventArgs e);
         public EventHandler<ClipingEventArgs> ClipingOperationEventHandlerDelegate;
