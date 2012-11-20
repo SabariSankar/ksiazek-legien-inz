@@ -3,16 +3,6 @@
 namespace MainWindow
 {
 
-    /// <summary>
-    /// Name of the axis - X,Y or Z.
-    /// </summary>
-    public enum Axis
-    {
-        X,
-        Y,
-        Z
-    };
-
     public enum RotationOperation
     {
         Back,

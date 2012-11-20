@@ -30,9 +30,9 @@
         {
             this.XClipingTrackBar2 = new System.Windows.Forms.TrackBar();
             this.XClipingTrackBar1 = new System.Windows.Forms.TrackBar();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.zLabel = new System.Windows.Forms.Label();
+            this.yLabel = new System.Windows.Forms.Label();
+            this.xLabel = new System.Windows.Forms.Label();
             this.YClipingTrackBar2 = new System.Windows.Forms.TrackBar();
             this.YClipingTrackBar1 = new System.Windows.Forms.TrackBar();
             this.ZClipingTrackBar2 = new System.Windows.Forms.TrackBar();
@@ -47,8 +47,9 @@
             // 
             // XClipingTrackBar2
             // 
+            this.XClipingTrackBar2.BackColor = System.Drawing.SystemColors.Control;
             this.XClipingTrackBar2.Location = new System.Drawing.Point(147, 9);
-            this.XClipingTrackBar2.Margin = new System.Windows.Forms.Padding(0);
+            this.XClipingTrackBar2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.XClipingTrackBar2.Maximum = 200;
             this.XClipingTrackBar2.Name = "XClipingTrackBar2";
             this.XClipingTrackBar2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -58,45 +59,52 @@
             // 
             // XClipingTrackBar1
             // 
+            this.XClipingTrackBar1.BackColor = System.Drawing.SystemColors.Control;
             this.XClipingTrackBar1.Location = new System.Drawing.Point(21, 9);
-            this.XClipingTrackBar1.Margin = new System.Windows.Forms.Padding(0);
+            this.XClipingTrackBar1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.XClipingTrackBar1.Maximum = 200;
             this.XClipingTrackBar1.Name = "XClipingTrackBar1";
             this.XClipingTrackBar1.Size = new System.Drawing.Size(128, 45);
             this.XClipingTrackBar1.TabIndex = 65;
             this.XClipingTrackBar1.Scroll += new System.EventHandler(this.XClipingTrackBar1_Scroll);
             // 
-            // label6
+            // zLabel
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(7, 99);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(17, 13);
-            this.label6.TabIndex = 64;
-            this.label6.Text = "Z:";
+            this.zLabel.AutoSize = true;
+            this.zLabel.ForeColor = System.Drawing.Color.Blue;
+            this.zLabel.Location = new System.Drawing.Point(7, 111);
+            this.zLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.zLabel.Name = "zLabel";
+            this.zLabel.Size = new System.Drawing.Size(17, 13);
+            this.zLabel.TabIndex = 64;
+            this.zLabel.Text = "Z:";
             // 
-            // label5
+            // yLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 54);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(17, 13);
-            this.label5.TabIndex = 63;
-            this.label5.Text = "Y:";
+            this.yLabel.AutoSize = true;
+            this.yLabel.ForeColor = System.Drawing.Color.Green;
+            this.yLabel.Location = new System.Drawing.Point(7, 66);
+            this.yLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.yLabel.Name = "yLabel";
+            this.yLabel.Size = new System.Drawing.Size(17, 13);
+            this.yLabel.TabIndex = 63;
+            this.yLabel.Text = "Y:";
             // 
-            // label4
+            // xLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 9);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(17, 13);
-            this.label4.TabIndex = 62;
-            this.label4.Text = "X:";
+            this.xLabel.AutoSize = true;
+            this.xLabel.ForeColor = System.Drawing.Color.Red;
+            this.xLabel.Location = new System.Drawing.Point(7, 21);
+            this.xLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.xLabel.Name = "xLabel";
+            this.xLabel.Size = new System.Drawing.Size(17, 13);
+            this.xLabel.TabIndex = 62;
+            this.xLabel.Text = "X:";
             // 
             // YClipingTrackBar2
             // 
             this.YClipingTrackBar2.Location = new System.Drawing.Point(147, 54);
-            this.YClipingTrackBar2.Margin = new System.Windows.Forms.Padding(0);
+            this.YClipingTrackBar2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.YClipingTrackBar2.Maximum = 200;
             this.YClipingTrackBar2.Name = "YClipingTrackBar2";
             this.YClipingTrackBar2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -107,7 +115,7 @@
             // YClipingTrackBar1
             // 
             this.YClipingTrackBar1.Location = new System.Drawing.Point(21, 54);
-            this.YClipingTrackBar1.Margin = new System.Windows.Forms.Padding(0);
+            this.YClipingTrackBar1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.YClipingTrackBar1.Maximum = 200;
             this.YClipingTrackBar1.Name = "YClipingTrackBar1";
             this.YClipingTrackBar1.Size = new System.Drawing.Size(128, 45);
@@ -117,7 +125,7 @@
             // ZClipingTrackBar2
             // 
             this.ZClipingTrackBar2.Location = new System.Drawing.Point(147, 99);
-            this.ZClipingTrackBar2.Margin = new System.Windows.Forms.Padding(0);
+            this.ZClipingTrackBar2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.ZClipingTrackBar2.Maximum = 200;
             this.ZClipingTrackBar2.Name = "ZClipingTrackBar2";
             this.ZClipingTrackBar2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -128,7 +136,7 @@
             // ZClipingTrackBar1
             // 
             this.ZClipingTrackBar1.Location = new System.Drawing.Point(21, 99);
-            this.ZClipingTrackBar1.Margin = new System.Windows.Forms.Padding(0);
+            this.ZClipingTrackBar1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.ZClipingTrackBar1.Maximum = 200;
             this.ZClipingTrackBar1.Name = "ZClipingTrackBar1";
             this.ZClipingTrackBar1.Size = new System.Drawing.Size(128, 45);
@@ -137,15 +145,18 @@
             // 
             // ClipingToolbox
             // 
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.ZClipingTrackBar2);
             this.Controls.Add(this.ZClipingTrackBar1);
             this.Controls.Add(this.YClipingTrackBar2);
             this.Controls.Add(this.YClipingTrackBar1);
             this.Controls.Add(this.XClipingTrackBar2);
             this.Controls.Add(this.XClipingTrackBar1);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.zLabel);
+            this.Controls.Add(this.yLabel);
+            this.Controls.Add(this.xLabel);
+            this.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
+            this.Padding = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this.Size = new System.Drawing.Size(284, 149);
             this.Text = "ClipingToolbox";
             ((System.ComponentModel.ISupportInitialize)(this.XClipingTrackBar2)).EndInit();
@@ -163,9 +174,9 @@
 
         public System.Windows.Forms.TrackBar XClipingTrackBar2;
         public System.Windows.Forms.TrackBar XClipingTrackBar1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label zLabel;
+        private System.Windows.Forms.Label yLabel;
+        private System.Windows.Forms.Label xLabel;
         public System.Windows.Forms.TrackBar YClipingTrackBar2;
         public System.Windows.Forms.TrackBar YClipingTrackBar1;
         public System.Windows.Forms.TrackBar ZClipingTrackBar2;

@@ -39,13 +39,17 @@ namespace MainWindow
             this.secondWindow = new Kitware.VTK.RenderWindowControl();
             this.thirdWindow = new Kitware.VTK.RenderWindowControl();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lockZ = new System.Windows.Forms.CheckBox();
+            this.lockY = new System.Windows.Forms.CheckBox();
+            this.lockX = new System.Windows.Forms.CheckBox();
+            this.colorStrip = new System.Windows.Forms.Panel();
             this.buttonForward = new System.Windows.Forms.Button();
             this.buttonBack = new System.Windows.Forms.Button();
             this.buttonLoadDicom = new System.Windows.Forms.Button();
+            this.clipingPanel = new MainWindow.ClipingToolbox();
             this.PlaneZButton = new System.Windows.Forms.Button();
             this.PlaneYButton = new System.Windows.Forms.Button();
             this.PlaneXButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.comboBoxSeries = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -56,7 +60,6 @@ namespace MainWindow
             this.trackBarLevel = new System.Windows.Forms.TrackBar();
             this.trackBarWidth = new System.Windows.Forms.TrackBar();
             this.openFileDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.clipingPanel = new MainWindow.ClipingToolbox();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -122,6 +125,10 @@ namespace MainWindow
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lockZ);
+            this.panel1.Controls.Add(this.lockY);
+            this.panel1.Controls.Add(this.lockX);
+            this.panel1.Controls.Add(this.colorStrip);
             this.panel1.Controls.Add(this.buttonForward);
             this.panel1.Controls.Add(this.buttonBack);
             this.panel1.Controls.Add(this.buttonLoadDicom);
@@ -129,7 +136,6 @@ namespace MainWindow
             this.panel1.Controls.Add(this.PlaneZButton);
             this.panel1.Controls.Add(this.PlaneYButton);
             this.panel1.Controls.Add(this.PlaneXButton);
-            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.chart1);
             this.panel1.Controls.Add(this.comboBoxSeries);
             this.panel1.Controls.Add(this.comboBox1);
@@ -143,8 +149,50 @@ namespace MainWindow
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.MinimumSize = new System.Drawing.Size(267, 619);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(326, 622);
+            this.panel1.Size = new System.Drawing.Size(305, 622);
             this.panel1.TabIndex = 3;
+            // 
+            // lockZ
+            // 
+            this.lockZ.AutoSize = true;
+            this.lockZ.Location = new System.Drawing.Point(144, 395);
+            this.lockZ.Name = "lockZ";
+            this.lockZ.Size = new System.Drawing.Size(81, 17);
+            this.lockZ.TabIndex = 70;
+            this.lockZ.Text = "Lock Z axis";
+            this.lockZ.UseVisualStyleBackColor = true;
+            this.lockZ.CheckedChanged += new System.EventHandler(this.lockZ_CheckedChanged);
+            // 
+            // lockY
+            // 
+            this.lockY.AutoSize = true;
+            this.lockY.Location = new System.Drawing.Point(144, 366);
+            this.lockY.Name = "lockY";
+            this.lockY.Size = new System.Drawing.Size(81, 17);
+            this.lockY.TabIndex = 69;
+            this.lockY.Text = "Lock Y axis";
+            this.lockY.UseVisualStyleBackColor = true;
+            this.lockY.CheckedChanged += new System.EventHandler(this.lockY_CheckedChanged);
+            // 
+            // lockX
+            // 
+            this.lockX.AutoSize = true;
+            this.lockX.Location = new System.Drawing.Point(144, 337);
+            this.lockX.Name = "lockX";
+            this.lockX.Size = new System.Drawing.Size(81, 17);
+            this.lockX.TabIndex = 68;
+            this.lockX.Text = "Lock X axis";
+            this.lockX.UseVisualStyleBackColor = true;
+            this.lockX.CheckedChanged += new System.EventHandler(this.lockX_CheckedChanged);
+            // 
+            // colorStrip
+            // 
+            this.colorStrip.Enabled = false;
+            this.colorStrip.Location = new System.Drawing.Point(51, 199);
+            this.colorStrip.Name = "colorStrip";
+            this.colorStrip.Size = new System.Drawing.Size(185, 17);
+            this.colorStrip.TabIndex = 67;
+            this.colorStrip.Paint += new System.Windows.Forms.PaintEventHandler(this.colorStrip_Paint);
             // 
             // buttonForward
             // 
@@ -168,7 +216,7 @@ namespace MainWindow
             // 
             // buttonLoadDicom
             // 
-            this.buttonLoadDicom.Location = new System.Drawing.Point(12, 555);
+            this.buttonLoadDicom.Location = new System.Drawing.Point(12, 587);
             this.buttonLoadDicom.Name = "buttonLoadDicom";
             this.buttonLoadDicom.Size = new System.Drawing.Size(75, 23);
             this.buttonLoadDicom.TabIndex = 64;
@@ -176,12 +224,24 @@ namespace MainWindow
             this.buttonLoadDicom.UseVisualStyleBackColor = true;
             this.buttonLoadDicom.Click += new System.EventHandler(this.buttonLoadDicom_Click);
             // 
+            // clipingPanel
+            // 
+            this.clipingPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.clipingPanel.Location = new System.Drawing.Point(13, 432);
+            this.clipingPanel.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
+            this.clipingPanel.Name = "clipingPanel";
+            this.clipingPanel.Padding = new System.Windows.Forms.Padding(5, 15, 5, 5);
+            this.clipingPanel.Size = new System.Drawing.Size(283, 149);
+            this.clipingPanel.TabIndex = 63;
+            this.clipingPanel.TabStop = false;
+            this.clipingPanel.Text = "ClipingToolbox";
+            // 
             // PlaneZButton
             // 
             this.PlaneZButton.BackColor = System.Drawing.Color.Blue;
             this.PlaneZButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.PlaneZButton.ForeColor = System.Drawing.Color.White;
-            this.PlaneZButton.Location = new System.Drawing.Point(13, 332);
+            this.PlaneZButton.Location = new System.Drawing.Point(13, 391);
             this.PlaneZButton.Name = "PlaneZButton";
             this.PlaneZButton.Size = new System.Drawing.Size(125, 23);
             this.PlaneZButton.TabIndex = 62;
@@ -194,7 +254,7 @@ namespace MainWindow
             this.PlaneYButton.BackColor = System.Drawing.Color.Green;
             this.PlaneYButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.PlaneYButton.ForeColor = System.Drawing.Color.White;
-            this.PlaneYButton.Location = new System.Drawing.Point(13, 303);
+            this.PlaneYButton.Location = new System.Drawing.Point(13, 362);
             this.PlaneYButton.Name = "PlaneYButton";
             this.PlaneYButton.Size = new System.Drawing.Size(125, 23);
             this.PlaneYButton.TabIndex = 61;
@@ -208,23 +268,13 @@ namespace MainWindow
             this.PlaneXButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.PlaneXButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.PlaneXButton.ForeColor = System.Drawing.Color.White;
-            this.PlaneXButton.Location = new System.Drawing.Point(13, 274);
+            this.PlaneXButton.Location = new System.Drawing.Point(13, 333);
             this.PlaneXButton.Name = "PlaneXButton";
             this.PlaneXButton.Size = new System.Drawing.Size(125, 23);
             this.PlaneXButton.TabIndex = 60;
             this.PlaneXButton.Text = "Show PlaneX";
             this.PlaneXButton.UseVisualStyleBackColor = false;
             this.PlaneXButton.Click += new System.EventHandler(this.PlaneXButton_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 584);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 60;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // chart1
             // 
@@ -264,7 +314,7 @@ namespace MainWindow
             // comboBoxSeries
             // 
             this.comboBoxSeries.FormattingEnabled = true;
-            this.comboBoxSeries.Location = new System.Drawing.Point(232, 220);
+            this.comboBoxSeries.Location = new System.Drawing.Point(232, 235);
             this.comboBoxSeries.Name = "comboBoxSeries";
             this.comboBoxSeries.Size = new System.Drawing.Size(52, 21);
             this.comboBoxSeries.TabIndex = 57;
@@ -273,7 +323,7 @@ namespace MainWindow
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(13, 220);
+            this.comboBox1.Location = new System.Drawing.Point(13, 235);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(203, 21);
             this.comboBox1.TabIndex = 18;
@@ -334,15 +384,6 @@ namespace MainWindow
             this.trackBarWidth.TabIndex = 6;
             this.trackBarWidth.Scroll += new System.EventHandler(this.trackBarWidth_Scroll);
             // 
-            // clipingPanel
-            // 
-            this.clipingPanel.Location = new System.Drawing.Point(13, 388);
-            this.clipingPanel.Name = "clipingPanel";
-            this.clipingPanel.Size = new System.Drawing.Size(289, 145);
-            this.clipingPanel.TabIndex = 63;
-            this.clipingPanel.TabStop = false;
-            this.clipingPanel.Text = "ClipingToolbox";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -381,13 +422,16 @@ namespace MainWindow
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Button PlaneZButton;
         private System.Windows.Forms.Button PlaneYButton;
-        private System.Windows.Forms.Button button1;
         private ClipingToolbox clipingPanel;
         private System.Windows.Forms.FolderBrowserDialog openFileDialog1;
         private System.Windows.Forms.Button buttonLoadDicom;
         private System.Windows.Forms.Button buttonForward;
         private System.Windows.Forms.Button buttonBack;
         private System.Windows.Forms.Button PlaneXButton;
+        private System.Windows.Forms.Panel colorStrip;
+        private System.Windows.Forms.CheckBox lockZ;
+        private System.Windows.Forms.CheckBox lockY;
+        private System.Windows.Forms.CheckBox lockX;
     }
 }
 

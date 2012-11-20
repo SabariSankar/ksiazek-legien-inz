@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using Kitware.VTK;
 using XMLReaderTest;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
 
 namespace MainWindow
 {
@@ -78,7 +81,6 @@ namespace MainWindow
             colors.SetColorSpaceToRGB();
             colors.Build();
             planeWidget.GetColorMap().SetLookupTable(colors);
-   
         }
 
         //wizualizacja 3d -----------------------------------------------------------------
@@ -318,6 +320,38 @@ namespace MainWindow
             return xyzSize;
         }
 
+        public void GenerateStrip(Graphics sourceGraphics, int height, int width)
+        {
+            var rect = new Rectangle(0, 0, width, height);
+            using (Brush aGradientBrush = new LinearGradientBrush(rect, Color.Blue, Color.Red, LinearGradientMode.Horizontal))
+            {
+                using (Pen aGradientPen = new Pen(aGradientBrush))
+                {
+                    sourceGraphics.FillRectangle(aGradientBrush, 0, 0, width, height);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Lock/unlock PlaneWidget on specified axis.
+        /// </summary>
+        /// <param name="axis">axis to lock/unlock</param>
+        /// <param name="state">0 to turn off, 1 to turn on</param>
+        public void ChangePlaneGadetActivity(Axis axis, int state)
+        {
+                PlaneWidget widget = null;
+                switch (axis)
+                {
+                    case(Axis.X): widget = PlaneWidgetX; break;
+                    case(Axis.Y): widget = PlaneWidgetY; break;
+                    case(Axis.Z): widget = PlaneWidgetZ; break;
+                }
+                if (state == 0)
+                    widget.InteractionOff();
+                if (state == 1)
+                    widget.InteractionOn();
+        }
+
         /// <summary>
         /// Disposing all elements in visualization 3D.
         /// </summary>
@@ -335,10 +369,7 @@ namespace MainWindow
             return true;
         }
 
-     
-   
     }
-
 
     public class PlaneWidget : vtkImagePlaneWidget
     {
@@ -350,7 +381,6 @@ namespace MainWindow
         }
 
     }
-
 
 }
 
