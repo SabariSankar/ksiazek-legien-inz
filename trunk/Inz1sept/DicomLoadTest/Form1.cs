@@ -408,6 +408,30 @@ namespace MainWindow
             _firstVizualization2D.RotateImageForward();
         }
 
+        private void lockX_CheckedChanged(object sender, EventArgs e)
+        {
+            int state = ((CheckBox)sender).Checked ? 0 : 1;
+           _vizualization3D.ChangePlaneGadetActivity(Axis.X, state);
+        }
+
+        private void lockY_CheckedChanged(object sender, EventArgs e)
+        {
+            int state = ((CheckBox)sender).Checked ? 0 : 1;
+            _vizualization3D.ChangePlaneGadetActivity(Axis.Y, state);
+        }
+
+        private void lockZ_CheckedChanged(object sender, EventArgs e)
+        {
+            int state = ((CheckBox)sender).Checked ? 0 : 1;
+            _vizualization3D.ChangePlaneGadetActivity(Axis.Z, state);
+        }
+
+        private void colorStrip_Paint(object sender, PaintEventArgs e)
+        {
+            var width = chart1.ChartAreas["ChartArea1"].Position.Size.Width > 0 ? (int)chart1.ChartAreas["ChartArea1"].Position.Size.Width : 1;
+            _vizualization3D.GenerateStrip(e.Graphics, 10, width);
+        }
+
 
     }
 }
