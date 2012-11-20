@@ -339,11 +339,13 @@ namespace MainWindow
             {
                 _vizualization3D.PlaneWidgetX.On();
                 PlaneXButton.Text = ButtonText.HidePlaneX;
+                lockX.Enabled = true;
             }
             else
             {
                 _vizualization3D.PlaneWidgetX.Off();
                 PlaneXButton.Text = ButtonText.ShowPlaneX;
+                lockX.Enabled = false;
             }
         }
 
@@ -353,11 +355,13 @@ namespace MainWindow
             {
                 _vizualization3D.PlaneWidgetY.On();
                 PlaneYButton.Text = ButtonText.HidePlaneY;
+                lockY.Enabled = true;
             }
             else
             {
                 _vizualization3D.PlaneWidgetY.Off();
                 PlaneYButton.Text = ButtonText.ShowPlaneY;
+                lockY.Enabled = false;
             }
         }
 
@@ -367,11 +371,13 @@ namespace MainWindow
             {
                 _vizualization3D.PlaneWidgetZ.On();
                 PlaneZButton.Text = ButtonText.HidePlaneZ;
+                lockZ.Enabled = true;
             }
             else
             {
                 _vizualization3D.PlaneWidgetZ.Off();
                 PlaneZButton.Text = ButtonText.ShowPlaneZ;
+                lockZ.Enabled = false;
             }
         }
 
@@ -424,11 +430,13 @@ namespace MainWindow
         {
             int state = ((CheckBox)sender).Checked ? 0 : 1;
             _vizualization3D.ChangePlaneGadetActivity(Axis.Z, state);
+            colorStrip.Invalidate();
         }
 
         private void colorStrip_Paint(object sender, PaintEventArgs e)
         {
-            var width = chart1.ChartAreas["ChartArea1"].Position.Size.Width > 0 ? (int)chart1.ChartAreas["ChartArea1"].Position.Size.Width : 1;
+            var width = chart1.ChartAreas["ChartArea1"].Position.Size.Width > 0 ? (int)chart1.ChartAreas["ChartArea1"].Position.Size.Height : 1;
+            Console.WriteLine(width);
             _vizualization3D.GenerateStrip(e.Graphics, 10, width);
         }
 

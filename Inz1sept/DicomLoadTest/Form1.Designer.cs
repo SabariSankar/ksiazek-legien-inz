@@ -155,6 +155,7 @@ namespace MainWindow
             // lockZ
             // 
             this.lockZ.AutoSize = true;
+            this.lockZ.Enabled = false;
             this.lockZ.Location = new System.Drawing.Point(144, 395);
             this.lockZ.Name = "lockZ";
             this.lockZ.Size = new System.Drawing.Size(81, 17);
@@ -166,6 +167,7 @@ namespace MainWindow
             // lockY
             // 
             this.lockY.AutoSize = true;
+            this.lockY.Enabled = false;
             this.lockY.Location = new System.Drawing.Point(144, 366);
             this.lockY.Name = "lockY";
             this.lockY.Size = new System.Drawing.Size(81, 17);
@@ -177,6 +179,7 @@ namespace MainWindow
             // lockX
             // 
             this.lockX.AutoSize = true;
+            this.lockX.Enabled = false;
             this.lockX.Location = new System.Drawing.Point(144, 337);
             this.lockX.Name = "lockX";
             this.lockX.Size = new System.Drawing.Size(81, 17);
