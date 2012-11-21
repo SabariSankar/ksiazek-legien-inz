@@ -32,7 +32,7 @@ namespace MainWindow
         private DicomLoader _dicomLoader;
         private readonly Chart _chart;
         public XmlPresetReader PresetReader { get; set; }
-        public PresetInformation PresetInfo { get; set; } 
+        public PresetInformation PresetInfo { get; set; }
 
         private float _windowWidth;
         private float _windowLevel = 40;
@@ -61,7 +61,7 @@ namespace MainWindow
             planeWidget.GetPlaneProperty().SetOpacity(0);
 
             vtkColorTransferFunction colors = vtkColorTransferFunction.New();
-            
+
             if (planeWidget.Axis == Axis.X)
             {
                 planeWidget.SetPlaneOrientationToXAxes();
@@ -124,7 +124,7 @@ namespace MainWindow
             _window.RenderWindow.Render();
 
             //ClipingModule
-            _clipingModule = new ClipingModule(GetObjectSize());          
+            _clipingModule = new ClipingModule(GetObjectSize());
         }
 
         public void ChangeDirectory(DicomLoader dicomLoader)
@@ -156,10 +156,8 @@ namespace MainWindow
             _window.Validate();
             _window.Update();
 
-            
+            _clipingModule = new ClipingModule(GetObjectSize());
 
-            _clipingModule = new ClipingModule(GetObjectSize());     
-            
         }
 
         public void ExecuteClipingOperation(object sender, ClipingEventArgs args)
@@ -245,7 +243,7 @@ namespace MainWindow
             _window.RenderWindow.Render();
         }
 
-        public void ChangeSplineAndPointFunction(List<DataPoint> splinePoints )
+        public void ChangeSplineAndPointFunction(List<DataPoint> splinePoints)
         {
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
             _chart.Series["OpacityFunctionSpline"].Points.Clear();
@@ -316,19 +314,24 @@ namespace MainWindow
 
         public IList<double> GetObjectSize()
         {
-            var xyzSize = new List<double> {_volume.GetXRange()[1], _volume.GetYRange()[1], _volume.GetZRange()[1]};
+            var xyzSize = new List<double> { _volume.GetXRange()[1], _volume.GetYRange()[1], _volume.GetZRange()[1] };
             return xyzSize;
         }
 
         public void GenerateStrip(Graphics sourceGraphics, int height, int width)
         {
+            var colorFunction = _volume.GetProperty().GetRGBTransferFunction();
+
+            double[] arr = colorFunction.GetRange();
+            double max = arr[1];
+            double min = arr[0];
+
+            //colorFunction.
+
             var rect = new Rectangle(0, 0, width, height);
             using (Brush aGradientBrush = new LinearGradientBrush(rect, Color.Blue, Color.Red, LinearGradientMode.Horizontal))
             {
-                using (Pen aGradientPen = new Pen(aGradientBrush))
-                {
-                    sourceGraphics.FillRectangle(aGradientBrush, 0, 0, width, height);
-                }
+                sourceGraphics.FillRectangle(aGradientBrush, 0, 0, width, height);
             }
         }
 
@@ -339,17 +342,17 @@ namespace MainWindow
         /// <param name="state">0 to turn off, 1 to turn on</param>
         public void ChangePlaneGadetActivity(Axis axis, int state)
         {
-                PlaneWidget widget = null;
-                switch (axis)
-                {
-                    case(Axis.X): widget = PlaneWidgetX; break;
-                    case(Axis.Y): widget = PlaneWidgetY; break;
-                    case(Axis.Z): widget = PlaneWidgetZ; break;
-                }
-                if (state == 0)
-                    widget.InteractionOff();
-                if (state == 1)
-                    widget.InteractionOn();
+            PlaneWidget widget = null;
+            switch (axis)
+            {
+                case (Axis.X): widget = PlaneWidgetX; break;
+                case (Axis.Y): widget = PlaneWidgetY; break;
+                case (Axis.Z): widget = PlaneWidgetZ; break;
+            }
+            if (state == 0)
+                widget.InteractionOff();
+            if (state == 1)
+                widget.InteractionOn();
         }
 
         /// <summary>
@@ -357,15 +360,15 @@ namespace MainWindow
         /// </summary>
         public bool Dispose()
         {
-            if(_volume != null) _volume.Dispose();
-            if(_dicomLoader != null) _dicomLoader.Dispose();
-            if(_mapper != null) _mapper.Dispose();
+            if (_volume != null) _volume.Dispose();
+            if (_dicomLoader != null) _dicomLoader.Dispose();
+            if (_mapper != null) _mapper.Dispose();
             if (_renderWindowInteractor != null) _renderWindowInteractor.Dispose();
             if (PlaneWidgetX != null) PlaneWidgetX.Dispose();
             if (PlaneWidgetY != null) PlaneWidgetY.Dispose();
             if (PlaneWidgetZ != null) PlaneWidgetZ.Dispose();
-            if(_window != null) _window.Dispose();
-        
+            if (_window != null) _window.Dispose();
+
             return true;
         }
 
