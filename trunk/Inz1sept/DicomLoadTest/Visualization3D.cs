@@ -39,6 +39,8 @@ namespace MainWindow
 
         private ClipingModule _clipingModule;
 
+        private int _currentPresetNumber;
+
         /// <summary>
         /// Set up the new PlaneWidget.
         /// </summary>
@@ -220,6 +222,8 @@ namespace MainWindow
             _window.Validate();
             _window.Update();
             _window.RenderWindow.Render();
+
+            _currentPresetNumber = numberOfSerie;
         }
 
         /// <summary>
@@ -323,16 +327,45 @@ namespace MainWindow
             var colorFunction = _volume.GetProperty().GetRGBTransferFunction();
 
             double[] arr = colorFunction.GetRange();
-            double max = arr[1];
-            double min = arr[0];
+            int max = (int)arr[1];
+            int min = (int)arr[0];
+            int len = max - min;
 
-            //colorFunction.
-
-            var rect = new Rectangle(0, 0, width, height);
-            using (Brush aGradientBrush = new LinearGradientBrush(rect, Color.Blue, Color.Red, LinearGradientMode.Horizontal))
+            int unit = len / width;
+            int counter;
+            int? prevCounter = null;
+            float counterf = 0;
+           // System.IO.StreamWriter file = new System.IO.StreamWriter(@"debug_file.txt");
+            foreach (var key in PresetInfo.Series[_currentPresetNumber].ColorFuction.Keys)
             {
-                sourceGraphics.FillRectangle(aGradientBrush, 0, 0, width, height);
-            }
+                if (prevCounter == null)
+                {
+                    prevCounter = (int)0;
+                    counterf = key;
+                }
+                else
+                {
+                    counter = (int)((key - counterf) / unit);
+                    if (counter > 0)
+                    {
+                        //
+                     //               file.WriteLine(counterf + " " + counter + " " + key);
+                        //
+                        var rect = new Rectangle(prevCounter.Value, 0, prevCounter.Value + counter, height);
+                        using (Brush aGradientBrush = new LinearGradientBrush(rect,
+                            //PresetInfo.Series[_currentPresetNumber].ColorFuction[counterf][1],
+                            Color.Blue,
+                            //PresetInfo.Series[_currentPresetNumber].ColorFuction[key][0],
+                            Color.Red,
+                            LinearGradientMode.Horizontal))
+                        {
+                            sourceGraphics.FillRectangle(aGradientBrush, prevCounter.Value, 0, prevCounter.Value + counter, height);
+                        }
+                    }
+                    prevCounter = prevCounter.Value + counter;
+                    counterf = key;
+                }
+            }           
         }
 
         /// <summary>
