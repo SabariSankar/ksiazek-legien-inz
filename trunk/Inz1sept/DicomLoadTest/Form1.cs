@@ -435,9 +435,17 @@ namespace MainWindow
 
         private void colorStrip_Paint(object sender, PaintEventArgs e)
         {
-            var width = chart1.ChartAreas["ChartArea1"].Position.Size.Width > 0 ? (int)chart1.ChartAreas["ChartArea1"].Position.Size.Height : 1;
-            Console.WriteLine(width);
+            //var coordinate = chart1.ChartAreas["ChartArea1"].AxisX.Maximum;
+            var width = chart1.ChartAreas["ChartArea1"].Position.Size.Width > 0 ? (int)chart1.ChartAreas["ChartArea1"].Position.Size.Width*chart1.Size.Width/100 : 1;
+
+            
+            //Console.WriteLine(chart1.ChartAreas["ChartArea1"].Position.Size.Width);
             _vizualization3D.GenerateStrip(e.Graphics, 10, width);
+        }
+
+        private void clipingPanel_Enter(object sender, EventArgs e)
+        {
+
         }
 
 
