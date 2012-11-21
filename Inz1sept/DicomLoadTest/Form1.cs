@@ -197,13 +197,14 @@ namespace MainWindow
             }
             comboBoxSeries.SelectedIndex = 0;
             _vizualization3D.Update3DVisualization();
-
+            colorStrip.Invalidate();
         }
 
 
         private void comboBoxSeries_SelectedIndexChanged(object sender, EventArgs e)
         {
             _vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
+            colorStrip.Invalidate();
         }
 
         #endregion
@@ -442,12 +443,6 @@ namespace MainWindow
             //Console.WriteLine(chart1.ChartAreas["ChartArea1"].Position.Size.Width);
             _vizualization3D.GenerateStrip(e.Graphics, 10, width);
         }
-
-        private void clipingPanel_Enter(object sender, EventArgs e)
-        {
-
-        }
-
 
     }
 }
