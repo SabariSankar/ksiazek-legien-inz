@@ -30,9 +30,9 @@ namespace MainWindow
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.fourthWindow = new Kitware.VTK.RenderWindowControl();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.firstWindow = new Kitware.VTK.RenderWindowControl();
@@ -46,6 +46,7 @@ namespace MainWindow
             this.buttonForward = new System.Windows.Forms.Button();
             this.buttonBack = new System.Windows.Forms.Button();
             this.buttonLoadDicom = new System.Windows.Forms.Button();
+            this.clipingPanel = new MainWindow.ClipingToolbox();
             this.PlaneZButton = new System.Windows.Forms.Button();
             this.PlaneYButton = new System.Windows.Forms.Button();
             this.PlaneXButton = new System.Windows.Forms.Button();
@@ -59,16 +60,31 @@ namespace MainWindow
             this.trackBarLevel = new System.Windows.Forms.TrackBar();
             this.trackBarWidth = new System.Windows.Forms.TrackBar();
             this.openFileDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.clipingPanel = new MainWindow.ClipingToolbox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.bigFirstWindow = new Kitware.VTK.RenderWindowControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.bigSecondWindow = new Kitware.VTK.RenderWindowControl();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.bigThirdWindow = new Kitware.VTK.RenderWindowControl();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.bigFourthWindow = new Kitware.VTK.RenderWindowControl();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarWidth)).BeginInit();
-            this.tabControl1.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.SuspendLayout();
             // 
             // fourthWindow
@@ -227,6 +243,18 @@ namespace MainWindow
             this.buttonLoadDicom.UseVisualStyleBackColor = true;
             this.buttonLoadDicom.Click += new System.EventHandler(this.buttonLoadDicom_Click);
             // 
+            // clipingPanel
+            // 
+            this.clipingPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.clipingPanel.Location = new System.Drawing.Point(12, 432);
+            this.clipingPanel.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
+            this.clipingPanel.Name = "clipingPanel";
+            this.clipingPanel.Padding = new System.Windows.Forms.Padding(5, 15, 5, 5);
+            this.clipingPanel.Size = new System.Drawing.Size(290, 141);
+            this.clipingPanel.TabIndex = 63;
+            this.clipingPanel.TabStop = false;
+            this.clipingPanel.Text = "ClipingToolbox";
+            // 
             // PlaneZButton
             // 
             this.PlaneZButton.BackColor = System.Drawing.Color.Blue;
@@ -269,31 +297,31 @@ namespace MainWindow
             // 
             // chart1
             // 
-            chartArea1.AxisY.Maximum = 1D;
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
+            chartArea3.AxisY.Maximum = 1D;
+            chartArea3.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea3);
             this.chart1.Location = new System.Drawing.Point(13, 72);
             this.chart1.Name = "chart1";
-            series1.BorderWidth = 2;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Color = System.Drawing.Color.RoyalBlue;
-            series1.IsVisibleInLegend = false;
-            series1.LabelBorderWidth = 3;
-            series1.MarkerColor = System.Drawing.Color.White;
-            series1.MarkerSize = 1;
-            series1.Name = "OpacityFunctionSpline";
-            series2.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            series2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            series2.BorderWidth = 5;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series2.Color = System.Drawing.Color.Yellow;
-            series2.IsVisibleInLegend = false;
-            series2.MarkerSize = 8;
-            series2.Name = "OpacityFunction";
-            this.chart1.Series.Add(series1);
-            this.chart1.Series.Add(series2);
+            series5.BorderWidth = 2;
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series5.Color = System.Drawing.Color.RoyalBlue;
+            series5.IsVisibleInLegend = false;
+            series5.LabelBorderWidth = 3;
+            series5.MarkerColor = System.Drawing.Color.White;
+            series5.MarkerSize = 1;
+            series5.Name = "OpacityFunctionSpline";
+            series6.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            series6.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            series6.BorderWidth = 5;
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series6.Color = System.Drawing.Color.Yellow;
+            series6.IsVisibleInLegend = false;
+            series6.MarkerSize = 8;
+            series6.Name = "OpacityFunction";
+            this.chart1.Series.Add(series5);
+            this.chart1.Series.Add(series6);
             this.chart1.Size = new System.Drawing.Size(238, 120);
             this.chart1.TabIndex = 58;
             this.chart1.Text = "chart1";
@@ -375,15 +403,20 @@ namespace MainWindow
             this.trackBarWidth.TabIndex = 6;
             this.trackBarWidth.Scroll += new System.EventHandler(this.trackBarWidth_Scroll);
             // 
-            // tabControl1
+            // tabControl
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(311, 3);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(711, 619);
-            this.tabControl1.TabIndex = 4;
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.Controls.Add(this.tabPage3);
+            this.tabControl.Controls.Add(this.tabPage4);
+            this.tabControl.Controls.Add(this.tabPage5);
+            this.tabControl.Location = new System.Drawing.Point(311, 3);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(711, 619);
+            this.tabControl.TabIndex = 4;
+            this.tabControl.Tag = "";
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -396,37 +429,138 @@ namespace MainWindow
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(703, 593);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.Text = "Four windows view";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.panel3);
+            this.tabPage2.Controls.Add(this.bigFirstWindow);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(703, 593);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "X plane view";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // clipingPanel
+            // panel3
             // 
-            this.clipingPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.clipingPanel.Location = new System.Drawing.Point(12, 432);
-            this.clipingPanel.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
-            this.clipingPanel.Name = "clipingPanel";
-            this.clipingPanel.Padding = new System.Windows.Forms.Padding(5, 15, 5, 5);
-            this.clipingPanel.Size = new System.Drawing.Size(290, 141);
-            this.clipingPanel.TabIndex = 63;
-            this.clipingPanel.TabStop = false;
-            this.clipingPanel.Text = "ClipingToolbox";
+            this.panel3.Location = new System.Drawing.Point(6, 558);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(691, 26);
+            this.panel3.TabIndex = 6;
+            // 
+            // bigFirstWindow
+            // 
+            this.bigFirstWindow.AddTestActors = false;
+            this.bigFirstWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.bigFirstWindow.Location = new System.Drawing.Point(6, 6);
+            this.bigFirstWindow.Name = "bigFirstWindow";
+            this.bigFirstWindow.Size = new System.Drawing.Size(691, 545);
+            this.bigFirstWindow.TabIndex = 5;
+            this.bigFirstWindow.TestText = null;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.panel4);
+            this.tabPage3.Controls.Add(this.bigSecondWindow);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(703, 593);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Y plane view";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // panel4
+            // 
+            this.panel4.Location = new System.Drawing.Point(6, 557);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(691, 26);
+            this.panel4.TabIndex = 7;
+            // 
+            // bigSecondWindow
+            // 
+            this.bigSecondWindow.AddTestActors = false;
+            this.bigSecondWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.bigSecondWindow.Location = new System.Drawing.Point(6, 6);
+            this.bigSecondWindow.Name = "bigSecondWindow";
+            this.bigSecondWindow.Size = new System.Drawing.Size(691, 545);
+            this.bigSecondWindow.TabIndex = 6;
+            this.bigSecondWindow.TestText = null;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.panel5);
+            this.tabPage4.Controls.Add(this.bigThirdWindow);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(703, 593);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Z plane view";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            this.panel5.Location = new System.Drawing.Point(7, 557);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(691, 26);
+            this.panel5.TabIndex = 8;
+            // 
+            // bigThirdWindow
+            // 
+            this.bigThirdWindow.AddTestActors = false;
+            this.bigThirdWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.bigThirdWindow.Location = new System.Drawing.Point(7, 6);
+            this.bigThirdWindow.Name = "bigThirdWindow";
+            this.bigThirdWindow.Size = new System.Drawing.Size(691, 545);
+            this.bigThirdWindow.TabIndex = 7;
+            this.bigThirdWindow.TestText = null;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.panel6);
+            this.tabPage5.Controls.Add(this.bigFourthWindow);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(703, 593);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "3D view";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // panel6
+            // 
+            this.panel6.Location = new System.Drawing.Point(6, 559);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(691, 26);
+            this.panel6.TabIndex = 8;
+            // 
+            // bigFourthWindow
+            // 
+            this.bigFourthWindow.AddTestActors = false;
+            this.bigFourthWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.bigFourthWindow.Location = new System.Drawing.Point(6, 6);
+            this.bigFourthWindow.Name = "bigFourthWindow";
+            this.bigFourthWindow.Size = new System.Drawing.Size(691, 545);
+            this.bigFourthWindow.TabIndex = 7;
+            this.bigFourthWindow.TestText = null;
+            // 
+            // panel2
+            // 
+            this.panel2.Location = new System.Drawing.Point(141, 111);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(200, 100);
+            this.panel2.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1025, 622);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "Form1";
@@ -436,8 +570,12 @@ namespace MainWindow
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLevel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarWidth)).EndInit();
-            this.tabControl1.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -471,9 +609,21 @@ namespace MainWindow
         private System.Windows.Forms.CheckBox lockZ;
         private System.Windows.Forms.CheckBox lockY;
         private System.Windows.Forms.CheckBox lockX;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.Panel panel2;
+        private Kitware.VTK.RenderWindowControl bigFirstWindow;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
+        private Kitware.VTK.RenderWindowControl bigSecondWindow;
+        private System.Windows.Forms.Panel panel5;
+        private Kitware.VTK.RenderWindowControl bigThirdWindow;
+        private System.Windows.Forms.Panel panel6;
+        private Kitware.VTK.RenderWindowControl bigFourthWindow;
     }
 }
 
