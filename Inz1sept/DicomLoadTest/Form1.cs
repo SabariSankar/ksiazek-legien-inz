@@ -18,7 +18,7 @@ namespace MainWindow
         private Visualization2D _thirdVizualization2D;
 
         private readonly DicomLoader _dicomLoader;
-        private String _directoryPath = @"D:\Downloads\PANORAMIX"; //"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
+        private String _directoryPath = @"D:\DICOM\PANORAMIX"; //"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
         private const String PresetDir = @"..\..\presety";
 
         private DataPoint _selectedDataPoint;
