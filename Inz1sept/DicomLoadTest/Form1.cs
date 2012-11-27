@@ -89,7 +89,7 @@ namespace MainWindow
             clipingPanel.ClipingOperationEventHandlerDelegate += new EventHandler<ClipingEventArgs>(_vizualization3D.ExecuteClipingOperation);
             clipingPanel.InitialiseClipingToolbox(_vizualization3D.GetObjectSize());
 
-            vtkImageExtractComponents extract = vtkImageExtractComponents.New();
+            /*vtkImageExtractComponents extract = vtkImageExtractComponents.New();
             extract.SetInput( _dicomLoader.GetOutput() );
             extract.SetComponents(0);
             extract.Update();
@@ -108,7 +108,7 @@ namespace MainWindow
 
 
             xyPlotActor.AddInput(histogram.GetOutput());
-            fourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().AddActor(xyPlotActor); 
+            fourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().AddActor(xyPlotActor); */
             fourthWindow.RenderWindow.Render();
 
         }
@@ -125,6 +125,16 @@ namespace MainWindow
             _firstVizualization2D.Update2DVisualization(windowLevel, windowWidth);
             _secondVizualization2D.Update2DVisualization(windowLevel, windowWidth);
             _thirdVizualization2D.Update2DVisualization(windowLevel, windowWidth);
+
+            if (bigFirstWindow.RenderWindow != null)
+                bigFirstWindow.RenderWindow.Render();
+            if (bigSecondWindow.RenderWindow != null)
+                bigSecondWindow.RenderWindow.Render();
+            if (bigThirdWindow.RenderWindow != null)
+                bigThirdWindow.RenderWindow.Render();
+            if (bigFourthWindow.RenderWindow != null)
+                bigFourthWindow.RenderWindow.Render();
+            
         }
 
   
@@ -444,5 +454,44 @@ namespace MainWindow
             _vizualization3D.GenerateStrip(e.Graphics, 10, width);
         }
 
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int current = (sender as TabControl).SelectedTab.TabIndex;
+            if (current == 0)
+            {
+              firstWindow.RenderWindow.GetRenderers().RemoveAllItems();
+              firstWindow.RenderWindow.AddRenderer(_firstVizualization2D.GetRenderer());
+              secondWindow.RenderWindow.GetRenderers().RemoveAllItems();
+              secondWindow.RenderWindow.AddRenderer(_secondVizualization2D.GetRenderer());
+              thirdWindow.RenderWindow.GetRenderers().RemoveAllItems();
+              thirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
+                
+            }
+            if (current == 1)
+            {
+                bigFirstWindow.RenderWindow.GetRenderers().RemoveAllItems();
+                bigFirstWindow.RenderWindow.AddRenderer(_firstVizualization2D.GetRenderer());
+            }
+            if (current == 2)
+            {
+                bigSecondWindow.RenderWindow.GetRenderers().RemoveAllItems();
+                bigSecondWindow.RenderWindow.AddRenderer(_secondVizualization2D.GetRenderer());
+            }
+            if (current == 3)
+            {
+                bigThirdWindow.RenderWindow.GetRenderers().RemoveAllItems();
+                bigThirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
+            }
+            if (current == 5)
+            {
+                //bigFourthWindow
+            }
+
+        }
+
+   
+
+    
     }
 }

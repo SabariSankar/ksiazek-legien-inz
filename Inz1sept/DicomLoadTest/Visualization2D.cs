@@ -158,11 +158,20 @@ namespace MainWindow
 
             _viewer = vtkImageViewer2.New();
             _viewer.OffScreenRenderingOn();
-            _viewer.SetSize(350,250);
-            _window.RenderWindow.SetSize(350,250);
             _window.RenderWindow.AddRenderer(_viewer.GetRenderer());
             _window.RenderWindow.GetInteractor().SetInteractorStyle(imageStyle);
             _viewer.Render();
+        }
+
+        public vtkRenderer GetRenderer()
+        {
+            return _viewer.GetRenderer(); ;
+        }
+
+        public void SetRenderer(vtkRenderer renderer)
+        {
+            _window.RenderWindow.AddRenderer(renderer);
+            UpdateViewer();
         }
 
         /// <summary>
