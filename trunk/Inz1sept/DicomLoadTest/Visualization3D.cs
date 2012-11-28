@@ -25,10 +25,13 @@ namespace MainWindow
         /// Render window of visualization 3D.
         /// </summary>
         private readonly RenderWindowControl _window;
+
         /// <summary>
         /// Window interation of visualization 3D.
         /// </summary>
         private vtkRenderWindowInteractor _renderWindowInteractor;
+
+        private vtkRenderer renderer;
 
         public PlaneWidget PlaneWidgetX { get; set; }
         public PlaneWidget PlaneWidgetY { get; set; }
@@ -74,7 +77,7 @@ namespace MainWindow
             if (planeWidget.Axis == Axis.X)
             {
                 planeWidget.SetPlaneOrientationToXAxes();
-                colors.AddRGBPoint(0, 1, 0, 0);         //red
+                colors.AddRGBPoint(0, 1, 0, 0); //red
             }
             else if (planeWidget.Axis == Axis.Y)
             {
@@ -92,7 +95,23 @@ namespace MainWindow
             planeWidget.GetColorMap().SetLookupTable(colors);
         }
 
-        //wizualizacja 3d -----------------------------------------------------------------
+
+        public vtkVolume GetVolume()
+        {
+            return _volume;
+        }
+
+        public vtkRenderer GetRenderer()
+        {
+            return renderer;
+        }
+
+        public vtkRenderWindowInteractor GetInteractor()
+        {
+            return _renderWindowInteractor ;
+        }
+
+    //wizualizacja 3d -----------------------------------------------------------------
         public Visualization3D(RenderWindowControl window, DicomLoader dicomLoader, Chart chart)
         {
             _chart = chart;
@@ -108,6 +127,10 @@ namespace MainWindow
             SetGradientOpacity();
             _volume.SetMapper(_mapper);
 
+            renderer = vtkRenderer.New();
+            renderer.AddVolume(_volume);
+            _window.RenderWindow.GetRenderers().RemoveAllItems();
+            _window.RenderWindow.AddRenderer(renderer);
             _window.RenderWindow.GetRenderers().GetFirstRenderer().AddVolume(_volume);
 
 
@@ -119,7 +142,7 @@ namespace MainWindow
             vtkInteractorStyleTrackballCamera style = vtkInteractorStyleTrackballCamera.New();
             style.AutoAdjustCameraClippingRangeOff();
             _renderWindowInteractor.SetInteractorStyle(style);
-
+          
 
             //Create and setup planes
             PlaneWidgetX = new PlaneWidget(Axis.X);
@@ -142,7 +165,7 @@ namespace MainWindow
             _mapper.Dispose();
             _mapper = vtkSmartVolumeMapper.New();
             _mapper.SetInput(_dicomLoader.GetOutput());
-            //_mapper.Update();
+            _mapper.Update();
 
             _window.RenderWindow.GetRenderers().GetFirstRenderer().RemoveVolume(_volume);
             _volume.Dispose();
@@ -150,10 +173,9 @@ namespace MainWindow
             SetOpacityFunction();
             SetGradientOpacity();
             _volume.SetMapper(_mapper);
-            //_volume.Update();
+            _volume.Update();
 
             _window.RenderWindow.GetRenderers().GetFirstRenderer().AddVolume(_volume);
-            //_window.RenderWindow.GetRenderers().GetFirstRenderer().UseDepthPeelingOff();
             _window.RenderWindow.GetRenderers().GetFirstRenderer().Render();
 
             SetupPlane(PlaneWidgetX);

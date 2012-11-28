@@ -168,11 +168,7 @@ namespace MainWindow
             return _viewer.GetRenderer(); ;
         }
 
-        public void SetRenderer(vtkRenderer renderer)
-        {
-            _window.RenderWindow.AddRenderer(renderer);
-            UpdateViewer();
-        }
+   
 
         /// <summary>
         /// Changing the window width and level of the current slice.
