@@ -76,7 +76,8 @@ namespace XMLReaderTest
             _reader.ReadToFollowing("BLAU");
             float b = float.Parse(_reader.ReadElementContentAsString().Replace('.', ','));
             //Console.WriteLine(R + " " + G + " " + B);
-            return Color.FromArgb((int)r, (int)g, (int)b);
+            //return Color.FromArgb((int)(255*r), (int)(255*g), (int)(255*b));
+            return Color.FromArgb((int)r*255, (int)g*255, (int)b*255);
         }
 
         /// <summary>

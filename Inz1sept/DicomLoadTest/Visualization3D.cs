@@ -5,6 +5,8 @@ using XMLReaderTest;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using NLog;
+using System.Linq;
 
 
 namespace MainWindow
@@ -14,6 +16,11 @@ namespace MainWindow
     /// </summary>
     public class Visualization3D
     {
+        /// <summary>
+        /// Logger
+        /// </summary>
+        private static Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Render window of visualization 3D.
         /// </summary>
@@ -39,7 +46,7 @@ namespace MainWindow
 
         private ClipingModule _clipingModule;
 
-        private int _currentPresetNumber;
+        private int _currentSerieNumber;
 
         /// <summary>
         /// Set up the new PlaneWidget.
@@ -190,7 +197,7 @@ namespace MainWindow
 
             foreach (var pair in PresetInfo.Series[0].ColorFuction)
             {
-                ctf.AddRGBSegment(pair.Key, pair.Value[0].R, pair.Value[0].G, pair.Value[0].B,
+                ctf.AddRGBSegment(pair.Key,pair.Value[0].R, pair.Value[0].G, pair.Value[0].B,
                     pair.Key, pair.Value[1].R, pair.Value[1].G, pair.Value[1].B);
                 //Color colorRight = Color.FromArgb((int)pair.Value[1].R, (int)pair.Value[1].G, (int)pair.Value[1].B);
                 //Color colorLeft = Color.FromArgb((int)pair.Value[0].R, (int)pair.Value[0].G, (int)pair.Value[0].B);
@@ -199,6 +206,8 @@ namespace MainWindow
             ctf.SetScaleToLinear();
             _volume.GetProperty().SetColor(ctf);
             _volume.GetProperty().SetScalarOpacity(spwf);
+
+            _currentSerieNumber = 0;
         }
 
         /// <summary>
@@ -223,7 +232,7 @@ namespace MainWindow
             _window.Update();
             _window.RenderWindow.Render();
 
-            _currentPresetNumber = numberOfSerie;
+            _currentSerieNumber = numberOfSerie;
         }
 
         /// <summary>
@@ -316,28 +325,60 @@ namespace MainWindow
             _window.RenderWindow.Render();
         }
 
+        /// <summary>
+        /// Returns size of volume in every dimension.
+        /// </summary>
+        /// <returns>List containing 3 values(for x,y,z axis).</returns>
         public IList<double> GetObjectSize()
         {
             var xyzSize = new List<double> { _volume.GetXRange()[1], _volume.GetYRange()[1], _volume.GetZRange()[1] };
             return xyzSize;
         }
 
+        /// <summary>
+        /// Generate strip representing function of color. 
+        /// </summary>
+        /// <param name="sourceGraphics">Graphics to paint strip on.</param>
+        /// <param name="height">Strip height.</param>
+        /// <param name="width">Strip width.</param>
         public void GenerateStrip(Graphics sourceGraphics, int height, int width)
         {
+            var opacityFunction = _volume.GetProperty().GetScalarOpacity();
+
             var colorFunction = _volume.GetProperty().GetRGBTransferFunction();
 
-            double[] arr = colorFunction.GetRange();
-            int max = (int)arr[1];
-            int min = (int)arr[0];
-            int len = max - min;
+            double[] rangeArray = opacityFunction.GetRange();
+            var min = (float)rangeArray[0];
+            var max = (float)rangeArray[1];
+            int len = (int)(max - min);
+            logger.Warn(rangeArray[1].ToString() + " " + rangeArray[0].ToString());
 
             int unit = len / width;
             int counter;
             int? prevCounter = null;
             float counterf = 0;
-           // System.IO.StreamWriter file = new System.IO.StreamWriter(@"debug_file.txt");
-            foreach (var key in PresetInfo.Series[_currentPresetNumber].ColorFuction.Keys)
+
+            var colorList = PresetInfo.Series[_currentSerieNumber].ColorFuction.Keys
+                .Where(key => key > min & key < max)
+                .Select(key => PresetInfo.Series[_currentSerieNumber].ColorFuction[key]).ToList(); 
+
+            var firstColor = Color.FromArgb(255, (int)colorFunction.GetRedValue(min), 
+                (int)colorFunction.GetGreenValue(min), (int)colorFunction.GetBlueValue(min));
+
+            var lastColor = Color.FromArgb(255, (int)colorFunction.GetRedValue(max),
+               (int)colorFunction.GetGreenValue(max), (int)colorFunction.GetBlueValue(max));
+
+            colorList.Add(new Color[] { lastColor, lastColor });
+            colorList.Insert(0, new Color[] { firstColor, firstColor });
+
+            var keyList = PresetInfo.Series[_currentSerieNumber].ColorFuction.Keys.Select(key => key).Where(key => key > min & key < max).ToList();
+            keyList.Add(max);
+            keyList.Insert(0, min);
+
+            int i = -1;
+            foreach(var key in keyList)
             {
+                i++;
                 if (prevCounter == null)
                 {
                     prevCounter = (int)0;
@@ -348,16 +389,16 @@ namespace MainWindow
                     counter = (int)((key - counterf) / unit);
                     if (counter > 0)
                     {
-                        //
-                     //               file.WriteLine(counterf + " " + counter + " " + key);
-                        //
+                        var colorInfo1 = colorList[i-1][1];
+                        var colorInfo2 = colorList[i][0];
+
+                        logger.Warn(counterf.ToString() + " " + key.ToString() + " " + colorInfo1.ToString() + " " + colorInfo2.ToString()); 
+
                         var rect = new Rectangle(prevCounter.Value, 0, prevCounter.Value + counter, height);
-                        using (Brush aGradientBrush = new LinearGradientBrush(rect,
-                            //PresetInfo.Series[_currentPresetNumber].ColorFuction[counterf][1],
-                            Color.Blue,
-                            //PresetInfo.Series[_currentPresetNumber].ColorFuction[key][0],
-                            Color.Red,
-                            LinearGradientMode.Horizontal))
+                        //var color1 = Color.FromArgb(colorInfo1.A, colorInfo1.R * 255, colorInfo1.G * 255, colorInfo1.B * 255);
+                        //var color2 = Color.FromArgb(colorInfo2.A, colorInfo2.R * 255, colorInfo2.G * 255, colorInfo2.B * 255);
+
+                        using (Brush aGradientBrush = new LinearGradientBrush(rect, colorInfo1, colorInfo2, LinearGradientMode.Horizontal))
                         {
                             sourceGraphics.FillRectangle(aGradientBrush, prevCounter.Value, 0, prevCounter.Value + counter, height);
                         }
@@ -365,7 +406,7 @@ namespace MainWindow
                     prevCounter = prevCounter.Value + counter;
                     counterf = key;
                 }
-            }           
+            }
         }
 
         /// <summary>
