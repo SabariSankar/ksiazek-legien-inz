@@ -117,6 +117,7 @@ namespace MainWindow
         private void update3DVisualization(float windowLevel, float windowWidth)
         {
             _vizualization3D.Update3DVisualization(windowLevel, windowWidth);
+
         }
 
 
@@ -208,6 +209,15 @@ namespace MainWindow
             comboBoxSeries.SelectedIndex = 0;
             _vizualization3D.Update3DVisualization();
             colorStrip.Invalidate();
+
+            if (bigFourthWindow.RenderWindow != null)
+            {
+                bigFourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().GetVolumes().RemoveAllItems();
+                bigFourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().AddVolume(_vizualization3D.GetVolume());
+                bigFourthWindow.Update();
+                bigFourthWindow.RenderWindow.Render();
+            }
+
         }
 
 
@@ -215,6 +225,9 @@ namespace MainWindow
         {
             _vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
             colorStrip.Invalidate();
+
+            if (bigFourthWindow.RenderWindow != null)
+                bigFourthWindow.RenderWindow.Render();
         }
 
         #endregion
@@ -265,6 +278,8 @@ namespace MainWindow
                 _selectedDataPoint = null;
 
                 chart1.Invalidate();
+                if (bigFourthWindow.RenderWindow != null)
+                    bigFourthWindow.RenderWindow.Render();
             }
         }
 
@@ -306,6 +321,9 @@ namespace MainWindow
                         List<DataPoint> points = chart1.Series["OpacityFunction"].Points.ToList<DataPoint>();
                         points.Sort(new Comparison<DataPoint>(Compare));
                         _vizualization3D.ChangeSplineFunction(points);
+
+                        if (bigFourthWindow.RenderWindow != null)
+                            bigFourthWindow.RenderWindow.Render();
                     }
                 }
             }
@@ -333,6 +351,9 @@ namespace MainWindow
                         //points.Remove(points.Find(x => x.XValue == pX & x.YValues[0] == pY));
                         points.Sort(new Comparison<DataPoint>(Compare));
                         _vizualization3D.ChangeSplineAndPointFunction(points);
+
+                        if (bigFourthWindow.RenderWindow != null)
+                            bigFourthWindow.RenderWindow.Render();
                     }
                 }
             }
@@ -401,29 +422,10 @@ namespace MainWindow
         }
 
 
-        private void buttonLoadDicom_Click(object sender, EventArgs e)
-        {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                _directoryPath = openFileDialog1.SelectedPath;
-                _dicomLoader.ChangeDirectory(_directoryPath);
+ 
 
-                _vizualization3D.ChangeDirectory(_dicomLoader);
-                _vizualization3D.ChangeColorAndOpacityFunction(comboBox1.Text);
-                _vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
-            }
 
-        }
-
-        private void buttonBack_Click(object sender, EventArgs e)
-        {
-            _firstVizualization2D.RotateImageBack();
-        }
-
-        private void buttonForward_Click(object sender, EventArgs e)
-        {
-            _firstVizualization2D.RotateImageForward();
-        }
+        #region Obsluga lockow
 
         private void lockX_CheckedChanged(object sender, EventArgs e)
         {
@@ -443,6 +445,8 @@ namespace MainWindow
             _vizualization3D.ChangePlaneGadetActivity(Axis.Z, state);
             colorStrip.Invalidate();
         }
+
+        #endregion
 
         private void colorStrip_Paint(object sender, PaintEventArgs e)
         {
@@ -466,7 +470,7 @@ namespace MainWindow
               secondWindow.RenderWindow.AddRenderer(_secondVizualization2D.GetRenderer());
               thirdWindow.RenderWindow.GetRenderers().RemoveAllItems();
               thirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
-                
+       
             }
             if (current == 1)
             {
@@ -483,11 +487,41 @@ namespace MainWindow
                 bigThirdWindow.RenderWindow.GetRenderers().RemoveAllItems();
                 bigThirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
             }
-            if (current == 5)
+            if (current == 4)
             {
-                //bigFourthWindow
+                //bigFourthWindow.RenderWindow.GetRenderers().RemoveAllItems();
+                //bigFourthWindow.RenderWindow.AddRenderer(_vizualization3D.GetRenderer());
+                
+                bigFourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().GetVolumes().RemoveAllItems();
+                bigFourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().AddVolume(_vizualization3D.GetVolume());
+                bigFourthWindow.Update();
+                bigFourthWindow.RenderWindow.Render();
             }
 
+        }
+
+        private void buttonBack_Click(object sender, EventArgs e)
+        {
+            _firstVizualization2D.RotateImageBack();
+        }
+
+        private void buttonForward_Click(object sender, EventArgs e)
+        {
+            _firstVizualization2D.RotateImageForward();
+        }
+  
+
+        private void loadDicomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                _directoryPath = openFileDialog1.SelectedPath;
+                _dicomLoader.ChangeDirectory(_directoryPath);
+
+                _vizualization3D.ChangeDirectory(_dicomLoader);
+                _vizualization3D.ChangeColorAndOpacityFunction(comboBox1.Text);
+                _vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
+            }
         }
 
    
