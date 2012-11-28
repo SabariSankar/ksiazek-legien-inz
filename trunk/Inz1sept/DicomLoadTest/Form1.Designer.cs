@@ -30,9 +30,9 @@ namespace MainWindow
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.fourthWindow = new Kitware.VTK.RenderWindowControl();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.firstWindow = new Kitware.VTK.RenderWindowControl();
@@ -83,7 +83,7 @@ namespace MainWindow
             this.panel6 = new System.Windows.Forms.Panel();
             this.bigFourthWindow = new Kitware.VTK.RenderWindowControl();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.clipingPanel = new MainWindow.ClipingToolbox();
+            this.clipingToolbox = new MainWindow.ClipingToolbox();
             this.panel1.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLevel)).BeginInit();
@@ -283,54 +283,54 @@ namespace MainWindow
             this.chart1.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
             this.chart1.BorderlineWidth = 2;
             this.chart1.BorderSkin.SkinStyle = System.Windows.Forms.DataVisualization.Charting.BorderSkinStyle.Emboss;
-            chartArea4.Area3DStyle.Inclination = 40;
-            chartArea4.Area3DStyle.IsClustered = true;
-            chartArea4.Area3DStyle.IsRightAngleAxes = false;
-            chartArea4.Area3DStyle.LightStyle = System.Windows.Forms.DataVisualization.Charting.LightStyle.Realistic;
-            chartArea4.Area3DStyle.Perspective = 9;
-            chartArea4.Area3DStyle.Rotation = 25;
-            chartArea4.Area3DStyle.WallWidth = 3;
-            chartArea4.AxisX.LabelStyle.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold);
-            chartArea4.AxisX.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            chartArea4.AxisX.MajorGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            chartArea4.AxisY.LabelStyle.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold);
-            chartArea4.AxisY.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            chartArea4.AxisY.MajorGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            chartArea4.AxisY.Maximum = 1D;
-            chartArea4.BackColor = System.Drawing.Color.OldLace;
-            chartArea4.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.TopBottom;
-            chartArea4.BackSecondaryColor = System.Drawing.Color.White;
-            chartArea4.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            chartArea4.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea4.Name = "ChartArea1";
-            chartArea4.ShadowColor = System.Drawing.Color.Transparent;
-            this.chart1.ChartAreas.Add(chartArea4);
+            chartArea2.Area3DStyle.Inclination = 40;
+            chartArea2.Area3DStyle.IsClustered = true;
+            chartArea2.Area3DStyle.IsRightAngleAxes = false;
+            chartArea2.Area3DStyle.LightStyle = System.Windows.Forms.DataVisualization.Charting.LightStyle.Realistic;
+            chartArea2.Area3DStyle.Perspective = 9;
+            chartArea2.Area3DStyle.Rotation = 25;
+            chartArea2.Area3DStyle.WallWidth = 3;
+            chartArea2.AxisX.LabelStyle.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold);
+            chartArea2.AxisX.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            chartArea2.AxisX.MajorGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            chartArea2.AxisY.LabelStyle.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold);
+            chartArea2.AxisY.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            chartArea2.AxisY.Maximum = 1D;
+            chartArea2.BackColor = System.Drawing.Color.OldLace;
+            chartArea2.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.TopBottom;
+            chartArea2.BackSecondaryColor = System.Drawing.Color.White;
+            chartArea2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            chartArea2.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea2.Name = "ChartArea1";
+            chartArea2.ShadowColor = System.Drawing.Color.Transparent;
+            this.chart1.ChartAreas.Add(chartArea2);
             this.chart1.Location = new System.Drawing.Point(7, 27);
             this.chart1.Name = "chart1";
-            series7.BorderWidth = 2;
-            series7.ChartArea = "ChartArea1";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series7.Color = System.Drawing.Color.RoyalBlue;
-            series7.IsVisibleInLegend = false;
-            series7.LabelBorderWidth = 3;
-            series7.MarkerColor = System.Drawing.Color.White;
-            series7.MarkerSize = 1;
-            series7.Name = "OpacityFunctionSpline";
-            series7.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series7.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series8.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            series8.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            series8.BorderWidth = 5;
-            series8.ChartArea = "ChartArea1";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series8.Color = System.Drawing.Color.Yellow;
-            series8.IsVisibleInLegend = false;
-            series8.MarkerSize = 8;
-            series8.Name = "OpacityFunction";
-            series8.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series8.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.chart1.Series.Add(series7);
-            this.chart1.Series.Add(series8);
+            series3.BorderWidth = 2;
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Color = System.Drawing.Color.RoyalBlue;
+            series3.IsVisibleInLegend = false;
+            series3.LabelBorderWidth = 3;
+            series3.MarkerColor = System.Drawing.Color.White;
+            series3.MarkerSize = 1;
+            series3.Name = "OpacityFunctionSpline";
+            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series4.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            series4.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            series4.BorderWidth = 5;
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series4.Color = System.Drawing.Color.Yellow;
+            series4.IsVisibleInLegend = false;
+            series4.MarkerSize = 8;
+            series4.Name = "OpacityFunction";
+            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.chart1.Series.Add(series3);
+            this.chart1.Series.Add(series4);
             this.chart1.Size = new System.Drawing.Size(270, 145);
             this.chart1.TabIndex = 58;
             this.chart1.Text = "chart1";
@@ -662,17 +662,17 @@ namespace MainWindow
             this.panel2.Size = new System.Drawing.Size(200, 100);
             this.panel2.TabIndex = 0;
             // 
-            // clipingPanel
+            // clipingToolbox
             // 
-            this.clipingPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.clipingPanel.Location = new System.Drawing.Point(1028, 20);
-            this.clipingPanel.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
-            this.clipingPanel.Name = "clipingPanel";
-            this.clipingPanel.Padding = new System.Windows.Forms.Padding(5, 15, 5, 5);
-            this.clipingPanel.Size = new System.Drawing.Size(165, 360);
-            this.clipingPanel.TabIndex = 63;
-            this.clipingPanel.TabStop = false;
-            this.clipingPanel.Text = "ClipingToolbox";
+            this.clipingToolbox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.clipingToolbox.Location = new System.Drawing.Point(1028, 20);
+            this.clipingToolbox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
+            this.clipingToolbox.Name = "clipingToolbox";
+            this.clipingToolbox.Padding = new System.Windows.Forms.Padding(5);
+            this.clipingToolbox.Size = new System.Drawing.Size(165, 360);
+            this.clipingToolbox.TabIndex = 63;
+            this.clipingToolbox.TabStop = false;
+            this.clipingToolbox.Text = "ClipingToolbox";
             // 
             // Form1
             // 
@@ -683,7 +683,7 @@ namespace MainWindow
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.flowLayoutPanel1);
-            this.Controls.Add(this.clipingPanel);
+            this.Controls.Add(this.clipingToolbox);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "DICOM 3D: aplikacja do wizualizacji wyników badañ medycznych.";
@@ -732,7 +732,6 @@ namespace MainWindow
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Button PlaneZButton;
         private System.Windows.Forms.Button PlaneYButton;
-        private ClipingToolbox clipingPanel;
         private System.Windows.Forms.FolderBrowserDialog openFileDialog1;
         private System.Windows.Forms.Button PlaneXButton;
         private System.Windows.Forms.Panel colorStrip;
@@ -766,6 +765,7 @@ namespace MainWindow
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadDicomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private ClipingToolbox clipingToolbox;
     }
 }
 

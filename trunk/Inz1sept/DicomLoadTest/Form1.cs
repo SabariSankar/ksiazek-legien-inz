@@ -18,7 +18,7 @@ namespace MainWindow
         private Visualization2D _thirdVizualization2D;
 
         private readonly DicomLoader _dicomLoader;
-        private String _directoryPath = @"D:\DICOM\PANORAMIX"; //"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
+        private String _directoryPath = @"C:\Users\Grzegorz\Downloads\PANORAMIX\PANORAMIX"; //"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
         private const String PresetDir = @"..\..\presety";
 
         private DataPoint _selectedDataPoint;
@@ -86,8 +86,8 @@ namespace MainWindow
             _vizualization3D.PlaneWidgetZ.InteractionEvt += PlaneZMoved;
 
             //handling events from ClipingToolbox
-            clipingPanel.ClipingOperationEventHandlerDelegate += new EventHandler<ClipingEventArgs>(_vizualization3D.ExecuteClipingOperation);
-            clipingPanel.InitialiseClipingToolbox(_vizualization3D.GetObjectSize());
+            clipingToolbox.ClipingOperationEventHandlerDelegate += new EventHandler<ClipingEventArgs>(_vizualization3D.ExecuteClipingOperation);
+            clipingToolbox.InitialiseClipingToolbox(_vizualization3D.GetObjectSize());
 
             /*vtkImageExtractComponents extract = vtkImageExtractComponents.New();
             extract.SetInput( _dicomLoader.GetOutput() );
