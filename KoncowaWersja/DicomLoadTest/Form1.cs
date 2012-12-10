@@ -18,7 +18,7 @@ namespace MainWindow
         private Visualization2D _thirdVizualization2D;
 
         private readonly DicomLoader _dicomLoader;
-        private String _directoryPath = @"D:\DICOM\PANORAMIX"; //"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
+        private String _directoryPath = @"D:\Downloads\PANORAMIX"; //"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
         private const String PresetDir = @"..\..\presety";
 
         private DataPoint _selectedDataPoint;
@@ -135,10 +135,10 @@ namespace MainWindow
                 bigThirdWindow.RenderWindow.Render();
             if (bigFourthWindow.RenderWindow != null)
                 bigFourthWindow.RenderWindow.Render();
-            
+
         }
 
-  
+
 
         //wizualizaja 2d
         private void firstWindow_Load(object sender, EventArgs e)
@@ -341,7 +341,7 @@ namespace MainWindow
             {
                 if (hitResult.ChartElementType == ChartElementType.DataPoint)
                 {
-                    DataPoint selected = (DataPoint) hitResult.Object;
+                    DataPoint selected = (DataPoint)hitResult.Object;
                     if (chart1.Series["OpacityFunction"].Points.Contains(selected))
                     {
                         chart1.Series["OpacityFunction"].Points.Remove(selected);
@@ -415,22 +415,12 @@ namespace MainWindow
 
         #endregion
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //var bmp = firstVizualization2D.GetImage();
-            var form = new Form2(_dicomLoader) { Visible = true };
-        }
-
-
- 
-
-
-        #region Obsluga lockow
+        #region Obs³uga locków
 
         private void lockX_CheckedChanged(object sender, EventArgs e)
         {
             int state = ((CheckBox)sender).Checked ? 0 : 1;
-           _vizualization3D.ChangePlaneGadetActivity(Axis.X, state);
+            _vizualization3D.ChangePlaneGadetActivity(Axis.X, state);
         }
 
         private void lockY_CheckedChanged(object sender, EventArgs e)
@@ -448,29 +438,30 @@ namespace MainWindow
 
         #endregion
 
+        #region Rysowanie paska z funkcj¹ koloru
+
         private void colorStrip_Paint(object sender, PaintEventArgs e)
         {
-            //var coordinate = chart1.ChartAreas["ChartArea1"].AxisX.Maximum;
-            var width = chart1.ChartAreas["ChartArea1"].Position.Size.Width > 0 ? (int)chart1.ChartAreas["ChartArea1"].Position.Size.Width*chart1.Size.Width/100 : 1;
-
-            
-            //Console.WriteLine(chart1.ChartAreas["ChartArea1"].Position.Size.Width);
+            var width = chart1.ChartAreas["ChartArea1"].Position.Size.Width > 0 ? (int)chart1.ChartAreas["ChartArea1"].Position.Size.Width * chart1.Size.Width / 100 : 1;
             _vizualization3D.GenerateStrip(e.Graphics, 10, width);
         }
 
+        #endregion
+
+        # region Zmiana zak³adki
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             int current = (sender as TabControl).SelectedTab.TabIndex;
             if (current == 0)
             {
-              firstWindow.RenderWindow.GetRenderers().RemoveAllItems();
-              firstWindow.RenderWindow.AddRenderer(_firstVizualization2D.GetRenderer());
-              secondWindow.RenderWindow.GetRenderers().RemoveAllItems();
-              secondWindow.RenderWindow.AddRenderer(_secondVizualization2D.GetRenderer());
-              thirdWindow.RenderWindow.GetRenderers().RemoveAllItems();
-              thirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
-       
+                firstWindow.RenderWindow.GetRenderers().RemoveAllItems();
+                firstWindow.RenderWindow.AddRenderer(_firstVizualization2D.GetRenderer());
+                secondWindow.RenderWindow.GetRenderers().RemoveAllItems();
+                secondWindow.RenderWindow.AddRenderer(_secondVizualization2D.GetRenderer());
+                thirdWindow.RenderWindow.GetRenderers().RemoveAllItems();
+                thirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
+
             }
             if (current == 1)
             {
@@ -494,7 +485,7 @@ namespace MainWindow
             {
                 //bigFourthWindow.RenderWindow.GetRenderers().RemoveAllItems();
                 //bigFourthWindow.RenderWindow.AddRenderer(_vizualization3D.GetRenderer());
-                
+
                 bigFourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().GetVolumes().RemoveAllItems();
                 bigFourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().AddVolume(_vizualization3D.GetVolume());
                 bigFourthWindow.Update();
@@ -502,6 +493,8 @@ namespace MainWindow
             }
 
         }
+
+        #endregion
 
         private void buttonBack_Click(object sender, EventArgs e)
         {
@@ -512,7 +505,8 @@ namespace MainWindow
         {
             _firstVizualization2D.RotateImageForward();
         }
-  
+
+        #region Otwieranie nowych obrazów
 
         private void loadDicomToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -527,8 +521,15 @@ namespace MainWindow
             }
         }
 
-   
+        #endregion
 
-    
+        #region Wymuszenie odœwierzania paska funkcji koloru
+
+        private void chart1_Paint(object sender, PaintEventArgs e)
+        {
+            colorStrip.Invalidate();
+        }
+
+        #endregion
     }
 }

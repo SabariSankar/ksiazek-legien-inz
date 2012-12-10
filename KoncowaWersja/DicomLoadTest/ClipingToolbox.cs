@@ -4,14 +4,54 @@ using System.Windows.Forms;
 
 namespace MainWindow
 {
+
     public partial class ClipingToolbox : GroupBox
     {
         public delegate void EventHandler(object sender, ClipingEventArgs e);
         public EventHandler<ClipingEventArgs> ClipingOperationEventHandlerDelegate;
 
-        public ClipingToolbox()
+        private TableLayoutPanel _panel;
+
+        public ClipingToolbox() : base()
         {
+            _panel = new TableLayoutPanel();
+            _panel.AutoSize = true;
+            _panel.Dock = DockStyle.Top;
+            this.Controls.Add(_panel);
+
             InitializeComponent();
+
+            _panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16));
+            _panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 42));
+            _panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 42));
+
+            _panel.RowStyles.Add(new RowStyle(SizeType.Percent, 30));
+            _panel.RowStyles.Add(new RowStyle(SizeType.Percent, 30));
+            _panel.RowStyles.Add(new RowStyle(SizeType.Percent, 30));
+
+            _panel.Controls.Add(xLabel);
+            _panel.SetCellPosition(xLabel, new TableLayoutPanelCellPosition(0, 0));
+            xLabel.AutoSize = true;
+            _panel.Controls.Add(XClipingTrackBar1);
+            _panel.SetCellPosition(XClipingTrackBar1, new TableLayoutPanelCellPosition(1, 0));
+            _panel.Controls.Add(XClipingTrackBar2);
+            _panel.SetCellPosition(XClipingTrackBar2, new TableLayoutPanelCellPosition(2, 0));
+
+            _panel.Controls.Add(yLabel);
+            _panel.SetCellPosition(yLabel, new TableLayoutPanelCellPosition(0, 1));
+            zLabel.AutoSize = true;
+            _panel.Controls.Add(YClipingTrackBar1);
+            _panel.SetCellPosition(YClipingTrackBar1, new TableLayoutPanelCellPosition(1, 1));
+            _panel.Controls.Add(YClipingTrackBar2);
+            _panel.SetCellPosition(YClipingTrackBar2, new TableLayoutPanelCellPosition(2, 1));
+
+            _panel.Controls.Add(zLabel);
+            _panel.SetCellPosition(zLabel, new TableLayoutPanelCellPosition(0, 2));
+            zLabel.AutoSize = true;
+            _panel.Controls.Add(ZClipingTrackBar1);
+            _panel.SetCellPosition(ZClipingTrackBar1, new TableLayoutPanelCellPosition(1, 2));
+            _panel.Controls.Add(ZClipingTrackBar2);
+            _panel.SetCellPosition(ZClipingTrackBar2, new TableLayoutPanelCellPosition(2, 2));
         }
 
         public void InitialiseClipingToolbox(IList<double> sizeList)
