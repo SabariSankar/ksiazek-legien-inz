@@ -18,9 +18,12 @@ namespace MainWindow
         private Visualization2D _thirdVizualization2D;
 
         private readonly DicomLoader _dicomLoader;
-        private String _directoryPath = @"D:\Downloads\PANORAMIX"; //"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
-        private const String PresetDir = @"..\..\presety";
+        private string _directoryPath = @"D:\Downloads\PANORAMIX"; //"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
+        private const string PresetDir = @"..\..\presety";
 
+        /// <summary>
+        /// Selected point data used during opacity function modyfication
+        /// </summary>
         private DataPoint _selectedDataPoint;
 
         public Form1()
@@ -28,6 +31,8 @@ namespace MainWindow
             InitializeComponent();
             _dicomLoader = new DicomLoader(_directoryPath);
         }
+
+        #region Obs³uga zamykania aplikacji
 
         public void DisposeAll(object sender, FormClosingEventArgs e)
         {
@@ -38,8 +43,9 @@ namespace MainWindow
             _dicomLoader.Dispose();
         }
 
+        #endregion
 
-        #region Obsluga przesuwania poszczegolnych plaszczyzn
+        #region Obs³uga przesuwania poszczególnych p³aszczyzn
         //-------------------------------------------------------------------------
         //callback function for moving PlaneWidget
         public void PlaneXMoved(vtkObject sender, vtkObjectEventArgs e)
@@ -58,6 +64,7 @@ namespace MainWindow
         }
         #endregion
 
+        #region £adowanie i update RenderWindowControl z wizualizacj¹ 3D
 
         //wizualizacja 3d -----------------------------------------------------------------
         private void fourthWindow_Load(object sender, EventArgs e)
@@ -120,27 +127,10 @@ namespace MainWindow
 
         }
 
+        #endregion
 
-        private void update2DVisualization(float windowLevel, float windowWidth)
-        {
-            _firstVizualization2D.Update2DVisualization(windowLevel, windowWidth);
-            _secondVizualization2D.Update2DVisualization(windowLevel, windowWidth);
-            _thirdVizualization2D.Update2DVisualization(windowLevel, windowWidth);
+        #region £adowanie i update RenderWindowControls z wizualizacj¹ 2D
 
-            if (bigFirstWindow.RenderWindow != null)
-                bigFirstWindow.RenderWindow.Render();
-            if (bigSecondWindow.RenderWindow != null)
-                bigSecondWindow.RenderWindow.Render();
-            if (bigThirdWindow.RenderWindow != null)
-                bigThirdWindow.RenderWindow.Render();
-            if (bigFourthWindow.RenderWindow != null)
-                bigFourthWindow.RenderWindow.Render();
-
-        }
-
-
-
-        //wizualizaja 2d
         private void firstWindow_Load(object sender, EventArgs e)
         {
             _firstVizualization2D = new Visualization2D(firstWindow);
@@ -160,6 +150,25 @@ namespace MainWindow
             _thirdVizualization2D = new Visualization2D(thirdWindow);
             //_thirdVizualization2D.SliceToAxes(_dicomLoader, 100, Axis.Z);
         }
+
+        private void update2DVisualization(float windowLevel, float windowWidth)
+        {
+            _firstVizualization2D.Update2DVisualization(windowLevel, windowWidth);
+            _secondVizualization2D.Update2DVisualization(windowLevel, windowWidth);
+            _thirdVizualization2D.Update2DVisualization(windowLevel, windowWidth);
+
+            if (bigFirstWindow.RenderWindow != null)
+                bigFirstWindow.RenderWindow.Render();
+            if (bigSecondWindow.RenderWindow != null)
+                bigSecondWindow.RenderWindow.Render();
+            if (bigThirdWindow.RenderWindow != null)
+                bigThirdWindow.RenderWindow.Render();
+            if (bigFourthWindow.RenderWindow != null)
+                bigFourthWindow.RenderWindow.Render();
+
+        }
+
+        #endregion
 
         #region Obsluga levelu okna i jego szerokosci
         //suwak obsluguje szerokosc ------------------------------------------------------------
@@ -496,11 +505,13 @@ namespace MainWindow
 
         #endregion
 
+        [Obsolete]//Wygl¹da na nieu¿ywane?
         private void buttonBack_Click(object sender, EventArgs e)
         {
             _firstVizualization2D.RotateImageBack();
         }
 
+        [Obsolete]//Wygl¹da na nieu¿ywane?
         private void buttonForward_Click(object sender, EventArgs e)
         {
             _firstVizualization2D.RotateImageForward();
