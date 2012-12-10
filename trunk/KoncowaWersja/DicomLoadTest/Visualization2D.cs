@@ -1,4 +1,5 @@
 ﻿using Kitware.VTK;
+using DrawingModule;
 
 namespace MainWindow
 {
@@ -35,6 +36,16 @@ namespace MainWindow
         /// </summary>
         private int _orientation;
 
+        /// <summary>
+        /// Last image data displayed by window.
+        /// </summary>
+        private vtkImageData _lastData;
+        /// <summary>
+        /// Drawing mode enaled/disabled.
+        /// </summary>
+        public bool DrawingEnabled { get; set; }
+
+        public DrawingInfo DrawingInfo = new DrawingInfo();
 
         public void RotateImageForward()
         {
@@ -74,6 +85,7 @@ namespace MainWindow
             reslice.Update();
 
             _viewer.SetInput(reslice.GetOutput());
+
             UpdateViewer();
         }
 
@@ -99,12 +111,68 @@ namespace MainWindow
             reslice.SetInput(plane.GetResliceOutput());
             reslice.SetResliceTransform(transform);
             reslice.Update();
+            //
+            vtkImageData viewerInputData;
+            viewerInputData = reslice.GetOutput();
 
-            _viewer.SetInput(reslice.GetOutput());
+            _lastData = viewerInputData;
+
+            _viewer.SetInput(viewerInputData);
+            //
+            //_viewer.SetInput(reslice.GetOutput());
             UpdateViewer();
 
         }
 
+        //TODO
+
+        public void DrawingModeRepaint()
+        {
+            if (_lastData == null)
+                return;
+
+            vtkImageReslice reslice = vtkImageReslice.New();
+            vtkTransform transform = vtkTransform.New();
+            transform.PostMultiply();
+
+            //TODO wyznaczenie centrum okna
+            double[] center = { 75, 100, 0 };
+            transform.Translate(-center[0], -center[1], -center[2]);
+            transform.RotateZ(_orientation);
+            transform.Translate(+center[0], +center[1], +center[2]);
+
+            transform.Update();
+
+            reslice.SetInput(_lastData);
+            reslice.SetResliceTransform(transform);
+            reslice.Update();
+
+            vtkImageData viewerInputData;
+            if (!DrawingEnabled)
+            {
+               viewerInputData = reslice.GetOutput();
+            }
+            else
+            {
+                var resliceOutput = reslice.GetOutput();
+                var sizeArray = resliceOutput.GetDimensions();
+
+                vtkImageCanvasSource2D imageCanvas = vtkImageCanvasSource2D.New();
+                imageCanvas.SetScalarTypeToUnsignedChar();
+                imageCanvas.SetExtent(0, sizeArray[0], 0, sizeArray[1], 0, 0);
+                imageCanvas.DrawImage(0, 0, resliceOutput);
+
+                DrawingUtils.Draw(imageCanvas, DrawingInfo);
+               
+                imageCanvas.Update();
+                viewerInputData = imageCanvas.GetOutput();
+            }
+            _viewer.SetInput(viewerInputData);
+
+            UpdateViewer();
+        }
+
+        //TODO
 
         /// <summary>
         /// Update the 2D visualization window with new slice of pass X, Y or Z coordination. 

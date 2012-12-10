@@ -26,6 +26,11 @@ namespace MainWindow
         /// </summary>
         private DataPoint _selectedDataPoint;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool _drawLineCounter;
+
         public Form1()
         {
             InitializeComponent();
@@ -471,24 +476,49 @@ namespace MainWindow
                 thirdWindow.RenderWindow.GetRenderers().RemoveAllItems();
                 thirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
 
+                _firstVizualization2D.DrawingEnabled = false;
+                _firstVizualization2D.DrawingInfo.Clear();
+                _firstVizualization2D.DrawingModeRepaint();
+                _secondVizualization2D.DrawingEnabled = false;
+                _secondVizualization2D.DrawingInfo.Clear();
+                _secondVizualization2D.DrawingModeRepaint();
+                _thirdVizualization2D.DrawingEnabled = false;
+                _thirdVizualization2D.DrawingInfo.Clear();
+                _thirdVizualization2D.DrawingModeRepaint();
+
             }
             if (current == 1)
             {
                 bigFirstWindow.RenderWindow.GetRenderers().RemoveAllItems();
                 bigFirstWindow.RenderWindow.AddRenderer(_firstVizualization2D.GetRenderer());
                 bigFirstWindow.RenderWindow.GetInteractor().SetInteractorStyle(vtkInteractorStyleImage.New());
+
+                _firstVizualization2D.DrawingEnabled = true;
+                _firstVizualization2D.DrawingModeRepaint();
+                bigFirstWindow.RenderWindow.GetInteractor().RemoveAllHandlersForAllEvents();
+                DrawingInit(bigFirstWindow, _firstVizualization2D);
             }
             if (current == 2)
             {
                 bigSecondWindow.RenderWindow.GetRenderers().RemoveAllItems();
                 bigSecondWindow.RenderWindow.AddRenderer(_secondVizualization2D.GetRenderer());
                 bigSecondWindow.RenderWindow.GetInteractor().SetInteractorStyle(vtkInteractorStyleImage.New());
+
+                _secondVizualization2D.DrawingEnabled = true;
+                _secondVizualization2D.DrawingModeRepaint();
+                bigSecondWindow.RenderWindow.GetInteractor().RemoveAllHandlersForAllEvents();
+                DrawingInit(bigSecondWindow, _secondVizualization2D);
             }
             if (current == 3)
             {
                 bigThirdWindow.RenderWindow.GetRenderers().RemoveAllItems();
                 bigThirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
                 bigThirdWindow.RenderWindow.GetInteractor().SetInteractorStyle(vtkInteractorStyleImage.New());
+
+                _thirdVizualization2D.DrawingEnabled = true;
+                _thirdVizualization2D.DrawingModeRepaint();
+                bigThirdWindow.RenderWindow.GetInteractor().RemoveAllHandlersForAllEvents();
+                DrawingInit(bigThirdWindow, _thirdVizualization2D);
             }
             if (current == 4)
             {
@@ -539,6 +569,48 @@ namespace MainWindow
         private void chart1_Paint(object sender, PaintEventArgs e)
         {
             colorStrip.Invalidate();
+        }
+
+        #endregion
+
+        #region Rysowanie
+
+        public void DrawingInit()
+        {
+            DrawingInit(bigFirstWindow, _firstVizualization2D);
+            DrawingInit(bigSecondWindow, _secondVizualization2D);
+            DrawingInit(bigThirdWindow, _thirdVizualization2D);
+        }
+
+        private void DrawingInit(RenderWindowControl window, Visualization2D visualisation)
+        {
+
+            window.RenderWindow.GetInteractor().LeftButtonPressEvt += (vtkObject sender, vtkObjectEventArgs e)
+                =>
+            {
+                vtkRenderWindowInteractor caller = e.Caller as vtkRenderWindowInteractor;
+                if (caller != null)
+                {
+                    int[] mousePosition = caller.GetLastEventPosition();
+                    vtkPointPicker picker = vtkPointPicker.New();
+                    var correctPicking = picker.Pick((double)mousePosition[0], (double)mousePosition[1], (double)0, visualisation.GetRenderer());
+                    if (correctPicking > 0)
+                    {
+                        var positionOnObject = picker.GetMapperPosition();
+                        if (_drawLineCounter)
+                        {
+                            visualisation.DrawingInfo.AddPoint((int)positionOnObject[0], (int)positionOnObject[1]);
+                            visualisation.DrawingModeRepaint();
+                        }
+                        else
+                        {
+                            visualisation.DrawingInfo.AddLine();
+                            visualisation.DrawingInfo.AddPoint((int)positionOnObject[0], (int)positionOnObject[1]);
+                        }
+                        _drawLineCounter = !_drawLineCounter;
+                    }
+                }
+            };
         }
 
         #endregion

@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainWindow", "DicomLoadTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLReaderTest", "XMLReader\XMLReaderTest.csproj", "{026FAE15-EFA8-4A7E-9F3E-7062AFACA126}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawingModule", "DrawingModule\DrawingModule.csproj", "{13523F46-25C8-4277-AAA7-B0735F60A3F2}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -39,6 +41,16 @@ Global
 		{026FAE15-EFA8-4A7E-9F3E-7062AFACA126}.Release|Mixed Platforms.Build.0 = Release|x86
 		{026FAE15-EFA8-4A7E-9F3E-7062AFACA126}.Release|x86.ActiveCfg = Release|x86
 		{026FAE15-EFA8-4A7E-9F3E-7062AFACA126}.Release|x86.Build.0 = Release|x86
+		{13523F46-25C8-4277-AAA7-B0735F60A3F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13523F46-25C8-4277-AAA7-B0735F60A3F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13523F46-25C8-4277-AAA7-B0735F60A3F2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{13523F46-25C8-4277-AAA7-B0735F60A3F2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{13523F46-25C8-4277-AAA7-B0735F60A3F2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{13523F46-25C8-4277-AAA7-B0735F60A3F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13523F46-25C8-4277-AAA7-B0735F60A3F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13523F46-25C8-4277-AAA7-B0735F60A3F2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{13523F46-25C8-4277-AAA7-B0735F60A3F2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{13523F46-25C8-4277-AAA7-B0735F60A3F2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
