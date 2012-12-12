@@ -1,0 +1,5 @@
+C:\Users\Magda\workspaceJSEE\inzynierka\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\Magda\workspaceJSEE\inzynierka\obj\x86\Release\DicomLoadTest.Form1.resources
+C:\Users\Magda\workspaceJSEE\inzynierka\obj\x86\Release\DicomLoadTest.Properties.Resources.resources
+C:\Users\Magda\workspaceJSEE\inzynierka\obj\x86\Release\GenerateResource.read.1.tlog
+C:\Users\Magda\workspaceJSEE\inzynierka\obj\x86\Release\GenerateResource.write.1.tlog
