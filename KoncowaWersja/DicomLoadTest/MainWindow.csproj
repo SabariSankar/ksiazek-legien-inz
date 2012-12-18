@@ -116,7 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DrawingModule\DrawingModule.csproj">
-      <Project>{13523F46-25C8-4277-AAA7-B0735F60A3F2}</Project>
+      <Project>{1C9F7E30-1A1F-43AF-9E65-73781CC63C8B}</Project>
       <Name>DrawingModule</Name>
     </ProjectReference>
     <ProjectReference Include="..\XMLReader\XMLReaderTest.csproj">

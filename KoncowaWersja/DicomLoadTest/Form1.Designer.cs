@@ -1,4 +1,5 @@
 using System;
+using DrawingModule;
 
 namespace MainWindow
 {
@@ -71,19 +72,22 @@ namespace MainWindow
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.drawingPanelX = new DrawingModule.DrawingPanel();
             this.bigFirstWindow = new Kitware.VTK.RenderWindowControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.panel4 = new System.Windows.Forms.Panel();
+            this.drawingPanelY = new DrawingModule.DrawingPanel();
             this.bigSecondWindow = new Kitware.VTK.RenderWindowControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.panel5 = new System.Windows.Forms.Panel();
+            this.drawingPanelZ = new DrawingModule.DrawingPanel();
             this.bigThirdWindow = new Kitware.VTK.RenderWindowControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.panel6 = new System.Windows.Forms.Panel();
             this.bigFourthWindow = new Kitware.VTK.RenderWindowControl();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.drawingCheckBox = new System.Windows.Forms.CheckBox();
             this.clipingPanel = new MainWindow.ClipingToolbox();
+            this.drawingToolbox = new DrawingModule.DrawingToolbox();
+            this.saveImageFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.panel1.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarLevel)).BeginInit();
@@ -542,7 +546,7 @@ namespace MainWindow
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.panel3);
+            this.tabPage2.Controls.Add(this.drawingPanelX);
             this.tabPage2.Controls.Add(this.bigFirstWindow);
             this.tabPage2.Location = new System.Drawing.Point(4, 28);
             this.tabPage2.Name = "tabPage2";
@@ -552,26 +556,28 @@ namespace MainWindow
             this.tabPage2.Text = "X plane view";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // panel3
+            // drawingPanelX
             // 
-            this.panel3.Location = new System.Drawing.Point(6, 558);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(691, 26);
-            this.panel3.TabIndex = 6;
+            this.drawingPanelX.Image = null;
+            this.drawingPanelX.Location = new System.Drawing.Point(6, 574);
+            this.drawingPanelX.Name = "drawingPanelX";
+            this.drawingPanelX.Size = new System.Drawing.Size(691, 10);
+            this.drawingPanelX.TabIndex = 6;
             // 
             // bigFirstWindow
             // 
             this.bigFirstWindow.AddTestActors = false;
             this.bigFirstWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.bigFirstWindow.Location = new System.Drawing.Point(6, 6);
+            this.bigFirstWindow.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bigFirstWindow.Location = new System.Drawing.Point(3, 3);
             this.bigFirstWindow.Name = "bigFirstWindow";
-            this.bigFirstWindow.Size = new System.Drawing.Size(691, 545);
+            this.bigFirstWindow.Size = new System.Drawing.Size(697, 581);
             this.bigFirstWindow.TabIndex = 5;
             this.bigFirstWindow.TestText = null;
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.panel4);
+            this.tabPage3.Controls.Add(this.drawingPanelY);
             this.tabPage3.Controls.Add(this.bigSecondWindow);
             this.tabPage3.Location = new System.Drawing.Point(4, 28);
             this.tabPage3.Name = "tabPage3";
@@ -581,26 +587,28 @@ namespace MainWindow
             this.tabPage3.Text = "Y plane view";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // panel4
+            // drawingPanelY
             // 
-            this.panel4.Location = new System.Drawing.Point(6, 557);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(691, 26);
-            this.panel4.TabIndex = 7;
+            this.drawingPanelY.Image = null;
+            this.drawingPanelY.Location = new System.Drawing.Point(6, 573);
+            this.drawingPanelY.Name = "drawingPanelY";
+            this.drawingPanelY.Size = new System.Drawing.Size(691, 10);
+            this.drawingPanelY.TabIndex = 7;
             // 
             // bigSecondWindow
             // 
             this.bigSecondWindow.AddTestActors = false;
             this.bigSecondWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.bigSecondWindow.Location = new System.Drawing.Point(6, 6);
+            this.bigSecondWindow.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bigSecondWindow.Location = new System.Drawing.Point(3, 3);
             this.bigSecondWindow.Name = "bigSecondWindow";
-            this.bigSecondWindow.Size = new System.Drawing.Size(691, 545);
+            this.bigSecondWindow.Size = new System.Drawing.Size(697, 581);
             this.bigSecondWindow.TabIndex = 6;
             this.bigSecondWindow.TestText = null;
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.panel5);
+            this.tabPage4.Controls.Add(this.drawingPanelZ);
             this.tabPage4.Controls.Add(this.bigThirdWindow);
             this.tabPage4.Location = new System.Drawing.Point(4, 28);
             this.tabPage4.Name = "tabPage4";
@@ -610,12 +618,13 @@ namespace MainWindow
             this.tabPage4.Text = "Z plane view";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // panel5
+            // drawingPanelZ
             // 
-            this.panel5.Location = new System.Drawing.Point(7, 557);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(691, 26);
-            this.panel5.TabIndex = 8;
+            this.drawingPanelZ.Image = null;
+            this.drawingPanelZ.Location = new System.Drawing.Point(7, 573);
+            this.drawingPanelZ.Name = "drawingPanelZ";
+            this.drawingPanelZ.Size = new System.Drawing.Size(691, 10);
+            this.drawingPanelZ.TabIndex = 8;
             // 
             // bigThirdWindow
             // 
@@ -623,7 +632,7 @@ namespace MainWindow
             this.bigThirdWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.bigThirdWindow.Location = new System.Drawing.Point(7, 6);
             this.bigThirdWindow.Name = "bigThirdWindow";
-            this.bigThirdWindow.Size = new System.Drawing.Size(691, 545);
+            this.bigThirdWindow.Size = new System.Drawing.Size(691, 561);
             this.bigThirdWindow.TabIndex = 7;
             this.bigThirdWindow.TestText = null;
             // 
@@ -663,6 +672,18 @@ namespace MainWindow
             this.panel2.Size = new System.Drawing.Size(200, 100);
             this.panel2.TabIndex = 0;
             // 
+            // drawingCheckBox
+            // 
+            this.drawingCheckBox.AutoSize = true;
+            this.drawingCheckBox.Enabled = false;
+            this.drawingCheckBox.Location = new System.Drawing.Point(1029, 241);
+            this.drawingCheckBox.Name = "drawingCheckBox";
+            this.drawingCheckBox.Size = new System.Drawing.Size(137, 17);
+            this.drawingCheckBox.TabIndex = 64;
+            this.drawingCheckBox.Text = "Drawing Mode Enabled";
+            this.drawingCheckBox.UseVisualStyleBackColor = true;
+            this.drawingCheckBox.CheckedChanged += new System.EventHandler(this.drawingCheckBox_CheckedChanged);
+            // 
             // clipingPanel
             // 
             this.clipingPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -670,10 +691,25 @@ namespace MainWindow
             this.clipingPanel.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this.clipingPanel.Name = "clipingPanel";
             this.clipingPanel.Padding = new System.Windows.Forms.Padding(5, 15, 5, 5);
-            this.clipingPanel.Size = new System.Drawing.Size(165, 360);
+            this.clipingPanel.Size = new System.Drawing.Size(165, 214);
             this.clipingPanel.TabIndex = 63;
             this.clipingPanel.TabStop = false;
             this.clipingPanel.Text = "ClipingToolbox";
+            // 
+            // drawingToolbox
+            // 
+            this.drawingToolbox.Location = new System.Drawing.Point(1029, 265);
+            this.drawingToolbox.Name = "drawingToolbox";
+            this.drawingToolbox.Size = new System.Drawing.Size(164, 100);
+            this.drawingToolbox.TabIndex = 65;
+            this.drawingToolbox.TabStop = false;
+            this.drawingToolbox.Text = "Drawing Toolbox";
+            // 
+            // saveImageFileDialog
+            // 
+            this.saveImageFileDialog.DefaultExt = "bmp";
+            this.saveImageFileDialog.Filter = "Bitmap files | *.bmp | All files | *.*";
+            this.saveImageFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveImageFileDialog_FileOk);
             // 
             // Form1
             // 
@@ -681,6 +717,8 @@ namespace MainWindow
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1204, 622);
+            this.Controls.Add(this.drawingToolbox);
+            this.Controls.Add(this.drawingCheckBox);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.flowLayoutPanel1);
@@ -711,6 +749,7 @@ namespace MainWindow
             this.tabPage4.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -748,10 +787,10 @@ namespace MainWindow
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Panel panel2;
         private Kitware.VTK.RenderWindowControl bigFirstWindow;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Panel panel4;
+        private DrawingPanel drawingPanelX;
+        private DrawingPanel drawingPanelY;
         private Kitware.VTK.RenderWindowControl bigSecondWindow;
-        private System.Windows.Forms.Panel panel5;
+        private DrawingPanel drawingPanelZ;
         private Kitware.VTK.RenderWindowControl bigThirdWindow;
         private System.Windows.Forms.Panel panel6;
         private Kitware.VTK.RenderWindowControl bigFourthWindow;
@@ -767,6 +806,9 @@ namespace MainWindow
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadDicomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.CheckBox drawingCheckBox;
+        private DrawingToolbox drawingToolbox;
+        private System.Windows.Forms.SaveFileDialog saveImageFileDialog;
     }
 }
 

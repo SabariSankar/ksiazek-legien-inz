@@ -193,7 +193,7 @@ namespace MainWindow
 
         public void ExecuteClipingOperation(object sender, ClipingEventArgs args)
         {
-            _mapper.SetClippingPlanes(_clipingModule.GenerateNewPlaneCollection(args));
+            _mapper.SetClippingPlanes(_clipingModule.Clip(args));
             Update3DVisualization();
         }
 
