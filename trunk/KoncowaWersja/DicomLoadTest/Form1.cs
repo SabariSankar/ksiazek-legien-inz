@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Kitware.VTK;
 using System.IO;
 using System.Windows.Forms.DataVisualization.Charting;
+using DrawingModule;
 
 namespace MainWindow
 {
@@ -25,6 +26,10 @@ namespace MainWindow
         /// Selected point data used during opacity function modyfication
         /// </summary>
         private DataPoint _selectedDataPoint;
+        /// <summary>
+        /// Previous active tab.
+        /// </summary>
+        private int _prevoiusTab;
 
         /// <summary>
         /// 
@@ -34,6 +39,7 @@ namespace MainWindow
         public Form1()
         {
             InitializeComponent();
+            InitImageExport();
             _dicomLoader = new DicomLoader(_directoryPath);
         }
 
@@ -476,6 +482,9 @@ namespace MainWindow
                 thirdWindow.RenderWindow.GetRenderers().RemoveAllItems();
                 thirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
 
+<<<<<<< .mine
+                drawingCheckBox.Enabled = false;
+=======
                 _firstVizualization2D.DrawingEnabled = false;
                 _firstVizualization2D.DrawingInfo.Clear();
                 _firstVizualization2D.DrawingModeRepaint();
@@ -486,39 +495,58 @@ namespace MainWindow
                 _thirdVizualization2D.DrawingInfo.Clear();
                 _thirdVizualization2D.DrawingModeRepaint();
 
+>>>>>>> .r87
             }
             if (current == 1)
             {
                 bigFirstWindow.RenderWindow.GetRenderers().RemoveAllItems();
                 bigFirstWindow.RenderWindow.AddRenderer(_firstVizualization2D.GetRenderer());
                 bigFirstWindow.RenderWindow.GetInteractor().SetInteractorStyle(vtkInteractorStyleImage.New());
+<<<<<<< .mine
+
+                drawingCheckBox.Enabled = true;
+                drawingCheckBox.Checked = false;
+=======
 
                 _firstVizualization2D.DrawingEnabled = true;
                 _firstVizualization2D.DrawingModeRepaint();
                 bigFirstWindow.RenderWindow.GetInteractor().RemoveAllHandlersForAllEvents();
                 DrawingInit(bigFirstWindow, _firstVizualization2D);
+>>>>>>> .r87
             }
             if (current == 2)
             {
                 bigSecondWindow.RenderWindow.GetRenderers().RemoveAllItems();
                 bigSecondWindow.RenderWindow.AddRenderer(_secondVizualization2D.GetRenderer());
                 bigSecondWindow.RenderWindow.GetInteractor().SetInteractorStyle(vtkInteractorStyleImage.New());
+<<<<<<< .mine
+
+                drawingCheckBox.Enabled = true;
+                drawingCheckBox.Checked = false;
+=======
 
                 _secondVizualization2D.DrawingEnabled = true;
                 _secondVizualization2D.DrawingModeRepaint();
                 bigSecondWindow.RenderWindow.GetInteractor().RemoveAllHandlersForAllEvents();
                 DrawingInit(bigSecondWindow, _secondVizualization2D);
+>>>>>>> .r87
             }
             if (current == 3)
             {
                 bigThirdWindow.RenderWindow.GetRenderers().RemoveAllItems();
                 bigThirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
                 bigThirdWindow.RenderWindow.GetInteractor().SetInteractorStyle(vtkInteractorStyleImage.New());
+<<<<<<< .mine
+
+                drawingCheckBox.Enabled = true;
+                drawingCheckBox.Checked = false;
+=======
 
                 _thirdVizualization2D.DrawingEnabled = true;
                 _thirdVizualization2D.DrawingModeRepaint();
                 bigThirdWindow.RenderWindow.GetInteractor().RemoveAllHandlersForAllEvents();
                 DrawingInit(bigThirdWindow, _thirdVizualization2D);
+>>>>>>> .r87
             }
             if (current == 4)
             {
@@ -529,6 +557,9 @@ namespace MainWindow
                 bigFourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().AddVolume(_vizualization3D.GetVolume());
                 bigFourthWindow.Update();
                 bigFourthWindow.RenderWindow.Render();
+
+                drawingCheckBox.Enabled = false;
+                drawingCheckBox.Checked = false;
             }
 
         }
@@ -575,44 +606,121 @@ namespace MainWindow
 
         #region Rysowanie
 
-        public void DrawingInit()
+        private void drawingCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            DrawingInit(bigFirstWindow, _firstVizualization2D);
-            DrawingInit(bigSecondWindow, _secondVizualization2D);
-            DrawingInit(bigThirdWindow, _thirdVizualization2D);
+            
+            if (drawingCheckBox.Checked)
+            {
+                _prevoiusTab = tabControl.SelectedIndex;  
+                DrawingModeOn();
+            }
+            else
+            {
+                DrawingModeOff();
+            }
         }
 
-        private void DrawingInit(RenderWindowControl window, Visualization2D visualisation)
+        private void DrawingModeOn()
         {
-
-            window.RenderWindow.GetInteractor().LeftButtonPressEvt += (vtkObject sender, vtkObjectEventArgs e)
-                =>
+            RenderWindowControl windowControl = null;
+            DrawingPanel drawingPanel = null;
+            switch (tabControl.SelectedIndex)
             {
-                vtkRenderWindowInteractor caller = e.Caller as vtkRenderWindowInteractor;
-                if (caller != null)
-                {
-                    int[] mousePosition = caller.GetLastEventPosition();
-                    vtkPointPicker picker = vtkPointPicker.New();
-                    var correctPicking = picker.Pick((double)mousePosition[0], (double)mousePosition[1], (double)0, visualisation.GetRenderer());
-                    if (correctPicking > 0)
-                    {
-                        var positionOnObject = picker.GetMapperPosition();
-                        if (_drawLineCounter)
-                        {
-                            visualisation.DrawingInfo.AddPoint((int)positionOnObject[0], (int)positionOnObject[1]);
-                            visualisation.DrawingModeRepaint();
-                        }
-                        else
-                        {
-                            visualisation.DrawingInfo.AddLine();
-                            visualisation.DrawingInfo.AddPoint((int)positionOnObject[0], (int)positionOnObject[1]);
-                        }
-                        _drawLineCounter = !_drawLineCounter;
-                    }
-                }
-            };
+                case 1:
+                    windowControl = bigFirstWindow; drawingPanel = drawingPanelX;
+                    break;
+                case 2:
+                    windowControl = bigSecondWindow; drawingPanel = drawingPanelY;
+                    break;
+                case 3:
+                    windowControl = bigThirdWindow; drawingPanel = drawingPanelZ;
+                    break;
+            }
+
+            var height = windowControl.Height;
+
+            vtkWindowToImageFilter ImageFilter = vtkWindowToImageFilter.New();
+            ImageFilter.SetInput(windowControl.RenderWindow);
+            ImageFilter.Update();
+            drawingPanel.Image = ImageFilter.GetOutput().ToBitmap();
+            drawingPanel.Dock = DockStyle.Fill;
+            windowControl.Height = 0;
+            drawingPanel.Invalidate();
+        }
+
+        private void DrawingModeOff() {
+            RenderWindowControl windowControl = null;
+            DrawingPanel drawingPanel = null;
+            switch (_prevoiusTab)
+            {
+                case 1:
+                    windowControl = bigFirstWindow; drawingPanel = drawingPanelX;
+                    break;
+                case 2:
+                    windowControl = bigSecondWindow; drawingPanel = drawingPanelY;
+                    break;
+                case 3:
+                    windowControl = bigThirdWindow; drawingPanel = drawingPanelZ;
+                    break;
+            }
+
+            drawingPanel.Dock = DockStyle.Bottom;
+            drawingPanel.Height = 0;
+            windowControl.Dock = DockStyle.Fill;
         }
 
         #endregion
+
+        #region Zapisywanie obrazu do pliku
+
+        private void InitImageExport()
+        {
+            drawingToolbox.ExportImageButton.Click += (obj, args) =>
+            {
+                var dialog = saveImageFileDialog.ShowDialog();
+            };
+
+            drawingToolbox.ClearButton.Click += (obj, args) =>
+                {
+                    DrawingPanel drawingPanel = null;
+                    switch (tabControl.SelectedIndex)
+                    {
+                        case 1:
+                            drawingPanel = drawingPanelX;
+                            break;
+                        case 2:
+                            drawingPanel = drawingPanelY;
+                            break;
+                        case 3:
+                            drawingPanel = drawingPanelZ;
+                            break;
+                    }
+                    if(drawingPanel != null)
+                        drawingPanel.Clear();
+                };
+        }
+
+        private void saveImageFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            DrawingPanel drawingPanel = null;
+            switch (tabControl.SelectedIndex)
+            {
+                case 1:
+                    drawingPanel = drawingPanelX;
+                    break;
+                case 2:
+                    drawingPanel = drawingPanelY;
+                    break;
+                case 3:
+                    drawingPanel = drawingPanelZ;
+                    break;
+            }
+            if(drawingPanel != null)
+                drawingPanel.Save(saveImageFileDialog.FileName);
+        }
+
+        #endregion      
+
+
     }
 }

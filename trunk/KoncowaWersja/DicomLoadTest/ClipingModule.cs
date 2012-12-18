@@ -4,12 +4,32 @@ using System.Collections.Generic;
 
 namespace MainWindow
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ClipingModule
     {
+        /// <summary>
+        /// Logger
+        /// </summary>
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        /// Collection with cutting planes.
+        /// </summary>
         private readonly vtkPlaneCollection _planeCollection;
 
+        /// <summary>
+        /// Volume size in x dimension.
+        /// </summary>
         private int _xSize;
+        /// <summary>
+        /// Volume size in y dimension.
+        /// </summary>
         private int _ySize;
+        /// <summary>
+        /// Volume size in z dimension.
+        /// </summary>
         private int _zSize;
 
         public ClipingModule(IList<double> sizeList)
@@ -21,6 +41,10 @@ namespace MainWindow
            InitPlaneCollection(_planeCollection);
         }
 
+        /// <summary>
+        /// Sets volume size info. 
+        /// </summary>
+        /// <param name="sizeList">List with three elements(x,y,z)</param>
         private void InitVolumeSizesFromVizulaisation3D(IList<double> sizeList)
         {
             _xSize = (int)sizeList[0];
@@ -28,6 +52,10 @@ namespace MainWindow
             _zSize = (int)sizeList[2];
         }
 
+        /// <summary>
+        /// Sets initial planes' positions.
+        /// </summary>
+        /// <param name="planeCollection"></param>
         private void InitPlaneCollection(vtkPlaneCollection planeCollection)
         {
             var planeX1 = new vtkPlane();
@@ -61,7 +89,12 @@ namespace MainWindow
             planeCollection.AddItem(planeZ2);
         }
 
-        public vtkPlaneCollection GenerateNewPlaneCollection(ClipingEventArgs args)
+        /// <summary>
+        /// Changes cliping plane position.
+        /// </summary>
+        /// <param name="args">EventArgs with operation type and new plane position</param>
+        /// <returns>Modified plane</returns>
+        public vtkPlaneCollection Clip(ClipingEventArgs args)
         {
             try
             {
@@ -89,19 +122,26 @@ namespace MainWindow
                 
             }catch(Exception e)
             {
-                //logger
+                logger.ErrorException("Cliping opeartion exception.", e);
+                return null;
             }
             return _planeCollection;
         }
 
     }
 
+    /// <summary>
+    /// Arguments of event used during cliping operation.
+    /// </summary>
     public class ClipingEventArgs : EventArgs
     {
         public EClipingModuleOperationType Type { get; set; }
         public int Position { get; set; }
     }
 
+    /// <summary>
+    /// Enumeration with cliping operation type.
+    /// </summary>
     public enum EClipingModuleOperationType
     {
         X1, X2, Y1, Y2, Z1, Z2
