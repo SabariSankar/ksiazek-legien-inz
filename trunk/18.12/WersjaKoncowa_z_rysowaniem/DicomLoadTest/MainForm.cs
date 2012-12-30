@@ -461,8 +461,11 @@ namespace MainWindow
 
         private void colorStrip_Paint(object sender, PaintEventArgs e)
         {
-            var width = chart1.ChartAreas["ChartArea1"].Position.Size.Width > 0 ? (int)chart1.ChartAreas["ChartArea1"].Position.Size.Width * chart1.Size.Width / 100 : 1;
-            _vizualization3D.GenerateStrip(e.Graphics, 10, width);
+            if (_vizualization3D != null)
+            {
+                var width = chart1.ChartAreas["ChartArea1"].Position.Size.Width > 0 ? (int)chart1.ChartAreas["ChartArea1"].Position.Size.Width * chart1.Size.Width / 100 : 1;
+                _vizualization3D.GenerateStrip(e.Graphics, 10, width);
+            }
         }
 
         #endregion
@@ -602,7 +605,7 @@ namespace MainWindow
                     windowControl = bigThirdWindow; drawingPanel = drawingPanelZ;
                     break;
             }
-
+            drawingPanel.Visible = true;
             var height = windowControl.Height;
 
             vtkWindowToImageFilter ImageFilter = vtkWindowToImageFilter.New();
@@ -634,6 +637,10 @@ namespace MainWindow
 
             drawingPanel.Dock = DockStyle.Bottom;
             drawingPanel.Height = 0;
+            drawingPanel.Visible = false;
+
+            drawingPanel.ImageBackupClear();
+
             windowControl.Dock = DockStyle.Fill;
 
             drawingToolbox.Enabled = false;
