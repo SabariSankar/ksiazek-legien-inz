@@ -62,13 +62,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ButtonText.resx</DependentUpon>
     </Compile>
-    <Compile Include="ClipingModule.cs" />
-    <Compile Include="ClipingToolbox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ClipingToolbox.Designer.cs">
-      <DependentUpon>ClipingToolbox.cs</DependentUpon>
-    </Compile>
     <Compile Include="DicomLoader.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -83,9 +76,6 @@
     <EmbeddedResource Include="ButtonText.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ButtonText.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ClipingToolbox.resx">
-      <DependentUpon>ClipingToolbox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -115,6 +105,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClipingModule\ClipingModule.csproj">
+      <Project>{689FA51C-C48C-4AD6-956D-7AB4D57964C8}</Project>
+      <Name>ClipingModule</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DrawingModule\DrawingModule.csproj">
       <Project>{1C9F7E30-1A1F-43AF-9E65-73781CC63C8B}</Project>
       <Name>DrawingModule</Name>

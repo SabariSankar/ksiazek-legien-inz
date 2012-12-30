@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using NLog;
 using System.Linq;
+using ClipingModule;
 
 
 namespace MainWindow
@@ -47,7 +48,7 @@ namespace MainWindow
         private float _windowWidth;
         private float _windowLevel = 40;
 
-        private ClipingModule _clipingModule;
+        private ClipingObject _clipingModule;
 
         private int _currentSerieNumber;
 
@@ -155,8 +156,8 @@ namespace MainWindow
             // Render
             _window.RenderWindow.Render();
 
-            //ClipingModule
-            _clipingModule = new ClipingModule(GetObjectSize());
+            //ClipingObject
+            _clipingModule = new ClipingObject(GetObjectSize());
         }
 
         public void ChangeDirectory(DicomLoader dicomLoader)
@@ -187,7 +188,7 @@ namespace MainWindow
             _window.Validate();
             _window.Update();
 
-            _clipingModule = new ClipingModule(GetObjectSize());
+            _clipingModule = new ClipingObject(GetObjectSize());
 
         }
 

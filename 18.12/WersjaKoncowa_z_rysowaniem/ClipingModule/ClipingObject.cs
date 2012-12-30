@@ -2,12 +2,12 @@
 using Kitware.VTK;
 using System.Collections.Generic;
 
-namespace MainWindow
+namespace ClipingModule
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ClipingModule
+    public class ClipingObject
     {
         /// <summary>
         /// Logger
@@ -32,7 +32,7 @@ namespace MainWindow
         /// </summary>
         private int _zSize;
 
-        public ClipingModule(IList<double> sizeList)
+        public ClipingObject(IList<double> sizeList)
         {
             _planeCollection = vtkPlaneCollection.New();
 
