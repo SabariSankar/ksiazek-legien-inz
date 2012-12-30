@@ -37,6 +37,7 @@
             this.YClipingTrackBar1 = new System.Windows.Forms.TrackBar();
             this.ZClipingTrackBar2 = new System.Windows.Forms.TrackBar();
             this.ZClipingTrackBar1 = new System.Windows.Forms.TrackBar();
+            this.titleLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.XClipingTrackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.XClipingTrackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YClipingTrackBar2)).BeginInit();
@@ -152,6 +153,15 @@
             this.ZClipingTrackBar1.TabIndex = 69;
             this.ZClipingTrackBar1.Scroll += new System.EventHandler(this.ZClipingTrackBar1_Scroll);
             // 
+            // titleLabel
+            // 
+            this.titleLabel.AutoSize = true;
+            this.titleLabel.Location = new System.Drawing.Point(0, 0);
+            this.titleLabel.Name = "titleLabel";
+            this.titleLabel.Size = new System.Drawing.Size(100, 23);
+            this.titleLabel.TabIndex = 0;
+            this.titleLabel.Text = "Cliping:";
+            // 
             // ClipingToolbox
             // 
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -190,5 +200,6 @@
         public System.Windows.Forms.TrackBar YClipingTrackBar1;
         public System.Windows.Forms.TrackBar ZClipingTrackBar2;
         public System.Windows.Forms.TrackBar ZClipingTrackBar1;
+        private System.Windows.Forms.Label titleLabel;
     }
 }
