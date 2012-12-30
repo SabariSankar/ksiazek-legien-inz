@@ -38,7 +38,7 @@ namespace DrawingModule
 
         private void DrawingPanelMouseMove(object sender, MouseEventArgs e)
         {
-            if (_Previous != null)
+            if (_Previous != null && Image != null)
             {
                 using (Graphics g = Graphics.FromImage(Image))
                 {
@@ -77,6 +77,11 @@ namespace DrawingModule
             }
             return true;
         }
-         
+
+        public void ImageBackupClear()
+        {
+            _imageBackup.Dispose();
+            _imageBackup = null;
+        }
     }
 }
