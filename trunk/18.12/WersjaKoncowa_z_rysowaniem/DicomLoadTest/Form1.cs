@@ -8,6 +8,7 @@ using Kitware.VTK;
 using System.IO;
 using System.Windows.Forms.DataVisualization.Charting;
 using DrawingModule;
+using ClipingModule;
 
 namespace MainWindow
 {
@@ -478,6 +479,7 @@ namespace MainWindow
                 thirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
 
                 drawingCheckBox.Enabled = false;
+                drawingToolbox.Enabled = false;
             }
             if (current == 1)
             {
@@ -570,7 +572,7 @@ namespace MainWindow
             if (drawingCheckBox.Checked)
             {
                 _prevoiusTab = tabControl.SelectedIndex;  
-                DrawingModeOn();
+                DrawingModeOn(); 
             }
             else
             {
@@ -604,6 +606,8 @@ namespace MainWindow
             drawingPanel.Dock = DockStyle.Fill;
             windowControl.Height = 0;
             drawingPanel.Invalidate();
+
+            drawingToolbox.Enabled = true;
         }
 
         private void DrawingModeOff() {
@@ -625,6 +629,8 @@ namespace MainWindow
             drawingPanel.Dock = DockStyle.Bottom;
             drawingPanel.Height = 0;
             windowControl.Dock = DockStyle.Fill;
+
+            drawingToolbox.Enabled = false;
         }
 
         #endregion

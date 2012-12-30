@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLReaderTest", "XMLReader\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawingModule", "DrawingModule\DrawingModule.csproj", "{1C9F7E30-1A1F-43AF-9E65-73781CC63C8B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipingModule", "ClipingModule\ClipingModule.csproj", "{689FA51C-C48C-4AD6-956D-7AB4D57964C8}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -51,6 +53,16 @@ Global
 		{1C9F7E30-1A1F-43AF-9E65-73781CC63C8B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1C9F7E30-1A1F-43AF-9E65-73781CC63C8B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1C9F7E30-1A1F-43AF-9E65-73781CC63C8B}.Release|x86.ActiveCfg = Release|Any CPU
+		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 using System;
 using DrawingModule;
+using ClipingModule;
 
 namespace MainWindow
 {
@@ -85,7 +86,7 @@ namespace MainWindow
             this.bigFourthWindow = new Kitware.VTK.RenderWindowControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.drawingCheckBox = new System.Windows.Forms.CheckBox();
-            this.clipingPanel = new MainWindow.ClipingToolbox();
+            this.clipingPanel = new ClipingModule.ClipingToolbox();
             this.drawingToolbox = new DrawingModule.DrawingToolbox();
             this.saveImageFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.panel1.SuspendLayout();

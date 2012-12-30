@@ -1,4 +1,4 @@
-﻿namespace MainWindow
+﻿namespace ClipingModule
 {
     partial class ClipingToolbox
     {

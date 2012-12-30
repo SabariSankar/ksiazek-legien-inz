@@ -36,6 +36,8 @@ namespace DrawingModule
             _panel.SetCellPosition(ClearButton, new TableLayoutPanelCellPosition(0, 0));
             _panel.Controls.Add(ExportImageButton);
             _panel.SetCellPosition(ExportImageButton, new TableLayoutPanelCellPosition(1, 0));
+
+            Enabled = false;
         }
 
         private void InitializeComponent()
@@ -67,6 +69,22 @@ namespace DrawingModule
             this.Text = "DrawingToolbox";
             this.ResumeLayout(false);
 
+        }
+
+        private bool _enabled;
+        public new bool Enabled
+        {
+            get { return _enabled; }
+            set
+            {
+                _enabled = value;
+                foreach (var component in _panel.Controls)
+                {
+                    var control = component as Control;
+                    if(control != null)
+                        control.Enabled = _enabled;
+                }
+            }
         }
     }
 }
