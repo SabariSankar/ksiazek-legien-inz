@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace ClipingModule
 {
 
-    public partial class ClipingToolbox : GroupBox
+    public partial class ClipingToolbox : Panel
     {
         public delegate void EventHandler(object sender, ClipingEventArgs e);
         public EventHandler<ClipingEventArgs> ClipingOperationEventHandlerDelegate;
@@ -20,6 +20,10 @@ namespace ClipingModule
             this.Controls.Add(_panel);
 
             InitializeComponent();
+
+            this.Controls.Add(titleLabel);
+            titleLabel.Dock = DockStyle.Top;
+            titleLabel.Padding = new Padding(0, 5, 0, 5);
 
             _panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16));
             _panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 42));

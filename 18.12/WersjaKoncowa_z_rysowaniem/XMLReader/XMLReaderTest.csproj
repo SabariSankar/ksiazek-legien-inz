@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Axis.cs" />
     <Compile Include="ElementOfSeries.cs" />
     <Compile Include="PresetInformation.cs" />
     <Compile Include="Program.cs" />

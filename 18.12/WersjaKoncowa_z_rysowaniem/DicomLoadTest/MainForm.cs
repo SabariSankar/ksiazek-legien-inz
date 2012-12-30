@@ -12,7 +12,7 @@ using ClipingModule;
 
 namespace MainWindow
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private Visualization3D _vizualization3D;
         private Visualization2D _firstVizualization2D;
@@ -32,10 +32,13 @@ namespace MainWindow
         /// </summary>
         private int _prevoiusTab;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
+
             InitImageExport();
+            drawingToolbox.DrawnigModeEnabled.CheckedChanged += drawingCheckBox_CheckedChanged;
+
             _dicomLoader = new DicomLoader(_directoryPath);
         }
 
@@ -478,7 +481,7 @@ namespace MainWindow
                 thirdWindow.RenderWindow.GetRenderers().RemoveAllItems();
                 thirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
 
-                drawingCheckBox.Enabled = false;
+                drawingToolbox.DrawnigModeEnabled.Enabled = false;
                 drawingToolbox.Enabled = false;
             }
             if (current == 1)
@@ -487,8 +490,8 @@ namespace MainWindow
                 bigFirstWindow.RenderWindow.AddRenderer(_firstVizualization2D.GetRenderer());
                 bigFirstWindow.RenderWindow.GetInteractor().SetInteractorStyle(vtkInteractorStyleImage.New());
 
-                drawingCheckBox.Enabled = true;
-                drawingCheckBox.Checked = false;
+                drawingToolbox.DrawnigModeEnabled.Enabled = true;
+                drawingToolbox.DrawnigModeEnabled.Checked = false;
             }
             if (current == 2)
             {
@@ -496,8 +499,8 @@ namespace MainWindow
                 bigSecondWindow.RenderWindow.AddRenderer(_secondVizualization2D.GetRenderer());
                 bigSecondWindow.RenderWindow.GetInteractor().SetInteractorStyle(vtkInteractorStyleImage.New());
 
-                drawingCheckBox.Enabled = true;
-                drawingCheckBox.Checked = false;
+                drawingToolbox.DrawnigModeEnabled.Enabled = true;
+                drawingToolbox.DrawnigModeEnabled.Checked = false;
             }
             if (current == 3)
             {
@@ -505,8 +508,8 @@ namespace MainWindow
                 bigThirdWindow.RenderWindow.AddRenderer(_thirdVizualization2D.GetRenderer());
                 bigThirdWindow.RenderWindow.GetInteractor().SetInteractorStyle(vtkInteractorStyleImage.New());
 
-                drawingCheckBox.Enabled = true;
-                drawingCheckBox.Checked = false;
+                drawingToolbox.DrawnigModeEnabled.Enabled = true;
+                drawingToolbox.DrawnigModeEnabled.Checked = false;
             }
             if (current == 4)
             {
@@ -518,8 +521,8 @@ namespace MainWindow
                 bigFourthWindow.Update();
                 bigFourthWindow.RenderWindow.Render();
 
-                drawingCheckBox.Enabled = false;
-                drawingCheckBox.Checked = false;
+                drawingToolbox.DrawnigModeEnabled.Enabled = false;
+                drawingToolbox.DrawnigModeEnabled.Checked = false;
             }
 
         }
@@ -568,15 +571,18 @@ namespace MainWindow
 
         private void drawingCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            
-            if (drawingCheckBox.Checked)
+            var checkBox = sender as CheckBox;
+            if (checkBox != null)
             {
-                _prevoiusTab = tabControl.SelectedIndex;  
-                DrawingModeOn(); 
-            }
-            else
-            {
-                DrawingModeOff();
+                if (checkBox.Checked)
+                {
+                    _prevoiusTab = tabControl.SelectedIndex;
+                    DrawingModeOn();
+                }
+                else
+                {
+                    DrawingModeOff();
+                }
             }
         }
 
