@@ -7,16 +7,33 @@ using System.Drawing;
 
 namespace DrawingModule
 {
-
+    /// <summary>
+    /// Panel with check box for turning drawing mode on/off and Export/Clear buttons.
+    /// Contains definition of panel layout, but not the buttons or check box actions.
+    /// </summary>
     public class DrawingToolbox : Panel
     {
-        public Button ExportImageButton;
-        public Button ClearButton;
+        /// <summary>
+        /// If checked drawing is enabled.
+        /// </summary>
         public CheckBox DrawnigModeEnabled;
-        private Label titleLabel;
 
+        /// <summary>
+        /// On click save the drawing area content into the file. Need user on-click action definition.
+        /// </summary>
+        public Button ExportImageButton;
+
+        /// <summary>
+        /// On click clears drawing area. Need user on-click action definition.
+        /// </summary>
+        public Button ClearButton;
+        
+        private Label _titleLabel;
         private TableLayoutPanel _panel;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public DrawingToolbox()
             : base()
         {
@@ -34,8 +51,8 @@ namespace DrawingModule
             _panel.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
             _panel.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
 
-            _panel.Controls.Add(titleLabel);
-            _panel.SetCellPosition(titleLabel, new TableLayoutPanelCellPosition(0,0));
+            _panel.Controls.Add(_titleLabel);
+            _panel.SetCellPosition(_titleLabel, new TableLayoutPanelCellPosition(0,0));
 
             _panel.Controls.Add(DrawnigModeEnabled);
             _panel.SetCellPosition(DrawnigModeEnabled, new TableLayoutPanelCellPosition(0,1));
@@ -54,7 +71,7 @@ namespace DrawingModule
             this.ExportImageButton = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
             this.DrawnigModeEnabled = new System.Windows.Forms.CheckBox();
-            this.titleLabel = new System.Windows.Forms.Label();
+            this._titleLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ExportImageButton
@@ -85,14 +102,14 @@ namespace DrawingModule
             this.DrawnigModeEnabled.Text = "Enabled";
             this.DrawnigModeEnabled.UseVisualStyleBackColor = true;
             // 
-            // titleLabel
+            // _titleLabel
             // 
-            this.titleLabel.AutoSize = true;
-            this.titleLabel.Location = new System.Drawing.Point(0, 0);
-            this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(100, 23);
-            this.titleLabel.TabIndex = 0;
-            this.titleLabel.Text = "Drawing:";
+            this._titleLabel.AutoSize = true;
+            this._titleLabel.Location = new System.Drawing.Point(0, 0);
+            this._titleLabel.Name = "_titleLabel";
+            this._titleLabel.Size = new System.Drawing.Size(100, 23);
+            this._titleLabel.TabIndex = 0;
+            this._titleLabel.Text = "Drawing:";
             // 
             // DrawingToolbox
             // 
@@ -102,6 +119,10 @@ namespace DrawingModule
         }
 
         private bool _enabled;
+
+        /// <summary>
+        /// If Clear button and ExportImage button are enabled/disabled; 
+        /// </summary>
         public new bool Enabled
         {
             get { return _enabled; }

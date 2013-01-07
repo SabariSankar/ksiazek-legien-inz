@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainWindow", "DicomLoadTest\MainWindow.csproj", "{68B592EB-0C16-4108-9DDB-CBADA8B0E7D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLReaderTest", "XMLReader\XMLReaderTest.csproj", "{026FAE15-EFA8-4A7E-9F3E-7062AFACA126}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLReaderModule", "XMLReader\XMLReaderModule.csproj", "{026FAE15-EFA8-4A7E-9F3E-7062AFACA126}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawingModule", "DrawingModule\DrawingModule.csproj", "{1C9F7E30-1A1F-43AF-9E65-73781CC63C8B}"
 EndProject

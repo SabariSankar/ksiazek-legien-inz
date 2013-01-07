@@ -12,6 +12,9 @@ using ClipingModule;
 
 namespace MainWindow
 {
+    /// <summary>
+    /// Main form of the DICOM3D application.
+    /// </summary>
     public partial class MainForm : Form
     {
         private Visualization3D _vizualization3D;
@@ -32,6 +35,9 @@ namespace MainWindow
         /// </summary>
         private int _prevoiusTab;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
@@ -40,10 +46,33 @@ namespace MainWindow
             drawingToolbox.DrawnigModeEnabled.CheckedChanged += drawingCheckBox_CheckedChanged;
 
             _dicomLoader = new DicomLoader(_directoryPath);
+            if(_dicomLoader.GetErrorCode() != 0 && _directoryPath != null)
+                MessageBox.Show(@"Data cannot be loaded. Possible errors: 
+                                1)directory does not contain dicom files  
+                                2)files are compressed",
+                    "Loading Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
         }
 
         #region Obs³uga zamykania aplikacji
 
+        /// <summary>
+        /// Strip menu "Exit" action.
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event arguments</param>
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        /// <summary>
+        /// Called during closing MainForm, associated with FormClosingEventHandler. 
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event arguments.</param>
         public void DisposeAll(object sender, FormClosingEventArgs e)
         {
             _vizualization3D.Dispose();

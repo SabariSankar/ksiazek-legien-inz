@@ -12,9 +12,7 @@ namespace MainWindow
         {
             _dicomReader = new vtkDICOMImageReader();
             _dicomReader.SetDirectoryName(directoryPath);
-            _dicomReader.Update();
-            int a = _dicomReader.GetWidth();
-            int b = _dicomReader.GetHeight();
+            _dicomReader.Update();        
         }
 
         public void ChangeDirectory(String directoryPath)
@@ -28,6 +26,11 @@ namespace MainWindow
         public vtkDataSet GetOutput()
         {
             return _dicomReader.GetOutput();
+        }
+
+        public int GetErrorCode()
+        {
+            return (int)_dicomReader.GetErrorCode(); 
         }
 
         public void Dispose()
