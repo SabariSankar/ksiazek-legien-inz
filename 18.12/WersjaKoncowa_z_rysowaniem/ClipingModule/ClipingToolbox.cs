@@ -4,14 +4,24 @@ using System.Windows.Forms;
 
 namespace ClipingModule
 {
-
+    /// <summary>
+    /// Container with track bars used for moving cliping planes.
+    /// </summary>
     public partial class ClipingToolbox : Panel
     {
+ 
         public delegate void EventHandler(object sender, ClipingEventArgs e);
+
+        /// <summary>
+        /// Handler for operation of cliping.
+        /// </summary>
         public EventHandler<ClipingEventArgs> ClipingOperationEventHandlerDelegate;
 
         private TableLayoutPanel _panel;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public ClipingToolbox() : base()
         {
             _panel = new TableLayoutPanel();
@@ -58,6 +68,10 @@ namespace ClipingModule
             _panel.SetCellPosition(ZClipingTrackBar2, new TableLayoutPanelCellPosition(2, 2));
         }
 
+        /// <summary>
+        /// Sets track bars' Maximum and Minimum properties.
+        /// </summary>
+        /// <param name="sizeList">List with three elements(x,y,z)</param>
         public void InitialiseClipingToolbox(IList<double> sizeList)
         {
             if (sizeList.Count != 3)

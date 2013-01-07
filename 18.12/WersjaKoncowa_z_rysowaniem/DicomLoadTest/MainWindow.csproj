@@ -156,9 +156,9 @@
       <Project>{1C9F7E30-1A1F-43AF-9E65-73781CC63C8B}</Project>
       <Name>DrawingModule</Name>
     </ProjectReference>
-    <ProjectReference Include="..\XMLReader\XMLReaderTest.csproj">
+    <ProjectReference Include="..\XMLReader\XMLReaderModule.csproj">
       <Project>{026FAE15-EFA8-4A7E-9F3E-7062AFACA126}</Project>
-      <Name>XMLReaderTest</Name>
+      <Name>XMLReaderModule</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

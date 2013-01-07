@@ -5,7 +5,8 @@ using System.Collections.Generic;
 namespace ClipingModule
 {
     /// <summary>
-    /// 
+    /// Class provides support for operation of cliping parts of 3D object.
+    /// Cliping planes are parrallel to x, y or z axis. 
     /// </summary>
     public class ClipingObject
     {
@@ -32,6 +33,10 @@ namespace ClipingModule
         /// </summary>
         private int _zSize;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="sizeList">List with three elements(x,y,z)</param>
         public ClipingObject(IList<double> sizeList)
         {
             _planeCollection = vtkPlaneCollection.New();
