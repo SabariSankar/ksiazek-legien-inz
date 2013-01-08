@@ -18,7 +18,14 @@ namespace ClipingModule
     /// </summary>
     public class ClipingEventArgs : EventArgs
     {
+        /// <summary>
+        /// Operation type - dimension and plane number. 
+        /// </summary>
         public EClipingModuleOperationType Type { get; set; }
+
+        /// <summary>
+        /// New plane position.
+        /// </summary>
         public int Position { get; set; }
     }
 }
