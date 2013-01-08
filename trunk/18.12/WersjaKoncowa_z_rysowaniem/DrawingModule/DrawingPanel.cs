@@ -81,6 +81,15 @@ namespace DrawingModule
         }
 
         /// <summary>
+        /// Removes original panel content.
+        /// </summary>
+        public void ImageBackupClear()
+        {
+            _imageBackup.Dispose();
+            _imageBackup = null;
+        }
+
+        /// <summary>
         /// Save content of panel as bitmap file.
         /// </summary>
         /// <param name="file">Path with file name.</param>
@@ -99,13 +108,5 @@ namespace DrawingModule
             return true;
         }
 
-        /// <summary>
-        /// Removes original panel content.
-        /// </summary>
-        public void ImageBackupClear()
-        {
-            _imageBackup.Dispose();
-            _imageBackup = null;
-        }
     }
 }

@@ -9,9 +9,6 @@ namespace ClipingModule
     /// </summary>
     public partial class ClipingToolbox : Panel
     {
- 
-        public delegate void EventHandler(object sender, ClipingEventArgs e);
-
         /// <summary>
         /// Handler for operation of cliping.
         /// </summary>
