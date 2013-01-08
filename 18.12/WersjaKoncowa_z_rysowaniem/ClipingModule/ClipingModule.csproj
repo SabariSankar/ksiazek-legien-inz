@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipingEventArgs.cs" />
     <Compile Include="ClipingObject.cs" />
     <Compile Include="ClipingToolbox.cs">
       <SubType>Component</SubType>
