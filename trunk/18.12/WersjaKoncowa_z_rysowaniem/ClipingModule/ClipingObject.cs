@@ -6,7 +6,8 @@ namespace ClipingModule
 {
     /// <summary>
     /// Class provides support for operation of cliping parts of 3D object.
-    /// Cliping planes are parrallel to x, y or z axis. 
+    /// Cliping planes are parrallel to x, y or z axis. Two planes for one axis,
+    /// reducing object size from two sides.
     /// </summary>
     public class ClipingObject
     {
@@ -98,7 +99,7 @@ namespace ClipingModule
         /// Changes cliping plane position.
         /// </summary>
         /// <param name="args">EventArgs with operation type and new plane position</param>
-        /// <returns>Modified plane</returns>
+        /// <returns>Collection with modified plane</returns>
         public vtkPlaneCollection Clip(ClipingEventArgs args)
         {
             try
