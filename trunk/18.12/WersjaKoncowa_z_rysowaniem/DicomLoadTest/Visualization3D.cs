@@ -208,29 +208,30 @@ namespace MainWindow
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
 
             PresetInfo = PresetReader.ReadXmlFile(presetName);
-            _chart.Series["OpacityFunction"].Points.Clear();
-            _chart.Series["OpacityFunctionSpline"].Points.Clear();
-
-            foreach (var pair in PresetInfo.Series[0].OpacityFunction)
+            if (PresetInfo != null)
             {
-                spwf.AddPoint(pair.Key, pair.Value);
-                _chart.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
-                _chart.Series["OpacityFunctionSpline"].Points.AddXY(pair.Key, pair.Value);
+                _chart.Series["OpacityFunction"].Points.Clear();
+                _chart.Series["OpacityFunctionSpline"].Points.Clear();
+
+                foreach (var pair in PresetInfo.Series[0].OpacityFunction)
+                {
+                    spwf.AddPoint(pair.Key, pair.Value);
+                    _chart.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
+                    _chart.Series["OpacityFunctionSpline"].Points.AddXY(pair.Key, pair.Value);
+                }
+
+                foreach (var pair in PresetInfo.Series[0].ColorFuction)
+                {
+                    ctf.AddRGBSegment(pair.Key, pair.Value[0].R, pair.Value[0].G, pair.Value[0].B,
+                        pair.Key, pair.Value[1].R, pair.Value[1].G, pair.Value[1].B);
+                }
+
+                ctf.SetScaleToLinear();
+                _volume.GetProperty().SetColor(ctf);
+                _volume.GetProperty().SetScalarOpacity(spwf);
+
+                _currentSerieNumber = 0;
             }
-
-            foreach (var pair in PresetInfo.Series[0].ColorFuction)
-            {
-                ctf.AddRGBSegment(pair.Key,pair.Value[0].R, pair.Value[0].G, pair.Value[0].B,
-                    pair.Key, pair.Value[1].R, pair.Value[1].G, pair.Value[1].B);
-                //Color colorRight = Color.FromArgb((int)pair.Value[1].R, (int)pair.Value[1].G, (int)pair.Value[1].B);
-                //Color colorLeft = Color.FromArgb((int)pair.Value[0].R, (int)pair.Value[0].G, (int)pair.Value[0].B);
-            }
-
-            ctf.SetScaleToLinear();
-            _volume.GetProperty().SetColor(ctf);
-            _volume.GetProperty().SetScalarOpacity(spwf);
-
-            _currentSerieNumber = 0;
         }
 
         /// <summary>
@@ -418,8 +419,6 @@ namespace MainWindow
                         logger.Warn(counterf.ToString() + " " + key.ToString() + " " + colorInfo1.ToString() + " " + colorInfo2.ToString()); 
 
                         var rect = new Rectangle(prevCounter.Value, 0, prevCounter.Value + counter, height);
-                        //var color1 = Color.FromArgb(colorInfo1.A, colorInfo1.R * 255, colorInfo1.G * 255, colorInfo1.B * 255);
-                        //var color2 = Color.FromArgb(colorInfo2.A, colorInfo2.R * 255, colorInfo2.G * 255, colorInfo2.B * 255);
 
                         using (Brush aGradientBrush = new LinearGradientBrush(rect, colorInfo1, colorInfo2, LinearGradientMode.Horizontal))
                         {
