@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Kitware.VTK;
-using XMLReaderTest;
+using XMLReaderModule;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Drawing;
 using System.Drawing.Drawing2D;

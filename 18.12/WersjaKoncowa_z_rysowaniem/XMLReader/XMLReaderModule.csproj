@@ -8,8 +8,8 @@
     <ProjectGuid>{026FAE15-EFA8-4A7E-9F3E-7062AFACA126}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XMLReaderTest</RootNamespace>
-    <AssemblyName>XMLReader</AssemblyName>
+    <RootNamespace>XMLReaderModule</RootNamespace>
+    <AssemblyName>XMLReaderModule</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
