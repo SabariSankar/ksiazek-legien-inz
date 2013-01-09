@@ -12,7 +12,7 @@ namespace MainWindow
         [STAThread]
         static void Main()
         {
-            //Logging
+            //VTK Logging
             var fileOutput = vtkFileOutputWindow.New();
             fileOutput.AppendOff();
             fileOutput.SetFileName("log.txt");
