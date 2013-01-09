@@ -15,7 +15,7 @@ namespace MainWindow
             //VTK Logging
             var fileOutput = vtkFileOutputWindow.New();
             fileOutput.AppendOff();
-            fileOutput.SetFileName("log.txt");
+            fileOutput.SetFileName("vtklog.txt");
             vtkOutputWindow.SetInstance(fileOutput);
 
             Application.EnableVisualStyles();
