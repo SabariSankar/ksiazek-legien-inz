@@ -163,7 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="convert.py" />
-    <Content Include="lib\NLog.dll" />
+    <None Include="lib\NLog.dll" />
     <EmbeddedResource Include="presety\Abd_shaded_A.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

@@ -27,9 +27,6 @@ namespace XMLReaderModule
             PresetInformation presetInformation = new PresetInformation();
             _reader = new XmlTextReader(@"..\..\presety\" + fileName);
 
-            if (_reader.ReadToFollowing("OpacityFunctions"))
-                Console.WriteLine("<Opacity Function>");
-
             while (_reader.Read())
             {
                 if ((_reader.NodeType == XmlNodeType.Element) && _reader.Name.Equals("PointList"))
@@ -44,7 +41,6 @@ namespace XMLReaderModule
                             _reader.ReadToFollowing("Second");
                             float second = float.Parse(_reader.ReadElementContentAsString().Replace('.', ','));
                             opacityFunction.Add(first, second);
-                            //Console.WriteLine(first + " " + second);
                         }
                         if ((_reader.NodeType == XmlNodeType.EndElement) && _reader.Name.Equals("PointList"))
                         {
@@ -56,7 +52,6 @@ namespace XMLReaderModule
                 }
                 if ((_reader.NodeType == XmlNodeType.EndElement) && _reader.Name.Equals("OpacityFunctions"))
                 {
-                    //Console.WriteLine("</OpacityFunctions>"); ;
                     break;
                 }
             }
@@ -75,8 +70,6 @@ namespace XMLReaderModule
             float g = float.Parse(_reader.ReadElementContentAsString().Replace('.', ','));
             _reader.ReadToFollowing("BLAU");
             float b = float.Parse(_reader.ReadElementContentAsString().Replace('.', ','));
-            //Console.WriteLine(R + " " + G + " " + B);
-            //return Color.FromArgb((int)(255*r), (int)(255*g), (int)(255*b));
             return Color.FromArgb((int)r*255, (int)g*255, (int)b*255);
         }
 
@@ -89,13 +82,11 @@ namespace XMLReaderModule
             Dictionary<float, Color[]> colorFunction = new Dictionary<float, Color[]>();
 
             if (_reader.ReadToFollowing("ColorLut"))
-                //Console.WriteLine("<ColorLut>");
 
             while (_reader.Read())
             {
                 if ((_reader.NodeType == XmlNodeType.Element) && _reader.Name.Equals("PointList"))
                 {
-                    //Console.WriteLine("<PointList>"); 
                     while (_reader.Read())
                     {
                         if ((_reader.NodeType == XmlNodeType.Element) && _reader.Name.Equals("First"))
@@ -118,7 +109,6 @@ namespace XMLReaderModule
                 }
                 if ((_reader.NodeType == XmlNodeType.EndElement) && _reader.Name.Equals("ColorLut"))
                 {
-                    //Console.WriteLine("</ColorLut>"); ;
                     break;
                 }
             }
@@ -135,13 +125,11 @@ namespace XMLReaderModule
             PresetInformation presetInformation = new PresetInformation();
 
             if (_reader.ReadToFollowing("ColoredFunctions"))
-                //Console.WriteLine("<ColoredFunctions>");
 
             while (_reader.Read())
             {
                 if ((_reader.NodeType == XmlNodeType.Element) && _reader.Name.Equals("PointList"))
                 {
-                    //Console.WriteLine("<PointList>");
                     Dictionary<float, float> opacityFunction = new Dictionary<float, float>();
                     Dictionary<float, Color[]> colorFunction = new Dictionary<float, Color[]>();
                     while (_reader.Read())
@@ -163,7 +151,6 @@ namespace XMLReaderModule
                         
                         if ((_reader.NodeType == XmlNodeType.EndElement) && _reader.Name.Equals("PointList"))
                         {
-                            //Console.WriteLine("</PointList>");
                             presetInformation.AddSerie(opacityFunction, colorFunction);
                             break;
                         }
@@ -172,7 +159,6 @@ namespace XMLReaderModule
 
                 if ((_reader.NodeType == XmlNodeType.EndElement) && _reader.Name.Equals("ColoredFunctions"))
                 {
-                    //Console.WriteLine("</ColoredFunctions>"); ;
                     break;
                 }
             }
