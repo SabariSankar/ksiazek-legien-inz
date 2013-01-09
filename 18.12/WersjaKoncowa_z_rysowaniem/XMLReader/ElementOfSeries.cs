@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace XMLReaderTest
+namespace XMLReaderModule
 {
     /// <summary>
     /// Holds opacity and color function

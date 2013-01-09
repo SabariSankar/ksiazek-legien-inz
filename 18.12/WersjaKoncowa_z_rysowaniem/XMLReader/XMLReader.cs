@@ -4,7 +4,7 @@ using System.IO;
 using System.Xml;
 using System.Drawing;
 
-namespace XMLReaderTest
+namespace XMLReaderModule
 {
     /// <summary>
     /// Open and reads xml file with preset

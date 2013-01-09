@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace XMLReaderTest
+namespace XMLReaderModule
 {
     /// <summary>
     /// Holds information about preset - list of series. Serie includes opacity and color function loaded from xml file. 
