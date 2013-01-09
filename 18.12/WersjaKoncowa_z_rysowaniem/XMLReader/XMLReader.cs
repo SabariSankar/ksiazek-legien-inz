@@ -22,7 +22,7 @@ namespace XMLReaderModule
         /// <param name="colorFunction">Color function which will be appply to loaded opacity function</param>
         /// <param name="fileName">Name of open xml</param>
         /// <returns>Information about the preset, which includes series of color and opacity function</returns>
-        public PresetInformation ReadOpacityFunction(String fileName, Dictionary<float, Color[]> colorFunction)
+        private PresetInformation ReadOpacityFunction(String fileName, Dictionary<float, Color[]> colorFunction)
         {
             PresetInformation presetInformation = new PresetInformation();
             _reader = new XmlTextReader(@"..\..\presety\" + fileName);
@@ -77,7 +77,7 @@ namespace XMLReaderModule
         /// Reads color function from the open xml. 
         /// </summary>
         /// <returns>Color function.</returns>
-        public Dictionary<float, Color[]> ReadColorFunction()
+        private Dictionary<float, Color[]> ReadColorFunction()
         {
             Dictionary<float, Color[]> colorFunction = new Dictionary<float, Color[]>();
 
@@ -120,7 +120,7 @@ namespace XMLReaderModule
         /// Reads opacity and color function from the open xml. 
         /// </summary>
         /// <returns>Information about the preset, which includes series of color and opacity function.</returns>
-        public PresetInformation ReadOpacityAndColorFunction()
+        private PresetInformation ReadOpacityAndColorFunction()
         {
             PresetInformation presetInformation = new PresetInformation();
 
