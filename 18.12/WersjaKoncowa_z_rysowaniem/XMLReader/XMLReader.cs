@@ -12,6 +12,11 @@ namespace XMLReaderModule
     public class XmlPresetReader
     {
         /// <summary>
+        /// Logger
+        /// </summary>
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        /// <summary>
         /// Handler to the open xml file
         /// </summary>
         private XmlTextReader _reader;
@@ -173,15 +178,23 @@ namespace XMLReaderModule
         /// <returns>Information about the preset, which includes series of color and opacity function</returns>
         public PresetInformation ReadXmlFile(String fileName)
         {
-            _reader = new XmlTextReader(Path.Combine(@"..\..\presety\",fileName));
-            _reader.ReadToFollowing("IndependentColor");
-            Boolean isIndependent = _reader.ReadElementContentAsBoolean();
-
-            if (isIndependent)
+            try
             {
-                return ReadOpacityFunction(fileName, ReadColorFunction());
+                _reader = new XmlTextReader(Path.Combine(@"..\..\presety\", fileName));
+                _reader.ReadToFollowing("IndependentColor");
+                Boolean isIndependent = _reader.ReadElementContentAsBoolean();
+
+                if (isIndependent)
+                {
+                    return ReadOpacityFunction(fileName, ReadColorFunction());
+                }
+                return ReadOpacityAndColorFunction();
             }
-            return ReadOpacityAndColorFunction();
+            catch (Exception e)
+            {
+                logger.ErrorException("Preset file reading exception:", e);
+                return null;
+            }
         }
     }
 
