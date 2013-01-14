@@ -27,11 +27,6 @@ namespace MainWindow
         /// </summary>
         private readonly RenderWindowControl _window;
 
-        /// <summary>
-        /// Window interation of visualization 3D.
-        /// </summary>
-        private vtkRenderWindowInteractor _renderWindowInteractor;
-
         private vtkRenderer renderer;
 
         public PlaneWidget PlaneWidgetX { get; set; }
@@ -41,9 +36,6 @@ namespace MainWindow
         private vtkVolumeMapper _mapper;
         private vtkVolume _volume;
         private DicomLoader _dicomLoader;
-        private readonly Chart _chart;
-        public XmlPresetReader PresetReader { get; set; }
-        public PresetInformation PresetInfo { get; set; }
 
         private float _windowWidth;
         private float _windowLevel = 40;
@@ -62,7 +54,6 @@ namespace MainWindow
             planeWidget.SetInput(_dicomLoader.GetOutput());
             planeWidget.SetPlaneOrientationToXAxes();
             planeWidget.SetSliceIndex(250);
-            planeWidget.SetInteractor(_renderWindowInteractor);
             planeWidget.SetLeftButtonAction(99);
             planeWidget.SetRightButtonAction(0);
             planeWidget.SetMarginSizeX(0);
@@ -97,28 +88,13 @@ namespace MainWindow
         }
 
 
-        public vtkVolume GetVolume()
-        {
-            return _volume;
-        }
-
-        public vtkRenderer GetRenderer()
-        {
-            return renderer;
-        }
-
-        public vtkRenderWindowInteractor GetInteractor()
-        {
-            return _renderWindowInteractor ;
-        }
+     
 
     //wizualizacja 3d -----------------------------------------------------------------
-        public Visualization3D(RenderWindowControl window, DicomLoader dicomLoader, Chart chart)
+        public Visualization3D(RenderWindowControl window, DicomLoader dicomLoader)
         {
-            _chart = chart;
             _window = window;
             _dicomLoader = dicomLoader;
-            PresetReader = new XmlPresetReader();
 
             // Create a mapper and actor
             _mapper = vtkSmartVolumeMapper.New();
@@ -135,16 +111,6 @@ namespace MainWindow
             _window.RenderWindow.GetRenderers().GetFirstRenderer().AddVolume(_volume);
 
 
-            // An interactor
-            _renderWindowInteractor = vtkRenderWindowInteractor.New();
-            _renderWindowInteractor.SetRenderWindow(_window.RenderWindow);
-
-            //Camera style
-            vtkInteractorStyleTrackballCamera style = vtkInteractorStyleTrackballCamera.New();
-            style.AutoAdjustCameraClippingRangeOff();
-            _renderWindowInteractor.SetInteractorStyle(style);
-          
-
             //Create and setup planes
             PlaneWidgetX = new PlaneWidget(Axis.X);
             SetupPlane(PlaneWidgetX);
@@ -152,6 +118,17 @@ namespace MainWindow
             SetupPlane(PlaneWidgetY);
             PlaneWidgetZ = new PlaneWidget(Axis.Z);
             SetupPlane(PlaneWidgetZ);
+          
+
+            //Camera style
+            vtkInteractorStyleTrackballCamera style = vtkInteractorStyleTrackballCamera.New();
+            style.AutoAdjustCameraClippingRangeOff();
+           
+            _window.RenderWindow.GetInteractor().SetInteractorStyle(style);
+            PlaneWidgetX.SetInteractor(_window.RenderWindow.GetInteractor());
+            PlaneWidgetY.SetInteractor(_window.RenderWindow.GetInteractor());
+            PlaneWidgetZ.SetInteractor(_window.RenderWindow.GetInteractor());
+
 
             // Render
             _window.RenderWindow.Render();
@@ -202,22 +179,16 @@ namespace MainWindow
         /// Reads new preset, updating color and opacity function from it. 
         /// </summary>
         /// <param name="presetName">Name of choosen preset.</param>
-        public void ChangeColorAndOpacityFunction(string presetName)
+        public void ChangeColorAndOpacityFunction(PresetInformation PresetInfo, string presetName)
         {
             vtkColorTransferFunction ctf = vtkColorTransferFunction.New();
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
 
-            PresetInfo = PresetReader.ReadXmlFile(presetName);
             if (PresetInfo != null)
             {
-                _chart.Series["OpacityFunction"].Points.Clear();
-                _chart.Series["OpacityFunctionSpline"].Points.Clear();
-
                 foreach (var pair in PresetInfo.Series[0].OpacityFunction)
                 {
                     spwf.AddPoint(pair.Key, pair.Value);
-                    _chart.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
-                    _chart.Series["OpacityFunctionSpline"].Points.AddXY(pair.Key, pair.Value);
                 }
 
                 foreach (var pair in PresetInfo.Series[0].ColorFuction)
@@ -238,17 +209,12 @@ namespace MainWindow
         /// Changes the opacity function to another serie from preset.
         /// </summary>
         /// <param name="numberOfSerie">Number of serie to update.</param>
-        public void ChangeToSerie(int numberOfSerie)
+        public void ChangeToSerie(PresetInformation PresetInfo, int numberOfSerie)
         {
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
-            _chart.Series["OpacityFunction"].Points.Clear();
-            _chart.Series["OpacityFunctionSpline"].Points.Clear();
-
             foreach (var pair in PresetInfo.Series[numberOfSerie].OpacityFunction)
             {
                 spwf.AddPoint(pair.Key, pair.Value);
-                _chart.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
-                _chart.Series["OpacityFunctionSpline"].Points.AddXY(pair.Key, pair.Value);
             }
             _volume.GetProperty().SetScalarOpacity(spwf);
 
@@ -266,12 +232,10 @@ namespace MainWindow
         public void ChangeSplineFunction(List<DataPoint> splinePoints)
         {
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
-            _chart.Series["OpacityFunctionSpline"].Points.Clear();
 
             foreach (DataPoint point in splinePoints)
             {
                 spwf.AddPoint(point.XValue, point.YValues[0]);
-                _chart.Series["OpacityFunctionSpline"].Points.AddXY(point.XValue, point.YValues[0]);
             }
             _volume.GetProperty().SetScalarOpacity(spwf);
 
@@ -283,14 +247,10 @@ namespace MainWindow
         public void ChangeSplineAndPointFunction(List<DataPoint> splinePoints)
         {
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
-            _chart.Series["OpacityFunctionSpline"].Points.Clear();
-            _chart.Series["OpacityFunction"].Points.Clear();
 
             foreach (DataPoint point in splinePoints)
             {
                 spwf.AddPoint(point.XValue, point.YValues[0]);
-                _chart.Series["OpacityFunctionSpline"].Points.AddXY(point.XValue, point.YValues[0]);
-                _chart.Series["OpacityFunction"].Points.AddXY(point.XValue, point.YValues[0]);
             }
             _volume.GetProperty().SetScalarOpacity(spwf);
 
@@ -365,7 +325,7 @@ namespace MainWindow
         /// <param name="sourceGraphics">Graphics to paint strip on.</param>
         /// <param name="height">Strip height.</param>
         /// <param name="width">Strip width.</param>
-        public void GenerateStrip(Graphics sourceGraphics, int height, int width)
+        public void GenerateStrip(PresetInformation PresetInfo, Graphics sourceGraphics, int height, int width)
         {
             var opacityFunction = _volume.GetProperty().GetScalarOpacity();
 
@@ -459,7 +419,6 @@ namespace MainWindow
             if (_volume != null) _volume.Dispose();
             if (_dicomLoader != null) _dicomLoader.Dispose();
             if (_mapper != null) _mapper.Dispose();
-            if (_renderWindowInteractor != null) _renderWindowInteractor.Dispose();
             if (PlaneWidgetX != null) PlaneWidgetX.Dispose();
             if (PlaneWidgetY != null) PlaneWidgetY.Dispose();
             if (PlaneWidgetZ != null) PlaneWidgetZ.Dispose();

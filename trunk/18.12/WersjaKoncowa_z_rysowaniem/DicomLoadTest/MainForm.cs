@@ -9,6 +9,7 @@ using System.IO;
 using System.Windows.Forms.DataVisualization.Charting;
 using DrawingModule;
 using ClipingModule;
+using XMLReaderModule;
 
 namespace MainWindow
 {
@@ -22,8 +23,11 @@ namespace MainWindow
         private Visualization2D _secondVizualization2D;
         private Visualization2D _thirdVizualization2D;
 
-        private readonly DicomLoader _dicomLoader;
-        private string _directoryPath = @"D:\Downloads\PANORAMIX"; //"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
+        private XmlPresetReader PresetReader;
+        private PresetInformation PresetInfo;
+
+        private  DicomLoader _dicomLoader;
+        private string _directoryPath = null;//@"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
         private const string PresetDir = @"..\..\presety";
 
         /// <summary>
@@ -45,15 +49,7 @@ namespace MainWindow
             InitImageExport();
             drawingToolbox.DrawnigModeEnabled.CheckedChanged += drawingCheckBox_CheckedChanged;
 
-            _dicomLoader = new DicomLoader(_directoryPath);
-            if(_dicomLoader.GetErrorCode() != 0 && _directoryPath != null)
-                MessageBox.Show(@"Data cannot be loaded. Possible errors: 
-                                1)directory does not contain dicom files  
-                                2)files are compressed",
-                    "Loading Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1);
+            PresetReader = new XmlPresetReader();
         }
 
         #region Obs³uga zamykania aplikacji
@@ -75,11 +71,13 @@ namespace MainWindow
         /// <param name="e">Event arguments.</param>
         public void DisposeAll(object sender, FormClosingEventArgs e)
         {
-            _vizualization3D.Dispose();
+            if (_vizualization3D != null)
+                _vizualization3D.Dispose();
             _firstVizualization2D.Dispose();
             _secondVizualization2D.Dispose();
             _thirdVizualization2D.Dispose();
-            _dicomLoader.Dispose();
+            if (_dicomLoader != null)
+                _dicomLoader.Dispose();
         }
 
         #endregion
@@ -108,62 +106,50 @@ namespace MainWindow
         //wizualizacja 3d -----------------------------------------------------------------
         private void fourthWindow_Load(object sender, EventArgs e)
         {
-            _vizualization3D = new Visualization3D(fourthWindow, _dicomLoader, chart1);
             string[] filePaths = Directory.GetFiles(PresetDir, "*.xml");
+
+            PresetInfo = PresetReader.ReadXmlFile(new FileInfo(filePaths[0]).Name);
 
             foreach (string dir in filePaths)
             {
                 comboBox1.Items.Add(new FileInfo(dir).Name);
             }
             comboBox1.SelectedIndex = 1;
-            _vizualization3D.ChangeColorAndOpacityFunction(String.IsNullOrEmpty(comboBox1.SelectedText) ? comboBox1.Text : comboBox1.SelectedText);
 
             comboBoxSeries.Items.Clear();
-            int numberOfSeries = _vizualization3D.PresetInfo.Series.Count;
+            int numberOfSeries = PresetInfo.Series.Count;
             for (int i = 0; i < numberOfSeries; i++)
             {
                 comboBoxSeries.Items.Add(i.ToString(CultureInfo.InvariantCulture));
             }
             comboBoxSeries.SelectedIndex = 0;
 
-            //moving planes
-            _vizualization3D.PlaneWidgetX.InteractionEvt += PlaneXMoved;
-            _vizualization3D.PlaneWidgetY.InteractionEvt += PlaneYMoved;
-            _vizualization3D.PlaneWidgetZ.InteractionEvt += PlaneZMoved;
-
-            //handling events from ClipingToolbox
-            clipingPanel.ClipingOperationEventHandlerDelegate += new EventHandler<ClipingEventArgs>(_vizualization3D.ExecuteClipingOperation);
-            clipingPanel.InitialiseClipingToolbox(_vizualization3D.GetObjectSize());
-
-            /*vtkImageExtractComponents extract = vtkImageExtractComponents.New();
-            extract.SetInput( _dicomLoader.GetOutput() );
-            extract.SetComponents(0);
-            extract.Update();
-            
-            double[] range = extract.GetOutput().GetScalarRange();
-
-            vtkXYPlotActor xyPlotActor = new vtkXYPlotActor();
-            vtkActor actor = vtkActor.New();
-
-            vtkImageAccumulate histogram = new vtkImageAccumulate();
-            histogram.SetInput(extract.GetOutput());
-            histogram.SetComponentOrigin(0, 0, 0);
-            histogram.SetComponentSpacing(1, 1, 1);
-            histogram.IgnoreZeroOn();
-            histogram.Update();
-
-
-            xyPlotActor.AddInput(histogram.GetOutput());
-            fourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().AddActor(xyPlotActor); */
-            fourthWindow.RenderWindow.Render();
+            createVisialization3D();
+            updateChart();
 
         }
 
-        //updatatuje okno wziualizacji 3d
-        private void update3DVisualization(float windowLevel, float windowWidth)
+        private void createVisialization3D()
         {
-            _vizualization3D.Update3DVisualization(windowLevel, windowWidth);
+            if (_directoryPath != null)
+            {
+                _dicomLoader = new DicomLoader(_directoryPath);
 
+                _vizualization3D = new Visualization3D(fourthWindow, _dicomLoader);
+                _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo, comboBox1.SelectedText);
+
+
+                //moving planes
+                _vizualization3D.PlaneWidgetX.InteractionEvt += PlaneXMoved;
+                _vizualization3D.PlaneWidgetY.InteractionEvt += PlaneYMoved;
+                _vizualization3D.PlaneWidgetZ.InteractionEvt += PlaneZMoved;
+
+                //handling events from ClipingToolbox
+                clipingPanel.ClipingOperationEventHandlerDelegate += new EventHandler<ClipingEventArgs>(_vizualization3D.ExecuteClipingOperation);
+                clipingPanel.InitialiseClipingToolbox(_vizualization3D.GetObjectSize());
+
+                fourthWindow.RenderWindow.Render();
+            }
         }
 
         #endregion
@@ -202,8 +188,6 @@ namespace MainWindow
                 bigSecondWindow.RenderWindow.Render();
             if (bigThirdWindow.RenderWindow != null)
                 bigThirdWindow.RenderWindow.Render();
-            if (bigFourthWindow.RenderWindow != null)
-                bigFourthWindow.RenderWindow.Render();
 
         }
 
@@ -247,35 +231,34 @@ namespace MainWindow
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _vizualization3D.ChangeColorAndOpacityFunction(String.IsNullOrEmpty(comboBox1.SelectedText) ? comboBox1.Text : comboBox1.SelectedText);
+            PresetInfo = PresetReader.ReadXmlFile(comboBox1.Text);
+            if (_vizualization3D != null)
+                _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo, comboBox1.SelectedText);
+
             comboBoxSeries.Items.Clear();
-            int numberOfSeries = _vizualization3D.PresetInfo.Series.Count;
+            int numberOfSeries = PresetInfo.Series.Count;
             for (var i = 0; i < numberOfSeries; i++)
             {
                 comboBoxSeries.Items.Add(i.ToString(CultureInfo.InvariantCulture));
             }
             comboBoxSeries.SelectedIndex = 0;
-            _vizualization3D.Update3DVisualization();
+            updateChart();
+            if (_vizualization3D != null)
+             _vizualization3D.Update3DVisualization();
             colorStrip.Invalidate();
 
-            if (bigFourthWindow.RenderWindow != null)
-            {
-                bigFourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().GetVolumes().RemoveAllItems();
-                bigFourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().AddVolume(_vizualization3D.GetVolume());
-                bigFourthWindow.Update();
-                bigFourthWindow.RenderWindow.Render();
-            }
+
 
         }
 
 
         private void comboBoxSeries_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
+            if (_vizualization3D != null)
+                _vizualization3D.ChangeToSerie(PresetInfo, int.Parse(comboBoxSeries.Text));
             colorStrip.Invalidate();
+            updateChart();
 
-            if (bigFourthWindow.RenderWindow != null)
-                bigFourthWindow.RenderWindow.Render();
         }
 
         #endregion
@@ -283,6 +266,42 @@ namespace MainWindow
         #region Obsluga wykresu
         //-------------------------------------------------------------------------------------
         //Obs³uga wykresu
+
+        private void updateChart()
+        {
+            chart1.Series["OpacityFunction"].Points.Clear();
+            chart1.Series["OpacityFunctionSpline"].Points.Clear();
+
+            foreach (var pair in PresetInfo.Series[comboBoxSeries.SelectedIndex].OpacityFunction)
+            {
+                chart1.Series["OpacityFunction"].Points.AddXY(pair.Key, pair.Value);
+                chart1.Series["OpacityFunctionSpline"].Points.AddXY(pair.Key, pair.Value);
+            }
+        }
+
+        public void updateChartSpline(List<DataPoint> splinePoints)
+        {
+            vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
+            chart1.Series["OpacityFunctionSpline"].Points.Clear();
+
+            foreach (DataPoint point in splinePoints)
+            {
+                spwf.AddPoint(point.XValue, point.YValues[0]);
+                chart1.Series["OpacityFunctionSpline"].Points.AddXY(point.XValue, point.YValues[0]);
+            }
+        }
+
+        private void updateChart(List<DataPoint> splinePoints)
+        {
+            chart1.Series["OpacityFunctionSpline"].Points.Clear();
+            chart1.Series["OpacityFunction"].Points.Clear();
+
+            foreach (DataPoint point in splinePoints)
+            {
+                chart1.Series["OpacityFunctionSpline"].Points.AddXY(point.XValue, point.YValues[0]);
+                chart1.Series["OpacityFunction"].Points.AddXY(point.XValue, point.YValues[0]);
+            }
+        }
 
         private void chart1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -322,12 +341,12 @@ namespace MainWindow
                     splinePoints.Find(x => x.XValue == _selectedDataPoint.XValue).YValues[0] =
                         _selectedDataPoint.YValues[0];
                 }
-                _vizualization3D.ChangeSplineFunction(splinePoints);
+                if (_vizualization3D != null)
+                    _vizualization3D.ChangeSplineFunction(splinePoints);
                 _selectedDataPoint = null;
 
+                updateChartSpline(splinePoints);
                 chart1.Invalidate();
-                if (bigFourthWindow.RenderWindow != null)
-                    bigFourthWindow.RenderWindow.Render();
             }
         }
 
@@ -368,10 +387,11 @@ namespace MainWindow
                         //chart1.Series["OpacityFunction"].Points.AddXY(selected.XValue, selected.YValues[0]);
                         List<DataPoint> points = chart1.Series["OpacityFunction"].Points.ToList<DataPoint>();
                         points.Sort(new Comparison<DataPoint>(Compare));
-                        _vizualization3D.ChangeSplineFunction(points);
 
-                        if (bigFourthWindow.RenderWindow != null)
-                            bigFourthWindow.RenderWindow.Render();
+                        if (_vizualization3D != null)
+                            _vizualization3D.ChangeSplineFunction(points);
+                        updateChartSpline(points);
+
                     }
                 }
             }
@@ -400,8 +420,6 @@ namespace MainWindow
                         points.Sort(new Comparison<DataPoint>(Compare));
                         _vizualization3D.ChangeSplineAndPointFunction(points);
 
-                        if (bigFourthWindow.RenderWindow != null)
-                            bigFourthWindow.RenderWindow.Render();
                     }
                 }
             }
@@ -415,49 +433,59 @@ namespace MainWindow
         //obs³uga pojawiania i znikania poszczególnych p³aszczyzn
         private void PlaneXButton_Click(object sender, EventArgs e)
         {
-            if (PlaneXButton.Text.Equals(ButtonText.ShowPlaneX))
+            if (_vizualization3D != null)
             {
-                _vizualization3D.PlaneWidgetX.On();
-                PlaneXButton.Text = ButtonText.HidePlaneX;
-                lockX.Enabled = true;
+                if (PlaneXButton.Text.Equals(ButtonText.ShowPlaneX))
+                {
+                    _vizualization3D.PlaneWidgetX.On();
+                    PlaneXButton.Text = ButtonText.HidePlaneX;
+                    lockX.Enabled = true;
+                }
+                else
+                {
+                    _vizualization3D.PlaneWidgetX.Off();
+                    PlaneXButton.Text = ButtonText.ShowPlaneX;
+                    lockX.Enabled = false;
+                }
             }
-            else
-            {
-                _vizualization3D.PlaneWidgetX.Off();
-                PlaneXButton.Text = ButtonText.ShowPlaneX;
-                lockX.Enabled = false;
-            }
+            fourthWindow.RenderWindow.Render();
         }
 
         private void PlaneYButton_Click(object sender, EventArgs e)
         {
-            if (PlaneYButton.Text.Equals(ButtonText.ShowPlaneY))
+            if (_vizualization3D != null)
             {
-                _vizualization3D.PlaneWidgetY.On();
-                PlaneYButton.Text = ButtonText.HidePlaneY;
-                lockY.Enabled = true;
-            }
-            else
-            {
-                _vizualization3D.PlaneWidgetY.Off();
-                PlaneYButton.Text = ButtonText.ShowPlaneY;
-                lockY.Enabled = false;
+                if (PlaneYButton.Text.Equals(ButtonText.ShowPlaneY))
+                {
+                    _vizualization3D.PlaneWidgetY.On();
+                    PlaneYButton.Text = ButtonText.HidePlaneY;
+                    lockY.Enabled = true;
+                }
+                else
+                {
+                    _vizualization3D.PlaneWidgetY.Off();
+                    PlaneYButton.Text = ButtonText.ShowPlaneY;
+                    lockY.Enabled = false;
+                }
             }
         }
 
         private void PlaneZButton_Click(object sender, EventArgs e)
         {
-            if (PlaneZButton.Text.Equals(ButtonText.ShowPlaneZ))
+            if (_vizualization3D != null)
             {
-                _vizualization3D.PlaneWidgetZ.On();
-                PlaneZButton.Text = ButtonText.HidePlaneZ;
-                lockZ.Enabled = true;
-            }
-            else
-            {
-                _vizualization3D.PlaneWidgetZ.Off();
-                PlaneZButton.Text = ButtonText.ShowPlaneZ;
-                lockZ.Enabled = false;
+                if (PlaneZButton.Text.Equals(ButtonText.ShowPlaneZ))
+                {
+                    _vizualization3D.PlaneWidgetZ.On();
+                    PlaneZButton.Text = ButtonText.HidePlaneZ;
+                    lockZ.Enabled = true;
+                }
+                else
+                {
+                    _vizualization3D.PlaneWidgetZ.Off();
+                    PlaneZButton.Text = ButtonText.ShowPlaneZ;
+                    lockZ.Enabled = false;
+                }
             }
         }
 
@@ -493,7 +521,7 @@ namespace MainWindow
             if (_vizualization3D != null)
             {
                 var width = chart1.ChartAreas["ChartArea1"].Position.Size.Width > 0 ? (int)chart1.ChartAreas["ChartArea1"].Position.Size.Width * chart1.Size.Width / 100 : 1;
-                _vizualization3D.GenerateStrip(e.Graphics, 10, width);
+                _vizualization3D.GenerateStrip(PresetInfo, e.Graphics, 10, width);
             }
         }
 
@@ -543,35 +571,10 @@ namespace MainWindow
                 drawingToolbox.DrawnigModeEnabled.Enabled = true;
                 drawingToolbox.DrawnigModeEnabled.Checked = false;
             }
-            if (current == 4)
-            {
-                //bigFourthWindow.RenderWindow.GetRenderers().RemoveAllItems();
-                //bigFourthWindow.RenderWindow.AddRenderer(_vizualization3D.GetRenderer());
-
-                bigFourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().GetVolumes().RemoveAllItems();
-                bigFourthWindow.RenderWindow.GetRenderers().GetFirstRenderer().AddVolume(_vizualization3D.GetVolume());
-                bigFourthWindow.Update();
-                bigFourthWindow.RenderWindow.Render();
-
-                drawingToolbox.DrawnigModeEnabled.Enabled = false;
-                drawingToolbox.DrawnigModeEnabled.Checked = false;
-            }
-
         }
 
         #endregion
 
-        [Obsolete]//Wygl¹da na nieu¿ywane?
-        private void buttonBack_Click(object sender, EventArgs e)
-        {
-            _firstVizualization2D.RotateImageBack();
-        }
-
-        [Obsolete]//Wygl¹da na nieu¿ywane?
-        private void buttonForward_Click(object sender, EventArgs e)
-        {
-            _firstVizualization2D.RotateImageForward();
-        }
 
         #region Otwieranie nowych obrazów
 
@@ -580,11 +583,20 @@ namespace MainWindow
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 _directoryPath = openFileDialog1.SelectedPath;
-                _dicomLoader.ChangeDirectory(_directoryPath);
 
-                _vizualization3D.ChangeDirectory(_dicomLoader);
-                _vizualization3D.ChangeColorAndOpacityFunction(comboBox1.Text);
-                _vizualization3D.ChangeToSerie(int.Parse(comboBoxSeries.Text));
+                if (_vizualization3D != null)
+                {
+                    _dicomLoader.ChangeDirectory(_directoryPath);
+
+                    _vizualization3D.ChangeDirectory(_dicomLoader);
+                    _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo, comboBox1.Text);
+                    _vizualization3D.ChangeToSerie(PresetInfo, int.Parse(comboBoxSeries.Text));
+                }
+                else
+                {
+                    createVisialization3D();
+                }
+                     
             }
         }
 
