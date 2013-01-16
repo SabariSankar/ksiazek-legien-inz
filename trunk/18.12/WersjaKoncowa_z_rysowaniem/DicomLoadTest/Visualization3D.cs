@@ -27,21 +27,45 @@ namespace MainWindow
         /// </summary>
         private readonly RenderWindowControl _window;
 
+        /// <summary>
+        /// Render for the 3d view.
+        /// </summary>
         private vtkRenderer renderer;
 
+        /// <summary>
+        /// Plane with the Axis.X orientation.
+        /// </summary>
         public PlaneWidget PlaneWidgetX { get; set; }
+        /// <summary>
+        /// Plane with the Axis.Y orientation.
+        /// </summary>
         public PlaneWidget PlaneWidgetY { get; set; }
+        /// <summary>
+        /// Plane with the Axis.Z orientation.
+        /// </summary>
         public PlaneWidget PlaneWidgetZ { get; set; }
 
+        /// <summary>
+        /// Mapper for the 3d view.
+        /// </summary>
         private vtkVolumeMapper _mapper;
+        /// <summary>
+        /// Volume for the 3d view.
+        /// </summary>
         private vtkVolume _volume;
+        /// <summary>
+        /// Dicom input
+        /// </summary>
         private DicomLoader _dicomLoader;
 
-        private float _windowWidth;
-        private float _windowLevel = 40;
-
+        /// <summary>
+        /// Module for cutting 3d volume.
+        /// </summary>
         private ClipingObject _clipingModule;
 
+        /// <summary>
+        /// Number of current serie of opacity function.
+        /// </summary>
         private int _currentSerieNumber;
 
         /// <summary>
@@ -88,9 +112,11 @@ namespace MainWindow
         }
 
 
-     
-
-    //wizualizacja 3d -----------------------------------------------------------------
+        /// <summary>
+        /// Create vizualization 3D
+        /// </summary>
+        /// <param name="window">Orginal window component. </param>
+        /// <param name="dicomLoader">Dicom input</param>
         public Visualization3D(RenderWindowControl window, DicomLoader dicomLoader)
         {
             _window = window;
@@ -137,6 +163,10 @@ namespace MainWindow
             _clipingModule = new ClipingObject(GetObjectSize());
         }
 
+        /// <summary>
+        /// Update 3d view after directory has changed.
+        /// </summary>
+        /// <param name="dicomLoader">Updated dicom loader.</param>
         public void ChangeDirectory(DicomLoader dicomLoader)
         {
             _dicomLoader = dicomLoader;
@@ -169,6 +199,11 @@ namespace MainWindow
 
         }
 
+        /// <summary>
+        /// Handler for ClipingEvent - reacts for cliping volume and update 3D view
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="args">Event arguments</param>
         public void ExecuteClipingOperation(object sender, ClipingEventArgs args)
         {
             _mapper.SetClippingPlanes(_clipingModule.Clip(args));
@@ -179,7 +214,7 @@ namespace MainWindow
         /// Reads new preset, updating color and opacity function from it. 
         /// </summary>
         /// <param name="presetName">Name of choosen preset.</param>
-        public void ChangeColorAndOpacityFunction(PresetInformation PresetInfo, string presetName)
+        public void ChangeColorAndOpacityFunction(PresetInformation PresetInfo)
         {
             vtkColorTransferFunction ctf = vtkColorTransferFunction.New();
             vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
@@ -202,6 +237,7 @@ namespace MainWindow
                 _volume.GetProperty().SetScalarOpacity(spwf);
 
                 _currentSerieNumber = 0;
+                Update3DVisualization();
             }
         }
 
@@ -244,20 +280,6 @@ namespace MainWindow
             _window.RenderWindow.Render();
         }
 
-        public void ChangeSplineAndPointFunction(List<DataPoint> splinePoints)
-        {
-            vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
-
-            foreach (DataPoint point in splinePoints)
-            {
-                spwf.AddPoint(point.XValue, point.YValues[0]);
-            }
-            _volume.GetProperty().SetScalarOpacity(spwf);
-
-            _window.Validate();
-            _window.Update();
-            _window.RenderWindow.Render();
-        }
 
         /// <summary>
         /// Set the opacity function based on current window level and width.
@@ -289,21 +311,11 @@ namespace MainWindow
             _volume.GetProperty().SetGradientOpacity(gpwf);
         }
 
-        //updatatuje okno wziualizacji 3d
-        public void Update3DVisualization()
+        /// <summary>
+        /// Update 3D visualization window
+        /// </summary>
+        private void Update3DVisualization()
         {
-            _window.Validate();
-            _window.Update();
-            _window.RenderWindow.Render();
-        }
-
-        public void Update3DVisualization(float windowLevel, float windowWidth)
-        {
-            _windowLevel = windowLevel;
-            _windowWidth = windowWidth;
-
-            SetOpacityFunction();
-
             _window.Validate();
             _window.Update();
             _window.RenderWindow.Render();
@@ -429,10 +441,21 @@ namespace MainWindow
 
     }
 
+
+    /// <summary>
+    /// Class is a wrapper for vtkImagePlaneWidget with axis orientation.
+    /// </summary>
     public class PlaneWidget : vtkImagePlaneWidget
     {
+        /// <summary>
+        /// Axis
+        /// </summary>
         public Axis Axis { get; set; }
 
+        /// <summary>
+        /// Create plane for the particular axis.
+        /// </summary>
+        /// <param name="axis">Axis.</param>
         public PlaneWidget(Axis axis)
         {
             Axis = axis;
