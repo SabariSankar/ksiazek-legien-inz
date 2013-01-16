@@ -136,7 +136,7 @@ namespace MainWindow
                 _dicomLoader = new DicomLoader(_directoryPath);
 
                 _vizualization3D = new Visualization3D(fourthWindow, _dicomLoader);
-                _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo, comboBox1.SelectedText);
+                _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo);
 
 
                 //moving planes
@@ -233,7 +233,7 @@ namespace MainWindow
         {
             PresetInfo = PresetReader.ReadXmlFile(comboBox1.Text);
             if (_vizualization3D != null)
-                _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo, comboBox1.SelectedText);
+                _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo);
 
             comboBoxSeries.Items.Clear();
             int numberOfSeries = PresetInfo.Series.Count;
@@ -243,8 +243,6 @@ namespace MainWindow
             }
             comboBoxSeries.SelectedIndex = 0;
             updateChart();
-            if (_vizualization3D != null)
-             _vizualization3D.Update3DVisualization();
             colorStrip.Invalidate();
 
 
@@ -418,7 +416,8 @@ namespace MainWindow
                         List<DataPoint> points = chart1.Series["OpacityFunction"].Points.ToList<DataPoint>();
                         //points.Remove(points.Find(x => x.XValue == pX & x.YValues[0] == pY));
                         points.Sort(new Comparison<DataPoint>(Compare));
-                        _vizualization3D.ChangeSplineAndPointFunction(points);
+                        if (_vizualization3D != null)
+                            _vizualization3D.ChangeSplineFunction(points);
 
                     }
                 }
@@ -589,7 +588,7 @@ namespace MainWindow
                     _dicomLoader.ChangeDirectory(_directoryPath);
 
                     _vizualization3D.ChangeDirectory(_dicomLoader);
-                    _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo, comboBox1.Text);
+                    _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo);
                     _vizualization3D.ChangeToSerie(PresetInfo, int.Parse(comboBoxSeries.Text));
                 }
                 else

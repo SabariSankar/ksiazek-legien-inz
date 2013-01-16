@@ -3,12 +3,6 @@
 namespace MainWindow
 {
 
-    public enum RotationOperation
-    {
-        Back,
-        Forward
-    };
-
     /// <summary>
     /// Takes care of 2D visualization window.
     /// </summary>
@@ -30,53 +24,7 @@ namespace MainWindow
         /// Window level of the visualization 2D.
         /// </summary>
         private float _windowLevel = 100;
-        /// <summary>
-        /// Orientation of the current visualization 2D (in degrees).
-        /// </summary>
-        private int _orientation;
-
-
-        public void RotateImageForward()
-        {
-            _orientation = _orientation + 90;
-            if (_orientation == 360) _orientation = 0;
-            RotateImage(RotationOperation.Forward);
-        }
-
-        public void RotateImageBack()
-        {
-            _orientation = _orientation - 90;
-            if (_orientation == -90) _orientation = 270;
-            RotateImage(RotationOperation.Back);
-        }
-
-        private void RotateImage(RotationOperation operation)
-        {
-            vtkImageReslice reslice = vtkImageReslice.New();
-            vtkTransform transform = vtkTransform.New();
-            transform.PostMultiply();
-
-            double[] center = { 75, 100, 0 };
-            transform.Translate(-center[0], -center[1], -center[2]);
-            if (operation == RotationOperation.Forward)
-            {
-                transform.RotateZ(90);
-            }
-            else if (operation == RotationOperation.Back)
-            {
-                transform.RotateZ(-90);
-            }
-            transform.Translate(+center[0], +center[1], +center[2]);
-
-            transform.Update();
-            reslice.SetInput(_viewer.GetInput());
-            reslice.SetResliceTransform(transform);
-            reslice.Update();
-
-            _viewer.SetInput(reslice.GetOutput());
-            UpdateViewer();
-        }
-
+ 
 
         /// <summary>
         /// Update the 2D visualization when the plane moved.
@@ -85,22 +33,7 @@ namespace MainWindow
         public void PlaneMoved(vtkImagePlaneWidget plane)
         {
 
-            vtkImageReslice reslice = vtkImageReslice.New();
-            vtkTransform transform = vtkTransform.New();
-            transform.PostMultiply();
-
-            //TODO wyznaczenie centrum okna
-            double[] center = {75, 100, 0};
-			transform.Translate( -center[0], -center[1], -center[2] );
-            transform.RotateZ(_orientation);
-			transform.Translate( +center[0], +center[1], +center[2] );
-
-            transform.Update();
-            reslice.SetInput(plane.GetResliceOutput());
-            reslice.SetResliceTransform(transform);
-            reslice.Update();
-
-            _viewer.SetInput(reslice.GetOutput());
+            _viewer.SetInput(plane.GetResliceOutput());
             UpdateViewer();
 
         }
