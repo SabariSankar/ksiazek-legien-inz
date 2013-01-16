@@ -110,9 +110,9 @@ namespace MainWindow
             this.fourthWindow.AddTestActors = false;
             this.fourthWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.fourthWindow.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fourthWindow.Location = new System.Drawing.Point(505, 355);
+            this.fourthWindow.Location = new System.Drawing.Point(505, 414);
             this.fourthWindow.Name = "fourthWindow";
-            this.fourthWindow.Size = new System.Drawing.Size(496, 346);
+            this.fourthWindow.Size = new System.Drawing.Size(496, 406);
             this.fourthWindow.TabIndex = 0;
             this.fourthWindow.TestText = null;
             this.fourthWindow.Load += new System.EventHandler(this.fourthWindow_Load);
@@ -124,7 +124,7 @@ namespace MainWindow
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1323, 742);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1323, 861);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
             // firstWindow
@@ -134,7 +134,7 @@ namespace MainWindow
             this.firstWindow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.firstWindow.Location = new System.Drawing.Point(3, 3);
             this.firstWindow.Name = "firstWindow";
-            this.firstWindow.Size = new System.Drawing.Size(496, 346);
+            this.firstWindow.Size = new System.Drawing.Size(496, 405);
             this.firstWindow.TabIndex = 4;
             this.firstWindow.TestText = null;
             this.firstWindow.Load += new System.EventHandler(this.firstWindow_Load);
@@ -146,7 +146,7 @@ namespace MainWindow
             this.secondWindow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.secondWindow.Location = new System.Drawing.Point(505, 3);
             this.secondWindow.Name = "secondWindow";
-            this.secondWindow.Size = new System.Drawing.Size(496, 346);
+            this.secondWindow.Size = new System.Drawing.Size(496, 405);
             this.secondWindow.TabIndex = 3;
             this.secondWindow.TestText = null;
             this.secondWindow.Load += new System.EventHandler(this.secondWindow_Load);
@@ -156,9 +156,9 @@ namespace MainWindow
             this.thirdWindow.AddTestActors = false;
             this.thirdWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.thirdWindow.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.thirdWindow.Location = new System.Drawing.Point(3, 355);
+            this.thirdWindow.Location = new System.Drawing.Point(3, 414);
             this.thirdWindow.Name = "thirdWindow";
-            this.thirdWindow.Size = new System.Drawing.Size(496, 346);
+            this.thirdWindow.Size = new System.Drawing.Size(496, 406);
             this.thirdWindow.TabIndex = 4;
             this.thirdWindow.TestText = null;
             this.thirdWindow.Load += new System.EventHandler(this.thirdWindow_Load);
@@ -176,7 +176,7 @@ namespace MainWindow
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.MinimumSize = new System.Drawing.Size(267, 619);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(305, 742);
+            this.panel1.Size = new System.Drawing.Size(305, 861);
             this.panel1.TabIndex = 3;
             // 
             // clipingPanel
@@ -569,7 +569,7 @@ namespace MainWindow
             this.tabControl.Name = "tabControl";
             this.tabControl.Padding = new System.Drawing.Point(39, 6);
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1018, 742);
+            this.tabControl.Size = new System.Drawing.Size(1018, 861);
             this.tabControl.TabIndex = 4;
             this.tabControl.Tag = "";
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
@@ -581,7 +581,7 @@ namespace MainWindow
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.tabPage1.Size = new System.Drawing.Size(1010, 710);
+            this.tabPage1.Size = new System.Drawing.Size(1010, 829);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Four windows view";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -601,7 +601,7 @@ namespace MainWindow
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1004, 704);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1004, 823);
             this.tableLayoutPanel1.TabIndex = 6;
             // 
             // tabPage2
@@ -611,7 +611,7 @@ namespace MainWindow
             this.tabPage2.Location = new System.Drawing.Point(4, 28);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1010, 718);
+            this.tabPage2.Size = new System.Drawing.Size(1010, 710);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "X plane view";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -643,7 +643,7 @@ namespace MainWindow
             this.tabPage3.Location = new System.Drawing.Point(4, 28);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1010, 718);
+            this.tabPage3.Size = new System.Drawing.Size(1010, 710);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Y plane view";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -675,7 +675,7 @@ namespace MainWindow
             this.tabPage4.Location = new System.Drawing.Point(4, 28);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1010, 718);
+            this.tabPage4.Size = new System.Drawing.Size(1010, 710);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Z plane view";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -718,7 +718,7 @@ namespace MainWindow
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1323, 742);
+            this.ClientSize = new System.Drawing.Size(1323, 861);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.flowLayoutPanel1);
