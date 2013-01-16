@@ -126,8 +126,6 @@ namespace MainWindow
             _mapper = vtkSmartVolumeMapper.New();
             _mapper.SetInput(_dicomLoader.GetOutput());
             _volume = vtkVolume.New();
-            SetOpacityFunction();
-            SetGradientOpacity();
             _volume.SetMapper(_mapper);
 
             renderer = vtkRenderer.New();
@@ -178,8 +176,6 @@ namespace MainWindow
             _window.RenderWindow.GetRenderers().GetFirstRenderer().RemoveVolume(_volume);
             _volume.Dispose();
             _volume = vtkVolume.New();
-            SetOpacityFunction();
-            SetGradientOpacity();
             _volume.SetMapper(_mapper);
             _volume.Update();
 
@@ -281,36 +277,7 @@ namespace MainWindow
         }
 
 
-        /// <summary>
-        /// Set the opacity function based on current window level and width.
-        /// </summary>
-        private void SetOpacityFunction()
-        {
-            vtkPiecewiseFunction spwf = vtkPiecewiseFunction.New();
-
-            //Set the opacity curve for the volume
-            spwf.AddPoint(_windowLevel - (_windowWidth / 2), 0);
-            spwf.AddPoint(_windowLevel, 1);
-            spwf.AddPoint(_windowLevel + (_windowWidth / 2), 0);
-
-            _volume.GetProperty().SetScalarOpacity(spwf);
-        }
-
-        /// <summary>
-        /// Set the gradient function for the volume.
-        /// </summary>
-        private void SetGradientOpacity()
-        {
-            vtkPiecewiseFunction gpwf = vtkPiecewiseFunction.New();
-
-            //Set the gradient curve for the volume
-            gpwf.AddPoint(0, .2);
-            gpwf.AddPoint(10, .2);
-            gpwf.AddPoint(25, 1);
-
-            _volume.GetProperty().SetGradientOpacity(gpwf);
-        }
-
+     
         /// <summary>
         /// Update 3D visualization window
         /// </summary>
