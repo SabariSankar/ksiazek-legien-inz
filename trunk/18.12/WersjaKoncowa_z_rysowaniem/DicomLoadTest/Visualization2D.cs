@@ -40,35 +40,6 @@ namespace MainWindow
 
 
         /// <summary>
-        /// Update the 2D visualization window with new slice of pass X, Y or Z coordination. 
-        /// </summary>
-        /// <param name="dicomLoader"> Dicom input from we are going to cut the slice.</param>
-        /// <param name="slicePosition">Coordinates of the slice. </param>
-        /// <param name="axis">Name of axis to set cut orientation (X,Y,Z). </param>
-        public void SliceToAxes(DicomLoader dicomLoader, float slicePosition, Axis axis)
-        {
-            vtkImagePlaneWidget planeWidget = vtkImagePlaneWidget.New();
-            planeWidget.SetInput(dicomLoader.GetOutput());
-            if (axis == Axis.X)
-            {
-                planeWidget.SetPlaneOrientationToXAxes();
-            }
-            else if (axis == Axis.Y)
-            {
-                planeWidget.SetPlaneOrientationToYAxes();
-            }
-            else if (axis == Axis.Z)
-            {
-                planeWidget.SetPlaneOrientationToZAxes();
-            }
-            planeWidget.SetSliceIndex((int)slicePosition);
-            _viewer.SetInput(planeWidget.GetResliceOutput());
-            planeWidget.Dispose();
-
-            UpdateViewer();
-        }
-
-        /// <summary>
         /// Refresh viewer and window.
         /// </summary>
         private void UpdateViewer()
