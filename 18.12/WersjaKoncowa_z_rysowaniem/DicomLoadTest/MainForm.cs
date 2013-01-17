@@ -45,7 +45,7 @@ namespace MainWindow
         public MainForm()
         {
             InitializeComponent();
-
+            WindowState = FormWindowState.Maximized;
             InitImageExport();
             drawingToolbox.DrawnigModeEnabled.CheckedChanged += drawingCheckBox_CheckedChanged;
 
@@ -134,6 +134,15 @@ namespace MainWindow
             if (_directoryPath != null)
             {
                 _dicomLoader = new DicomLoader(_directoryPath);
+                if (_dicomLoader.GetErrorCode() != 0)
+                {
+                    MessageBox.Show("Cannot load directory.",
+                    "Loading error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+                    return;
+                }
 
                 _vizualization3D = new Visualization3D(fourthWindow, _dicomLoader);
                 _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo);
@@ -586,10 +595,23 @@ namespace MainWindow
                 if (_vizualization3D != null)
                 {
                     _dicomLoader.ChangeDirectory(_directoryPath);
-
-                    _vizualization3D.ChangeDirectory(_dicomLoader);
-                    _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo);
-                    _vizualization3D.ChangeToSerie(PresetInfo, int.Parse(comboBoxSeries.Text));
+                    if (_dicomLoader.GetErrorCode() == 0)
+                    {
+                        _vizualization3D.ChangeDirectory(_dicomLoader);
+                   
+                        _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo);
+                        _vizualization3D.ChangeToSerie(PresetInfo, int.Parse(comboBoxSeries.Text));
+                    }
+                    else
+                    {
+                        //_vizualization3D.Dispose();
+                        MessageBox.Show("Cannot load directory.",
+                            "Loading error",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error,
+                            MessageBoxDefaultButton.Button1);
+                        return;
+                    }
                 }
                 else
                 {
