@@ -165,6 +165,7 @@ namespace MainWindow
             // 
             // panel1
             // 
+            this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.clipingPanel);
             this.panel1.Controls.Add(this.drawingToolbox);
             this.panel1.Controls.Add(this.panel7);
@@ -213,7 +214,7 @@ namespace MainWindow
             this.panel7.Controls.Add(this.trackBarWidth);
             this.panel7.Location = new System.Drawing.Point(0, 27);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(305, 112);
+            this.panel7.Size = new System.Drawing.Size(309, 112);
             this.panel7.TabIndex = 71;
             // 
             // label4
@@ -519,7 +520,7 @@ namespace MainWindow
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(305, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(309, 24);
             this.menuStrip1.TabIndex = 75;
             this.menuStrip1.Text = "File";
             // 
@@ -611,7 +612,7 @@ namespace MainWindow
             this.tabPage2.Location = new System.Drawing.Point(4, 28);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1010, 829);
+            this.tabPage2.Size = new System.Drawing.Size(1010, 717);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "X plane view";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -620,7 +621,7 @@ namespace MainWindow
             // 
             this.drawingPanelX.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.drawingPanelX.Image = null;
-            this.drawingPanelX.Location = new System.Drawing.Point(3, 826);
+            this.drawingPanelX.Location = new System.Drawing.Point(3, 714);
             this.drawingPanelX.Name = "drawingPanelX";
             this.drawingPanelX.Size = new System.Drawing.Size(1004, 0);
             this.drawingPanelX.TabIndex = 6;
@@ -632,7 +633,7 @@ namespace MainWindow
             this.bigFirstWindow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bigFirstWindow.Location = new System.Drawing.Point(3, 3);
             this.bigFirstWindow.Name = "bigFirstWindow";
-            this.bigFirstWindow.Size = new System.Drawing.Size(1004, 823);
+            this.bigFirstWindow.Size = new System.Drawing.Size(1004, 711);
             this.bigFirstWindow.TabIndex = 5;
             this.bigFirstWindow.TestText = null;
             // 
@@ -643,7 +644,7 @@ namespace MainWindow
             this.tabPage3.Location = new System.Drawing.Point(4, 28);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1010, 829);
+            this.tabPage3.Size = new System.Drawing.Size(1010, 717);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Y plane view";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -652,7 +653,7 @@ namespace MainWindow
             // 
             this.drawingPanelY.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.drawingPanelY.Image = null;
-            this.drawingPanelY.Location = new System.Drawing.Point(3, 826);
+            this.drawingPanelY.Location = new System.Drawing.Point(3, 714);
             this.drawingPanelY.Name = "drawingPanelY";
             this.drawingPanelY.Size = new System.Drawing.Size(1004, 0);
             this.drawingPanelY.TabIndex = 7;
@@ -664,7 +665,7 @@ namespace MainWindow
             this.bigSecondWindow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bigSecondWindow.Location = new System.Drawing.Point(3, 3);
             this.bigSecondWindow.Name = "bigSecondWindow";
-            this.bigSecondWindow.Size = new System.Drawing.Size(1004, 823);
+            this.bigSecondWindow.Size = new System.Drawing.Size(1004, 711);
             this.bigSecondWindow.TabIndex = 6;
             this.bigSecondWindow.TestText = null;
             // 
@@ -675,7 +676,7 @@ namespace MainWindow
             this.tabPage4.Location = new System.Drawing.Point(4, 28);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1010, 829);
+            this.tabPage4.Size = new System.Drawing.Size(1010, 717);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Z plane view";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -684,7 +685,7 @@ namespace MainWindow
             // 
             this.drawingPanelZ.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.drawingPanelZ.Image = null;
-            this.drawingPanelZ.Location = new System.Drawing.Point(3, 826);
+            this.drawingPanelZ.Location = new System.Drawing.Point(3, 714);
             this.drawingPanelZ.Name = "drawingPanelZ";
             this.drawingPanelZ.Size = new System.Drawing.Size(1004, 0);
             this.drawingPanelZ.TabIndex = 8;
@@ -696,7 +697,7 @@ namespace MainWindow
             this.bigThirdWindow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bigThirdWindow.Location = new System.Drawing.Point(3, 3);
             this.bigThirdWindow.Name = "bigThirdWindow";
-            this.bigThirdWindow.Size = new System.Drawing.Size(1004, 823);
+            this.bigThirdWindow.Size = new System.Drawing.Size(1004, 711);
             this.bigThirdWindow.TabIndex = 7;
             this.bigThirdWindow.TestText = null;
             // 
