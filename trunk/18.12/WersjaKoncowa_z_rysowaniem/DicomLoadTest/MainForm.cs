@@ -27,8 +27,8 @@ namespace MainWindow
         private PresetInformation PresetInfo;
 
         private  DicomLoader _dicomLoader;
-        private string _directoryPath = null;//@"D:\\DICOM\\GOUDURIX\\GOUDURIX\\tmp";
-        private const string PresetDir = @"..\..\presety";
+        private string _directoryPath = null;
+        private const string PresetDir = @"presety";
 
         /// <summary>
         /// Selected point data used during opacity function modyfication
@@ -106,7 +106,7 @@ namespace MainWindow
         //wizualizacja 3d -----------------------------------------------------------------
         private void fourthWindow_Load(object sender, EventArgs e)
         {
-            string[] filePaths = Directory.GetFiles(PresetDir, "*.xml");
+            string[] filePaths = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(),PresetDir), "*.xml");
 
             PresetInfo = PresetReader.ReadXmlFile(new FileInfo(filePaths[0]).Name);
 
@@ -231,22 +231,22 @@ namespace MainWindow
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PresetInfo = PresetReader.ReadXmlFile(comboBox1.Text);
-            if (_vizualization3D != null)
-                _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo);
-
-            comboBoxSeries.Items.Clear();
-            int numberOfSeries = PresetInfo.Series.Count;
-            for (var i = 0; i < numberOfSeries; i++)
+            if (comboBoxSeries != null && PresetInfo != null)
             {
-                comboBoxSeries.Items.Add(i.ToString(CultureInfo.InvariantCulture));
+                PresetInfo = PresetReader.ReadXmlFile(comboBox1.Text);
+                if (_vizualization3D != null)
+                    _vizualization3D.ChangeColorAndOpacityFunction(PresetInfo);
+
+                comboBoxSeries.Items.Clear();
+                int numberOfSeries = PresetInfo.Series.Count;
+                for (var i = 0; i < numberOfSeries; i++)
+                {
+                    comboBoxSeries.Items.Add(i.ToString(CultureInfo.InvariantCulture));
+                }
+                comboBoxSeries.SelectedIndex = 0;
+                updateChart();
+                colorStrip.Invalidate();
             }
-            comboBoxSeries.SelectedIndex = 0;
-            updateChart();
-            colorStrip.Invalidate();
-
-
-
         }
 
 

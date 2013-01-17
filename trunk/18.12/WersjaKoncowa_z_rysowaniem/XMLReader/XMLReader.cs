@@ -30,7 +30,7 @@ namespace XMLReaderModule
         private PresetInformation ReadOpacityFunction(String fileName, Dictionary<float, Color[]> colorFunction)
         {
             PresetInformation presetInformation = new PresetInformation();
-            _reader = new XmlTextReader(@"..\..\presety\" + fileName);
+            _reader = new XmlTextReader(Path.Combine(Directory.GetCurrentDirectory(), @"presety\", fileName));
 
             while (_reader.Read())
             {
@@ -180,7 +180,7 @@ namespace XMLReaderModule
         {
             try
             {
-                _reader = new XmlTextReader(Path.Combine(@"..\..\presety\", fileName));
+                _reader = new XmlTextReader(Path.Combine(Directory.GetCurrentDirectory(), @"presety\", fileName));
                 _reader.ReadToFollowing("IndependentColor");
                 Boolean isIndependent = _reader.ReadElementContentAsBoolean();
 
@@ -192,8 +192,9 @@ namespace XMLReaderModule
             }
             catch (Exception e)
             {
-                logger.ErrorException("Preset file reading exception:", e);
-                return null;
+                logger.ErrorException("Preset file reading exception: "+e.Message, e);
+                logger.Warn(Path.Combine(Directory.GetCurrentDirectory(), @"presety\", fileName));
+                return new PresetInformation();
             }
         }
     }
