@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawingModule", "DrawingMod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipingModule", "ClipingModule\ClipingModule.csproj", "{689FA51C-C48C-4AD6-956D-7AB4D57964C8}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Dicom3DSetup", "Dicom3DSetup\Dicom3DSetup.vdproj", "{8F0FE3A9-C94C-4A6C-91CB-67FD69036226}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -63,6 +65,12 @@ Global
 		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{689FA51C-C48C-4AD6-956D-7AB4D57964C8}.Release|x86.ActiveCfg = Release|Any CPU
+		{8F0FE3A9-C94C-4A6C-91CB-67FD69036226}.Debug|Any CPU.ActiveCfg = Debug
+		{8F0FE3A9-C94C-4A6C-91CB-67FD69036226}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{8F0FE3A9-C94C-4A6C-91CB-67FD69036226}.Debug|x86.ActiveCfg = Debug
+		{8F0FE3A9-C94C-4A6C-91CB-67FD69036226}.Release|Any CPU.ActiveCfg = Release
+		{8F0FE3A9-C94C-4A6C-91CB-67FD69036226}.Release|Mixed Platforms.ActiveCfg = Release
+		{8F0FE3A9-C94C-4A6C-91CB-67FD69036226}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
