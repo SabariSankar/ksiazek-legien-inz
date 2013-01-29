@@ -760,5 +760,17 @@ namespace MainWindow
 
         #endregion      
 
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Authors: Magdalena Ksi¹¿ek, Grzegorz Legieñ \n"
+                    +"Year: 2012/2013 \n"
+                    +"Department of Computer Science \n"
+                    +"AGH University of Science and Technology",
+                    "About",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1);
+        }
+
     }
 }
