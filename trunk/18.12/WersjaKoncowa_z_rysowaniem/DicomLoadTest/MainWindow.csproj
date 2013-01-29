@@ -70,12 +70,19 @@
   <PropertyGroup>
     <StartupObject>MainWindow.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <Win32Resource>
+    </Win32Resource>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>d3d.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Kitware.mummy.Runtime">
-      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\bin\Kitware.mummy.Runtime.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\ActiViz.NET 5.8.0 OpenSource Edition\bin\Kitware.mummy.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Kitware.VTK">
-      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\bin\Kitware.VTK.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\ActiViz.NET 5.8.0 OpenSource Edition\bin\Kitware.VTK.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -163,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="convert.py" />
+    <Content Include="d3d.ico" />
     <None Include="lib\NLog.dll" />
     <EmbeddedResource Include="presety\Abd_shaded_A.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
